@@ -25,6 +25,7 @@ import {
 } from "@/features/modules/actions";
 import { createMaterial } from "@/features/materials/actions";
 import { createAssignment } from "@/features/assignments/actions";
+import { createQuiz } from "@/features/quizzes/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
 
 export default async function CourseDetailPage({
@@ -108,6 +109,12 @@ export default async function CourseDetailPage({
   const canDelete = await can("course.delete").catch(() => false);
   const canManageModules = await can("module.update").catch(() => false);
   const canAssign = await can("assignment.create").catch(() => false);
+  const canQuiz = await can("quiz.create").catch(() => false);
+  const { data: quizzes } = await supabase
+    .from("quizzes")
+    .select("id, title, status, max_attempts")
+    .eq("course_id", id)
+    .order("created_at");
   const { data: assignments } = await supabase
     .from("assignments")
     .select("id, title, type, status, due_at")
@@ -437,6 +444,71 @@ export default async function CourseDetailPage({
                 Revisi diizinkan
               </label>
               <Button type="submit">Buat tugas (DRAFT)</Button>
+            </form>
+          ) : null}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Kuis ({(quizzes ?? []).length})</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-1 text-sm">
+          {(
+            (quizzes ?? []) as {
+              id: string;
+              title: string;
+              status: string;
+              max_attempts: number;
+            }[]
+          ).map((q) => (
+            <Link
+              key={q.id}
+              href={`/quizzes/${q.id}`}
+              className="flex items-center gap-2 py-1 hover:underline"
+            >
+              <span className="flex-1 font-medium">{q.title}</span>
+              <Badge>{q.status}</Badge>
+              <Badge variant="outline">{q.max_attempts}x</Badge>
+            </Link>
+          ))}
+          {(quizzes ?? []).length === 0 ? (
+            <span className="text-muted-foreground">Belum ada kuis.</span>
+          ) : null}
+          {canQuiz ? (
+            <form
+              action={createQuiz}
+              className="mt-2 flex flex-col gap-3 border-t pt-4"
+            >
+              <input type="hidden" name="course_id" value={course.id} />
+              <div className="flex gap-3">
+                <Input
+                  name="title"
+                  placeholder="Judul kuis"
+                  required
+                  minLength={3}
+                  maxLength={200}
+                />
+                <Input
+                  name="max_attempts"
+                  type="number"
+                  min={1}
+                  max={100}
+                  defaultValue={1}
+                  required
+                />
+              </div>
+              <div className="flex gap-3">
+                <Input
+                  name="time_limit_seconds"
+                  type="number"
+                  min={1}
+                  max={86400}
+                  placeholder="Batas detik (opsional)"
+                />
+                <Input name="type" defaultValue="PRACTICE" maxLength={32} />
+              </div>
+              <Button type="submit">Buat kuis (DRAFT)</Button>
             </form>
           ) : null}
         </CardContent>
