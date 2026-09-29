@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,8 @@ import {
   deleteModule,
   moveModule,
 } from "@/features/modules/actions";
+import { createMaterial } from "@/features/materials/actions";
+import { isVisibleNow } from "@/features/materials/visibility";
 
 export default async function CourseDetailPage({
   params,
@@ -44,6 +47,35 @@ export default async function CourseDetailPage({
     .select("id, title, position, status")
     .eq("course_id", id)
     .order("position");
+
+  const moduleIds = ((modules ?? []) as { id: string }[]).map((m) => m.id);
+  const { data: allMaterials } =
+    moduleIds.length > 0
+      ? await supabase
+          .from("materials")
+          .select(
+            "id, module_id, title, type, status, is_required, scheduled_at",
+          )
+          .in("module_id", moduleIds)
+          .order("created_at")
+      : { data: [] as unknown[] };
+  const staffMaterials = await can("material.update").catch(() => false);
+  type MaterialRow = {
+    id: string;
+    module_id: string;
+    title: string;
+    type: string;
+    status: string;
+    is_required: boolean;
+    scheduled_at: string | null;
+  };
+  const byModule = new Map<string, MaterialRow[]>();
+  for (const mat of (allMaterials ?? []) as MaterialRow[]) {
+    if (!staffMaterials && !isVisibleNow(mat)) continue;
+    const list = byModule.get(mat.module_id) ?? [];
+    list.push(mat);
+    byModule.set(mat.module_id, list);
+  }
 
   // Progress ringkas: materi required vs selesai milik user.
   const {
@@ -145,45 +177,124 @@ export default async function CourseDetailPage({
               status: string;
             }[]
           ).map((m, i, arr) => (
-            <div key={m.id} className="flex items-center gap-2 py-1">
-              <Badge variant="outline">{m.position}</Badge>
-              <span className="flex-1">{m.title}</span>
-              <Badge>{m.status}</Badge>
-              {canManageModules ? (
-                <>
-                  <form action={moveModule}>
-                    <input type="hidden" name="module_id" value={m.id} />
-                    <input type="hidden" name="direction" value="up" />
-                    <Button
-                      type="submit"
-                      size="sm"
-                      variant="ghost"
-                      disabled={i === 0}
+            <div
+              key={m.id}
+              className="flex flex-col gap-1 border-b py-2 last:border-0"
+            >
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">{m.position}</Badge>
+                <span className="flex-1 font-medium">{m.title}</span>
+                <Badge>{m.status}</Badge>
+                {canManageModules ? (
+                  <>
+                    <form action={moveModule}>
+                      <input type="hidden" name="module_id" value={m.id} />
+                      <input type="hidden" name="direction" value="up" />
+                      <Button
+                        type="submit"
+                        size="sm"
+                        variant="ghost"
+                        disabled={i === 0}
+                      >
+                        ↑
+                      </Button>
+                    </form>
+                    <form action={moveModule}>
+                      <input type="hidden" name="module_id" value={m.id} />
+                      <input type="hidden" name="direction" value="down" />
+                      <Button
+                        type="submit"
+                        size="sm"
+                        variant="ghost"
+                        disabled={i === arr.length - 1}
+                      >
+                        ↓
+                      </Button>
+                    </form>
+                    <form action={deleteModule}>
+                      <input type="hidden" name="module_id" value={m.id} />
+                      <input type="hidden" name="course_id" value={course.id} />
+                      <Button type="submit" size="sm" variant="ghost">
+                        Hapus
+                      </Button>
+                    </form>
+                  </>
+                ) : null}
+              </div>
+              <div className="ml-8 flex flex-col gap-1">
+                {(byModule.get(m.id) ?? []).map(
+                  (mat: {
+                    id: string;
+                    title: string;
+                    type: string;
+                    status: string;
+                    is_required: boolean;
+                  }) => (
+                    <Link
+                      key={mat.id}
+                      href={`/materials/${mat.id}`}
+                      className="flex items-center gap-2 py-0.5 hover:underline"
                     >
-                      ↑
-                    </Button>
-                  </form>
-                  <form action={moveModule}>
+                      <Badge variant="outline">{mat.type}</Badge>
+                      <span className="flex-1">{mat.title}</span>
+                      {mat.is_required ? null : (
+                        <Badge variant="secondary">Opsional</Badge>
+                      )}
+                      <Badge>{mat.status}</Badge>
+                    </Link>
+                  ),
+                )}
+                {staffMaterials ? (
+                  <form
+                    action={createMaterial}
+                    className="flex flex-wrap gap-2 pt-1"
+                  >
                     <input type="hidden" name="module_id" value={m.id} />
-                    <input type="hidden" name="direction" value="down" />
-                    <Button
-                      type="submit"
-                      size="sm"
-                      variant="ghost"
-                      disabled={i === arr.length - 1}
+                    <input
+                      name="title"
+                      placeholder="Judul materi"
+                      required
+                      minLength={3}
+                      maxLength={200}
+                      className="border-input bg-background w-40 rounded-md border px-2 py-1 text-xs"
+                    />
+                    <input
+                      name="slug"
+                      placeholder="slug"
+                      required
+                      minLength={2}
+                      maxLength={80}
+                      className="border-input bg-background w-28 rounded-md border px-2 py-1 text-xs"
+                    />
+                    <select
+                      name="type"
+                      defaultValue="TEXT"
+                      className="border-input bg-background rounded-md border px-2 py-1 text-xs"
                     >
-                      ↓
+                      <option value="TEXT">TEXT</option>
+                      <option value="LINK">LINK</option>
+                      <option value="FILE">FILE</option>
+                      <option value="VIDEO">VIDEO</option>
+                    </select>
+                    <input
+                      name="url"
+                      placeholder="URL (khusus LINK)"
+                      className="border-input bg-background w-40 rounded-md border px-2 py-1 text-xs"
+                    />
+                    <label className="flex items-center gap-1 text-xs">
+                      <input
+                        type="checkbox"
+                        name="is_required"
+                        defaultChecked
+                      />
+                      Wajib
+                    </label>
+                    <Button type="submit" size="sm" variant="outline">
+                      + Materi
                     </Button>
                   </form>
-                  <form action={deleteModule}>
-                    <input type="hidden" name="module_id" value={m.id} />
-                    <input type="hidden" name="course_id" value={course.id} />
-                    <Button type="submit" size="sm" variant="ghost">
-                      Hapus
-                    </Button>
-                  </form>
-                </>
-              ) : null}
+                ) : null}
+              </div>
             </div>
           ))}
           {(modules ?? []).length === 0 ? (
