@@ -68,7 +68,7 @@ export default async function AdminRolesPage() {
               name="role_id"
               required
               defaultValue=""
-              className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="border-input bg-background rounded-md border px-3 py-2 text-sm"
             >
               <option value="" disabled>
                 Pilih peran
@@ -98,7 +98,7 @@ export default async function AdminRolesPage() {
               name="role_id"
               required
               defaultValue=""
-              className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="border-input bg-background rounded-md border px-3 py-2 text-sm"
             >
               <option value="" disabled>
                 Pilih peran

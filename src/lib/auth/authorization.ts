@@ -5,12 +5,7 @@
  */
 
 export type Scope =
-  | "GLOBAL"
-  | "ORGANIZATION"
-  | "DIVISION"
-  | "CLASS"
-  | "COURSE"
-  | "OWN";
+  "GLOBAL" | "ORGANIZATION" | "DIVISION" | "CLASS" | "COURSE" | "OWN";
 
 export type PermissionAssignment = {
   permission: string;
@@ -64,7 +59,10 @@ export function evaluateAccess(
       case "ORGANIZATION":
         return true;
       case "DIVISION":
-        if (context.divisionId && memberships.divisionIds.includes(context.divisionId)) {
+        if (
+          context.divisionId &&
+          memberships.divisionIds.includes(context.divisionId)
+        ) {
           return true;
         }
         break;

@@ -66,7 +66,9 @@ export async function loadAccess(userId: string): Promise<{
     assignments,
     memberships: {
       userId,
-      divisionIds: (divRows ?? []).map((r: { division_id: string }) => r.division_id),
+      divisionIds: (divRows ?? []).map(
+        (r: { division_id: string }) => r.division_id,
+      ),
       classIds: (classRows ?? []).map((r: { class_id: string }) => r.class_id),
     },
   };

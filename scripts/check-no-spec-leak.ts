@@ -58,16 +58,22 @@ function rel(p: string): string {
 for (const base of [PUBLIC, SRC]) {
   for (const f of walk(base)) {
     if (extname(f).toLowerCase() === ".md") {
-      violations.push({ file: rel(f), line: 0, rule: "no-md-in-public-or-src" });
+      violations.push({
+        file: rel(f),
+        line: 0,
+        rule: "no-md-in-public-or-src",
+      });
     }
   }
 }
 
 // Rule 2: tidak boleh ada import/require/readFile *.md di src/
-const importMdRe = /(\bfrom\s+["'][^"']*\.md["']|\bimport\s*\([^)]*\.md|require\s*\([^)]*\.md|\breadFile[A-Za-z]*\s*\([^)]*\.md)/;
-const specNameRes = SPEC_FILES.map(
-  (n) => ({ name: n, re: new RegExp(`\\b${n.replace(".", "\\.")}\\b`) }),
-);
+const importMdRe =
+  /(\bfrom\s+["'][^"']*\.md["']|\bimport\s*\([^)]*\.md|require\s*\([^)]*\.md|\breadFile[A-Za-z]*\s*\([^)]*\.md)/;
+const specNameRes = SPEC_FILES.map((n) => ({
+  name: n,
+  re: new RegExp(`\\b${n.replace(".", "\\.")}\\b`),
+}));
 
 for (const f of walk(SRC)) {
   if (!CODE_EXTS.has(extname(f).toLowerCase())) continue;
@@ -92,22 +98,43 @@ for (const f of walk(SRC)) {
 const nextConfigTs = join(ROOT, "next.config.ts");
 const nextConfigMjs = join(ROOT, "next.config.mjs");
 const nextConfigJs = join(ROOT, "next.config.js");
-const cfgPath = [nextConfigTs, nextConfigMjs, nextConfigJs].find((p) => existsSync(p));
+const cfgPath = [nextConfigTs, nextConfigMjs, nextConfigJs].find((p) =>
+  existsSync(p),
+);
 if (cfgPath) {
   const cfg = readFileSync(cfgPath, "utf8");
   if (!cfg.includes("pageExtensions")) {
-    violations.push({ file: rel(cfgPath), line: 0, rule: "missing-pageExtensions-guard" });
+    violations.push({
+      file: rel(cfgPath),
+      line: 0,
+      rule: "missing-pageExtensions-guard",
+    });
   } else if (/["']mdx?["']/.test(cfg)) {
-    violations.push({ file: rel(cfgPath), line: 0, rule: "pageExtensions-must-exclude-md" });
+    violations.push({
+      file: rel(cfgPath),
+      line: 0,
+      rule: "pageExtensions-must-exclude-md",
+    });
   }
 } else {
-  violations.push({ file: "next.config.ts", line: 0, rule: "missing-next-config" });
+  violations.push({
+    file: "next.config.ts",
+    line: 0,
+    rule: "missing-next-config",
+  });
 }
 
 // Rule 4: konvensi Next.js 16 — middleware.ts deprecated, gunakan proxy.ts
-for (const legacy of [join(ROOT, "middleware.ts"), join(ROOT, "src", "middleware.ts")]) {
+for (const legacy of [
+  join(ROOT, "middleware.ts"),
+  join(ROOT, "src", "middleware.ts"),
+]) {
   if (existsSync(legacy)) {
-    violations.push({ file: rel(legacy), line: 0, rule: "deprecated-middleware-use-proxy" });
+    violations.push({
+      file: rel(legacy),
+      line: 0,
+      rule: "deprecated-middleware-use-proxy",
+    });
   }
 }
 

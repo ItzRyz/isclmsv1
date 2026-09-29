@@ -4,20 +4,20 @@ This directory contains the final product/design specification for the Study Clu
 
 ## Files
 
-| File | Purpose |
-|---|---|
-| `AGENTS.md` | master instructions for developers/AI agents |
-| `architecture.md` | system architecture and service boundaries |
-| `prd.md` | product requirements |
-| `ui_ux_brief.md` | UI/UX and design-system brief |
-| `database.md` | database/ERD-equivalent specification |
-| `rbac.md` | multi-role/scoped RBAC |
-| `security.md` | security and privacy requirements |
-| `api.md` | API contracts |
-| `deployment.md` | environment/deployment/operations |
-| `testing.md` | testing strategy |
-| `tasks.md` | phased implementation tasks |
-| `contributing.md` | coding/development workflow |
+| File              | Purpose                                      |
+| ----------------- | -------------------------------------------- |
+| `AGENTS.md`       | master instructions for developers/AI agents |
+| `architecture.md` | system architecture and service boundaries   |
+| `prd.md`          | product requirements                         |
+| `ui_ux_brief.md`  | UI/UX and design-system brief                |
+| `database.md`     | database/ERD-equivalent specification        |
+| `rbac.md`         | multi-role/scoped RBAC                       |
+| `security.md`     | security and privacy requirements            |
+| `api.md`          | API contracts                                |
+| `deployment.md`   | environment/deployment/operations            |
+| `testing.md`      | testing strategy                             |
+| `tasks.md`        | phased implementation tasks                  |
+| `contributing.md` | coding/development workflow                  |
 
 ## Final stack
 

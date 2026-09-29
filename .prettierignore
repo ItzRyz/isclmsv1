@@ -1,0 +1,27 @@
+# Build / deps / generated — jangan format.
+.next
+out
+build
+node_modules
+coverage
+supabase/.temp
+migrations
+src/prisma/contract.json
+src/prisma/contract.d.ts
+*.tsbuildinfo
+next-env.d.ts
+
+# Dok internal (local-only, tidak ter-commit) — bukan kode produk.
+AGENTS.md
+api.md
+architecture.md
+contributing.md
+database.md
+deployment.md
+prd.md
+rbac.md
+security.md
+tasks.md
+testing.md
+ui_ux_brief.md
+prisma-8.md
