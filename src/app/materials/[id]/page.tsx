@@ -18,6 +18,7 @@ import {
   updateMaterial,
 } from "@/features/materials/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
+import { FileList } from "@/features/storage/file-list";
 import { UploadForm } from "@/features/storage/upload-form";
 
 function toLocalInput(iso: string | null): string {
@@ -67,10 +68,6 @@ export default async function MaterialDetailPage({
   const { data: links } = await supabase
     .from("material_links")
     .select("id, url, title")
-    .eq("material_id", id);
-  const { data: files } = await supabase
-    .from("material_files")
-    .select("id, original_name, mime_type, size_bytes")
     .eq("material_id", id);
 
   const mod = Array.isArray(material.modules)
@@ -127,12 +124,7 @@ export default async function MaterialDetailPage({
               {l.title ?? l.url}
             </a>
           ))}
-          {((files ?? []) as { id: string; original_name: string }[]).length >
-          0 ? (
-            <span className="text-muted-foreground">
-              Unduhan file menyusul P1-305.
-            </span>
-          ) : null}
+          <FileList materialId={material.id} />
           {staff && !visible ? (
             <Badge variant="outline">
               Pratinjau staf (belum tayang publik)
