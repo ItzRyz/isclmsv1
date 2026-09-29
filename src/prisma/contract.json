@@ -24,8 +24,44 @@
       "model": "Classes",
       "namespace": "public"
     },
+    "courses": {
+      "model": "Courses",
+      "namespace": "public"
+    },
     "divisions": {
       "model": "Divisions",
+      "namespace": "public"
+    },
+    "learning_activities": {
+      "model": "LearningActivities",
+      "namespace": "public"
+    },
+    "material_bookmarks": {
+      "model": "MaterialBookmarks",
+      "namespace": "public"
+    },
+    "material_files": {
+      "model": "MaterialFiles",
+      "namespace": "public"
+    },
+    "material_links": {
+      "model": "MaterialLinks",
+      "namespace": "public"
+    },
+    "material_prerequisites": {
+      "model": "MaterialPrerequisites",
+      "namespace": "public"
+    },
+    "material_progress": {
+      "model": "MaterialProgress",
+      "namespace": "public"
+    },
+    "materials": {
+      "model": "Materials",
+      "namespace": "public"
+    },
+    "modules": {
+      "model": "Modules",
       "namespace": "public"
     },
     "organizations": {
@@ -696,6 +732,224 @@
               "table": "classes"
             }
           },
+          "Courses": {
+            "fields": {
+              "code": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "difficulty": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "estimatedHours": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "publishedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "division": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "modules": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "courseId"
+                  ]
+                },
+                "to": {
+                  "model": "Modules",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "profilesProfiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "updatedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "code": {
+                  "column": "code"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "difficulty": {
+                  "column": "difficulty"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "estimatedHours": {
+                  "column": "estimated_hours"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "publishedAt": {
+                  "column": "published_at"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "updatedBy": {
+                  "column": "updated_by"
+                }
+              },
+              "namespaceId": "public",
+              "table": "courses"
+            }
+          },
           "Divisions": {
             "fields": {
               "code": {
@@ -781,6 +1035,21 @@
                   "namespace": "public"
                 }
               },
+              "courses": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
               "organization": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -845,6 +1114,1001 @@
               },
               "namespaceId": "public",
               "table": "divisions"
+            }
+          },
+          "LearningActivities": {
+            "fields": {
+              "activityType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "entityId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "entityType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "metadata": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/jsonb@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "activityType": {
+                  "column": "activity_type"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "entityId": {
+                  "column": "entity_id"
+                },
+                "entityType": {
+                  "column": "entity_type"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "metadata": {
+                  "column": "metadata"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "learning_activities"
+            }
+          },
+          "MaterialBookmarks": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "materialId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "material": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "materialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "materialId": {
+                  "column": "material_id"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "material_bookmarks"
+            }
+          },
+          "MaterialFiles": {
+            "fields": {
+              "checksum": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "materialId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "mimeType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "originalName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "sizeBytes": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "storageBucket": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "storagePath": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "material": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "materialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "checksum": {
+                  "column": "checksum"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "materialId": {
+                  "column": "material_id"
+                },
+                "mimeType": {
+                  "column": "mime_type"
+                },
+                "originalName": {
+                  "column": "original_name"
+                },
+                "sizeBytes": {
+                  "column": "size_bytes"
+                },
+                "storageBucket": {
+                  "column": "storage_bucket"
+                },
+                "storagePath": {
+                  "column": "storage_path"
+                }
+              },
+              "namespaceId": "public",
+              "table": "material_files"
+            }
+          },
+          "MaterialLinks": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "materialId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "url": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "material": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "materialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "materialId": {
+                  "column": "material_id"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "url": {
+                  "column": "url"
+                }
+              },
+              "namespaceId": "public",
+              "table": "material_links"
+            }
+          },
+          "MaterialPrerequisites": {
+            "fields": {
+              "materialId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "prerequisiteMaterialId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "material": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "materialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "prerequisiteMaterial": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "prerequisiteMaterialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "materialId": {
+                  "column": "material_id"
+                },
+                "prerequisiteMaterialId": {
+                  "column": "prerequisite_material_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "material_prerequisites"
+            }
+          },
+          "MaterialProgress": {
+            "fields": {
+              "completedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "lastPosition": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "materialId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "progressPercent": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "startedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "material": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "materialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "completedAt": {
+                  "column": "completed_at"
+                },
+                "lastPosition": {
+                  "column": "last_position"
+                },
+                "materialId": {
+                  "column": "material_id"
+                },
+                "progressPercent": {
+                  "column": "progress_percent"
+                },
+                "startedAt": {
+                  "column": "started_at"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "material_progress"
+            }
+          },
+          "Materials": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "contentText": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "estimatedMinutes": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "isRequired": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "moduleId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "publishedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "scheduledAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "materialBookmarks": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materialId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialBookmarks",
+                  "namespace": "public"
+                }
+              },
+              "materialFiles": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materialId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialFiles",
+                  "namespace": "public"
+                }
+              },
+              "materialLinks": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materialId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialLinks",
+                  "namespace": "public"
+                }
+              },
+              "materialPrerequisites": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materialId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialPrerequisites",
+                  "namespace": "public"
+                }
+              },
+              "materialPrerequisitesMaterialPrerequisites": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "prerequisiteMaterialId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialPrerequisites",
+                  "namespace": "public"
+                }
+              },
+              "materialProgresses": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materialId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialProgress",
+                  "namespace": "public"
+                }
+              },
+              "module": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "moduleId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Modules",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "profilesProfiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "updatedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "contentText": {
+                  "column": "content_text"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "estimatedMinutes": {
+                  "column": "estimated_minutes"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "isRequired": {
+                  "column": "is_required"
+                },
+                "moduleId": {
+                  "column": "module_id"
+                },
+                "publishedAt": {
+                  "column": "published_at"
+                },
+                "scheduledAt": {
+                  "column": "scheduled_at"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "updatedBy": {
+                  "column": "updated_by"
+                }
+              },
+              "namespaceId": "public",
+              "table": "materials"
+            }
+          },
+          "Modules": {
+            "fields": {
+              "courseId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "position": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "course": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "courseId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "materials": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "moduleId"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "courseId": {
+                  "column": "course_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "position": {
+                  "column": "position"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "modules"
             }
           },
           "Organizations": {
@@ -1158,6 +2422,111 @@
                 },
                 "to": {
                   "model": "ClassMembers",
+                  "namespace": "public"
+                }
+              },
+              "courses": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "coursesCourses": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "updatedBy"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "learningActivities": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "LearningActivities",
+                  "namespace": "public"
+                }
+              },
+              "materialBookmarks": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialBookmarks",
+                  "namespace": "public"
+                }
+              },
+              "materialProgresses": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialProgress",
+                  "namespace": "public"
+                }
+              },
+              "materials": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "materialsMaterials": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "updatedBy"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
                   "namespace": "public"
                 }
               },
@@ -1652,6 +3021,15 @@
               ],
               "typeName": "account_status"
             },
+            "content_status": {
+              "kind": "postgres-enum",
+              "members": [
+                "DRAFT",
+                "PUBLISHED",
+                "ARCHIVED"
+              ],
+              "typeName": "content_status"
+            },
             "entity_status": {
               "kind": "postgres-enum",
               "members": [
@@ -1798,6 +3176,55 @@
               "using": "has_permission(auth.uid(), 'class.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'class.update'::text)"
             },
+            "courses_delete": {
+              "kind": "policy",
+              "name": "courses_delete",
+              "namespaceId": "public",
+              "operation": "delete",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "courses",
+              "using": "has_permission(auth.uid(), 'course.delete'::text)"
+            },
+            "courses_insert": {
+              "kind": "policy",
+              "name": "courses_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "courses",
+              "withCheck": "has_permission(auth.uid(), 'course.create'::text)"
+            },
+            "courses_select": {
+              "kind": "policy",
+              "name": "courses_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "courses",
+              "using": "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'course.create'::text) OR has_permission(auth.uid(), 'course.update'::text) OR has_permission(auth.uid(), 'course.delete'::text))"
+            },
+            "courses_update": {
+              "kind": "policy",
+              "name": "courses_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "courses",
+              "using": "has_permission(auth.uid(), 'course.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'course.update'::text)"
+            },
             "divisions_delete": {
               "kind": "policy",
               "name": "divisions_delete",
@@ -1846,6 +3273,193 @@
               "tableName": "divisions",
               "using": "has_permission(auth.uid(), 'division.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'division.update'::text)"
+            },
+            "learning_activities_insert": {
+              "kind": "policy",
+              "name": "learning_activities_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "learning_activities",
+              "withCheck": "(user_id = auth.uid())"
+            },
+            "learning_activities_select": {
+              "kind": "policy",
+              "name": "learning_activities_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "learning_activities",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'progress.view'::text))"
+            },
+            "material_bookmarks_all": {
+              "kind": "policy",
+              "name": "material_bookmarks_all",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_bookmarks",
+              "using": "(user_id = auth.uid())",
+              "withCheck": "(user_id = auth.uid())"
+            },
+            "material_files_select": {
+              "kind": "policy",
+              "name": "material_files_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_files",
+              "using": "true"
+            },
+            "material_files_write": {
+              "kind": "policy",
+              "name": "material_files_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_files",
+              "using": "has_permission(auth.uid(), 'material.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'material.update'::text)"
+            },
+            "material_links_select": {
+              "kind": "policy",
+              "name": "material_links_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_links",
+              "using": "true"
+            },
+            "material_links_write": {
+              "kind": "policy",
+              "name": "material_links_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_links",
+              "using": "has_permission(auth.uid(), 'material.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'material.update'::text)"
+            },
+            "material_prerequisites_select": {
+              "kind": "policy",
+              "name": "material_prerequisites_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_prerequisites",
+              "using": "true"
+            },
+            "material_prerequisites_write": {
+              "kind": "policy",
+              "name": "material_prerequisites_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_prerequisites",
+              "using": "has_permission(auth.uid(), 'material.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'material.update'::text)"
+            },
+            "material_progress_select": {
+              "kind": "policy",
+              "name": "material_progress_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_progress",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'progress.view'::text))"
+            },
+            "material_progress_write": {
+              "kind": "policy",
+              "name": "material_progress_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_progress",
+              "using": "(user_id = auth.uid())",
+              "withCheck": "(user_id = auth.uid())"
+            },
+            "materials_select": {
+              "kind": "policy",
+              "name": "materials_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "materials",
+              "using": "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
+            },
+            "materials_write": {
+              "kind": "policy",
+              "name": "materials_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "materials",
+              "using": "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
+            },
+            "modules_select": {
+              "kind": "policy",
+              "name": "modules_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "modules",
+              "using": "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
+            },
+            "modules_write": {
+              "kind": "policy",
+              "name": "modules_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "modules",
+              "using": "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
             },
             "organizations_select": {
               "kind": "policy",
@@ -2058,10 +3672,55 @@
               "namespaceId": "public",
               "tableName": "classes"
             },
+            "courses": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "courses"
+            },
             "divisions": {
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "divisions"
+            },
+            "learning_activities": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "learning_activities"
+            },
+            "material_bookmarks": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "material_bookmarks"
+            },
+            "material_files": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "material_files"
+            },
+            "material_links": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "material_links"
+            },
+            "material_prerequisites": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "material_prerequisites"
+            },
+            "material_progress": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "material_progress"
+            },
+            "materials": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "materials"
+            },
+            "modules": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "modules"
             },
             "organizations": {
               "kind": "rls",
@@ -2647,6 +4306,183 @@
                 }
               ]
             },
+            "courses": {
+              "columns": {
+                "code": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "difficulty": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "estimated_hours": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "published_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "updated_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "courses_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "courses_division_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                },
+                {
+                  "name": "courses_updated_by_fkey",
+                  "source": {
+                    "columns": [
+                      "updated_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "division_id"
+                  ],
+                  "name": "courses_division_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "courses_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "division_id",
+                    "slug"
+                  ],
+                  "name": "courses_division_id_slug_key"
+                }
+              ]
+            },
             "divisions": {
               "columns": {
                 "code": {
@@ -2759,6 +4595,816 @@
                     "slug"
                   ],
                   "name": "divisions_slug_key"
+                }
+              ]
+            },
+            "learning_activities": {
+              "columns": {
+                "activity_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "entity_id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "entity_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "metadata": {
+                  "codecId": "pg/jsonb@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": {}
+                  },
+                  "nativeType": "jsonb",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "learning_activities_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "learning_activities"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "learning_activities_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "learning_activities_pkey"
+              },
+              "uniques": []
+            },
+            "material_bookmarks": {
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "material_bookmarks_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_bookmarks"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                },
+                {
+                  "name": "material_bookmarks_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_bookmarks"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "user_id",
+                  "material_id"
+                ],
+                "name": "material_bookmarks_pkey"
+              },
+              "uniques": []
+            },
+            "material_files": {
+              "columns": {
+                "checksum": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "mime_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "original_name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "size_bytes": {
+                  "codecId": "pg/int8@1",
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "storage_bucket": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "storage_path": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "material_files_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_files"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "material_files_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "storage_bucket",
+                    "storage_path"
+                  ],
+                  "name": "material_files_storage_bucket_storage_path_key"
+                }
+              ]
+            },
+            "material_links": {
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "url": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "material_links_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_links"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "material_links_pkey"
+              },
+              "uniques": []
+            },
+            "material_prerequisites": {
+              "checks": [
+                {
+                  "expression": "(material_id <> prerequisite_material_id)",
+                  "name": "material_prerequisites_check"
+                }
+              ],
+              "columns": {
+                "material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "prerequisite_material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "material_prerequisites_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_prerequisites"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                },
+                {
+                  "name": "material_prerequisites_prerequisite_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "prerequisite_material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_prerequisites"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "material_id",
+                  "prerequisite_material_id"
+                ],
+                "name": "material_prerequisites_pkey"
+              },
+              "uniques": []
+            },
+            "material_progress": {
+              "checks": [
+                {
+                  "expression": "((progress_percent >= 0) AND (progress_percent <= 100))",
+                  "name": "material_progress_progress_percent_check"
+                }
+              ],
+              "columns": {
+                "completed_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "last_position": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "progress_percent": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "started_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "material_progress_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_progress"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                },
+                {
+                  "name": "material_progress_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_progress"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "user_id",
+                  "material_id"
+                ],
+                "name": "material_progress_pkey"
+              },
+              "uniques": []
+            },
+            "materials": {
+              "columns": {
+                "content_text": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "estimated_minutes": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "is_required": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "module_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "published_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "scheduled_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "TEXT"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "updated_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "materials_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "materials_module_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "module_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "modules"
+                  }
+                },
+                {
+                  "name": "materials_updated_by_fkey",
+                  "source": {
+                    "columns": [
+                      "updated_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "module_id"
+                  ],
+                  "name": "materials_module_id",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "status"
+                  ],
+                  "name": "materials_status",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "materials_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "module_id",
+                    "slug"
+                  ],
+                  "name": "materials_module_id_slug_key"
+                }
+              ]
+            },
+            "modules": {
+              "columns": {
+                "course_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "position": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "modules_course_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "course_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "modules"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "course_id"
+                  ],
+                  "name": "modules_course_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "modules_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "course_id",
+                    "position"
+                  ],
+                  "name": "modules_course_id_position_key"
                 }
               ]
             },
@@ -3351,6 +5997,14 @@
                 "SUSPENDED"
               ]
             },
+            "ContentStatus": {
+              "kind": "valueSet",
+              "values": [
+                "DRAFT",
+                "PUBLISHED",
+                "ARCHIVED"
+              ]
+            },
             "EntityStatus": {
               "kind": "valueSet",
               "values": [
@@ -3376,7 +6030,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "aa47f25543141e7f126560df14a1fbc99f2d18faa6fd86550606c07bc75f1579"
+    "storageHash": "f2b9f5f1e906bf7120a180b54c3d814ac5252563833c0bf4ceb07622b610c2d6"
   },
   "capabilities": {
     "postgres": {

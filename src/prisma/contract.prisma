@@ -46,7 +46,14 @@ namespace public {
     updatedAt          Timestamptz            @default(now()) @map("updated_at")
     auditLogs          AuditLogs[]
     classMembers       ClassMembers[]
+    learningActivities LearningActivities[]
+    materialBookmarks  MaterialBookmarks[]
+    materialProgresses MaterialProgress[]
     userDivisions      UserDivisions[]
+    courses            Courses[]              @relation(name: "courses_created_by_fkey")
+    coursesCourses     Courses[]              @relation(name: "courses_updated_by_fkey")
+    materials          Materials[]            @relation(name: "materials_created_by_fkey")
+    materialsMaterials Materials[]            @relation(name: "materials_updated_by_fkey")
     userRoles          UserRoles[]            @relation(name: "user_roles_assigned_by_fkey")
     userRolesUserRoles UserRoles[]            @relation(name: "user_roles_user_id_fkey")
 
@@ -100,6 +107,7 @@ namespace public {
     createdAt      Timestamptz           @default(now()) @map("created_at")
     updatedAt      Timestamptz           @default(now()) @map("updated_at")
     classes        Classes[]
+    courses        Courses[]
     userDivisions  UserDivisions[]
     organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
 
@@ -141,6 +149,170 @@ namespace public {
     @@index([userId], map: "class_members_user_id")
     @@rls
     @@map("class_members")
+  }
+
+  model Courses {
+    id               Uuid                   @id(map: "courses_pkey") @default(sql`gen_random_uuid()`)
+    divisionId       Uuid                   @map("division_id")
+    name             String
+    slug             String
+    code             String?
+    description      String?
+    status           pg.enum(ContentStatus) @default("DRAFT")
+    difficulty       String?
+    estimatedHours   Int?                   @map("estimated_hours")
+    publishedAt      Timestamptz?           @map("published_at")
+    createdBy        Uuid?                  @map("created_by")
+    updatedBy        Uuid?                  @map("updated_by")
+    createdAt        Timestamptz            @default(now()) @map("created_at")
+    updatedAt        Timestamptz            @default(now()) @map("updated_at")
+    modules          Modules[]
+    profiles         Profiles?              @relation(name: "courses_created_by_fkey", fields: [createdBy], references: [id], map: "courses_created_by_fkey", index: false)
+    division         Divisions              @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "courses_division_id_fkey")
+    profilesProfiles Profiles?              @relation(name: "courses_updated_by_fkey", fields: [updatedBy], references: [id], map: "courses_updated_by_fkey", index: false)
+
+    @@unique([divisionId, slug], map: "courses_division_id_slug_key")
+    @@index([divisionId], map: "courses_division_id")
+    @@rls
+    @@map("courses")
+  }
+
+  model LearningActivities {
+    id           Uuid        @id(map: "learning_activities_pkey") @default(sql`gen_random_uuid()`)
+    userId       Uuid        @map("user_id")
+    activityType String      @map("activity_type")
+    entityType   String      @map("entity_type")
+    entityId     String?     @map("entity_id")
+    metadata     Jsonb       @default(json`{}`)
+    createdAt    Timestamptz @default(now()) @map("created_at")
+    user         Profiles    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "learning_activities_user_id_fkey")
+
+    @@index([userId], map: "learning_activities_user_id")
+    @@rls
+    @@map("learning_activities")
+  }
+
+  model Modules {
+    id          Uuid                   @id(map: "modules_pkey") @default(sql`gen_random_uuid()`)
+    courseId    Uuid                   @map("course_id")
+    title       String
+    slug        String
+    position    Int                    @default(0)
+    description String?
+    status      pg.enum(ContentStatus) @default("DRAFT")
+    createdAt   Timestamptz            @default(now()) @map("created_at")
+    updatedAt   Timestamptz            @default(now()) @map("updated_at")
+    materials   Materials[]
+    course      Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "modules_course_id_fkey")
+
+    @@unique([courseId, position], map: "modules_course_id_position_key")
+    @@index([courseId], map: "modules_course_id")
+    @@rls
+    @@map("modules")
+  }
+
+  model Materials {
+    id                                         Uuid                    @id(map: "materials_pkey") @default(sql`gen_random_uuid()`)
+    moduleId                                   Uuid                    @map("module_id")
+    title                                      String
+    slug                                       String
+    _type                                      String                  @default("TEXT") @map("type")
+    description                                String?
+    contentText                                String?                 @map("content_text")
+    estimatedMinutes                           Int?                    @map("estimated_minutes")
+    isRequired                                 Boolean                 @default(true) @map("is_required")
+    status                                     pg.enum(ContentStatus)  @default("DRAFT")
+    scheduledAt                                Timestamptz?            @map("scheduled_at")
+    publishedAt                                Timestamptz?            @map("published_at")
+    createdBy                                  Uuid?                   @map("created_by")
+    updatedBy                                  Uuid?                   @map("updated_by")
+    createdAt                                  Timestamptz             @default(now()) @map("created_at")
+    updatedAt                                  Timestamptz             @default(now()) @map("updated_at")
+    materialBookmarks                          MaterialBookmarks[]
+    materialFiles                              MaterialFiles[]
+    materialLinks                              MaterialLinks[]
+    materialProgresses                         MaterialProgress[]
+    materialPrerequisites                      MaterialPrerequisites[] @relation(name: "material_prerequisites_material_id_fkey")
+    materialPrerequisitesMaterialPrerequisites MaterialPrerequisites[] @relation(name: "material_prerequisites_prerequisite_material_id_fkey")
+    profiles                                   Profiles?               @relation(name: "materials_created_by_fkey", fields: [createdBy], references: [id], map: "materials_created_by_fkey", index: false)
+    module                                     Modules                 @relation(fields: [moduleId], references: [id], onDelete: Cascade, map: "materials_module_id_fkey")
+    profilesProfiles                           Profiles?               @relation(name: "materials_updated_by_fkey", fields: [updatedBy], references: [id], map: "materials_updated_by_fkey", index: false)
+
+    @@unique([moduleId, slug], map: "materials_module_id_slug_key")
+    @@index([moduleId], map: "materials_module_id")
+    @@index([status], map: "materials_status")
+    @@rls
+    @@map("materials")
+  }
+
+  model MaterialBookmarks {
+    userId     Uuid        @map("user_id")
+    materialId Uuid        @map("material_id")
+    createdAt  Timestamptz @default(now()) @map("created_at")
+    material   Materials   @relation(fields: [materialId], references: [id], onDelete: Cascade, map: "material_bookmarks_material_id_fkey", index: false)
+    user       Profiles    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "material_bookmarks_user_id_fkey", index: false)
+
+    @@id([userId, materialId], map: "material_bookmarks_pkey")
+    @@rls
+    @@map("material_bookmarks")
+  }
+
+  model MaterialFiles {
+    id            Uuid        @id(map: "material_files_pkey") @default(sql`gen_random_uuid()`)
+    materialId    Uuid        @map("material_id")
+    storageBucket String      @map("storage_bucket")
+    storagePath   String      @map("storage_path")
+    originalName  String      @map("original_name")
+    mimeType      String      @map("mime_type")
+    sizeBytes     BigInt      @map("size_bytes")
+    checksum      String?
+    createdAt     Timestamptz @default(now()) @map("created_at")
+    material      Materials   @relation(fields: [materialId], references: [id], onDelete: Cascade, map: "material_files_material_id_fkey", index: false)
+
+    @@unique([storageBucket, storagePath], map: "material_files_storage_bucket_storage_path_key")
+    @@rls
+    @@map("material_files")
+  }
+
+  model MaterialLinks {
+    id         Uuid        @id(map: "material_links_pkey") @default(sql`gen_random_uuid()`)
+    materialId Uuid        @map("material_id")
+    url        String
+    title      String?
+    createdAt  Timestamptz @default(now()) @map("created_at")
+    material   Materials   @relation(fields: [materialId], references: [id], onDelete: Cascade, map: "material_links_material_id_fkey", index: false)
+
+    @@rls
+    @@map("material_links")
+  }
+
+  model MaterialPrerequisites {
+    materialId             Uuid      @map("material_id")
+    prerequisiteMaterialId Uuid      @map("prerequisite_material_id")
+    material               Materials @relation(name: "material_prerequisites_material_id_fkey", fields: [materialId], references: [id], onDelete: Cascade, map: "material_prerequisites_material_id_fkey", index: false)
+    prerequisiteMaterial   Materials @relation(name: "material_prerequisites_prerequisite_material_id_fkey", fields: [prerequisiteMaterialId], references: [id], onDelete: Cascade, map: "material_prerequisites_prerequisite_material_id_fkey", index: false)
+
+    @@id([materialId, prerequisiteMaterialId], map: "material_prerequisites_pkey")
+    @@check(expression: "(material_id <> prerequisite_material_id)", map: "material_prerequisites_check")
+    @@rls
+    @@map("material_prerequisites")
+  }
+
+  model MaterialProgress {
+    userId          Uuid         @map("user_id")
+    materialId      Uuid         @map("material_id")
+    startedAt       Timestamptz  @default(now()) @map("started_at")
+    completedAt     Timestamptz? @map("completed_at")
+    progressPercent Int          @default(0) @map("progress_percent")
+    lastPosition    String?      @map("last_position")
+    updatedAt       Timestamptz  @default(now()) @map("updated_at")
+    material        Materials    @relation(fields: [materialId], references: [id], onDelete: Cascade, map: "material_progress_material_id_fkey", index: false)
+    user            Profiles     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "material_progress_user_id_fkey", index: false)
+
+    @@id([userId, materialId], map: "material_progress_pkey")
+    @@check(expression: "((progress_percent >= 0) AND (progress_percent <= 100))", map: "material_progress_progress_percent_check")
+    @@rls
+    @@map("material_progress")
   }
 
   model Permissions {
@@ -221,6 +393,13 @@ namespace public {
     INACTIVE = "INACTIVE"
     SUSPENDED = "SUSPENDED"
     @@map("account_status")
+  }
+
+  native_enum ContentStatus {
+    DRAFT = "DRAFT"
+    PUBLISHED = "PUBLISHED"
+    ARCHIVED = "ARCHIVED"
+    @@map("content_status")
   }
 
   native_enum EntityStatus {
@@ -313,6 +492,35 @@ namespace public {
     @@map("classes_update")
   }
 
+  policy_delete courses_delete {
+    target = Courses
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'course.delete'::text)"
+    @@map("courses_delete")
+  }
+
+  policy_insert courses_insert {
+    target = Courses
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'course.create'::text)"
+    @@map("courses_insert")
+  }
+
+  policy_select courses_select {
+    target = Courses
+    roles = [authenticated]
+    using = "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'course.create'::text) OR has_permission(auth.uid(), 'course.update'::text) OR has_permission(auth.uid(), 'course.delete'::text))"
+    @@map("courses_select")
+  }
+
+  policy_update courses_update {
+    target = Courses
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'course.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'course.update'::text)"
+    @@map("courses_update")
+  }
+
   policy_delete divisions_delete {
     target = Divisions
     roles = [authenticated]
@@ -340,6 +548,118 @@ namespace public {
     using = "has_permission(auth.uid(), 'division.update'::text)"
     withCheck = "has_permission(auth.uid(), 'division.update'::text)"
     @@map("divisions_update")
+  }
+
+  policy_insert learning_activities_insert {
+    target = LearningActivities
+    roles = [authenticated]
+    withCheck = "(user_id = auth.uid())"
+    @@map("learning_activities_insert")
+  }
+
+  policy_select learning_activities_select {
+    target = LearningActivities
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'progress.view'::text))"
+    @@map("learning_activities_select")
+  }
+
+  policy_all material_bookmarks_all {
+    target = MaterialBookmarks
+    roles = [authenticated]
+    using = "(user_id = auth.uid())"
+    withCheck = "(user_id = auth.uid())"
+    @@map("material_bookmarks_all")
+  }
+
+  policy_select material_files_select {
+    target = MaterialFiles
+    roles = [authenticated]
+    using = "true"
+    @@map("material_files_select")
+  }
+
+  policy_all material_files_write {
+    target = MaterialFiles
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'material.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'material.update'::text)"
+    @@map("material_files_write")
+  }
+
+  policy_select material_links_select {
+    target = MaterialLinks
+    roles = [authenticated]
+    using = "true"
+    @@map("material_links_select")
+  }
+
+  policy_all material_links_write {
+    target = MaterialLinks
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'material.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'material.update'::text)"
+    @@map("material_links_write")
+  }
+
+  policy_select material_prerequisites_select {
+    target = MaterialPrerequisites
+    roles = [authenticated]
+    using = "true"
+    @@map("material_prerequisites_select")
+  }
+
+  policy_all material_prerequisites_write {
+    target = MaterialPrerequisites
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'material.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'material.update'::text)"
+    @@map("material_prerequisites_write")
+  }
+
+  policy_select material_progress_select {
+    target = MaterialProgress
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'progress.view'::text))"
+    @@map("material_progress_select")
+  }
+
+  policy_all material_progress_write {
+    target = MaterialProgress
+    roles = [authenticated]
+    using = "(user_id = auth.uid())"
+    withCheck = "(user_id = auth.uid())"
+    @@map("material_progress_write")
+  }
+
+  policy_select materials_select {
+    target = Materials
+    roles = [authenticated]
+    using = "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
+    @@map("materials_select")
+  }
+
+  policy_all materials_write {
+    target = Materials
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
+    withCheck = "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
+    @@map("materials_write")
+  }
+
+  policy_select modules_select {
+    target = Modules
+    roles = [authenticated]
+    using = "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
+    @@map("modules_select")
+  }
+
+  policy_all modules_write {
+    target = Modules
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
+    withCheck = "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
+    @@map("modules_write")
   }
 
   policy_select organizations_select {
