@@ -1,3 +1,4 @@
+import QRCode from "qrcode";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -26,6 +27,11 @@ export default async function ProfilePage() {
     );
   }
 
+  const idQr = await QRCode.toDataURL(JSON.stringify({ member: profile.id }), {
+    width: 240,
+    margin: 1,
+  });
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <Card className="w-full max-w-md">
@@ -40,6 +46,20 @@ export default async function ProfilePage() {
           {profile.student_number ? (
             <Badge variant="secondary">{profile.student_number}</Badge>
           ) : null}
+        </CardContent>
+      </Card>
+
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Kartu anggota</CardTitle>
+          <CardDescription>
+            Tunjukkan ke mentor untuk scan saat sesi. Bukan bukti hadir tanpa
+            sesi berjalan.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={idQr} alt="QR kartu anggota" width={240} height={240} />
         </CardContent>
       </Card>
     </main>
