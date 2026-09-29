@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { gradeAttempt } from "./grade";
 import { seededShuffle } from "./shuffle";
 
 const answerSchema = z.object({
@@ -29,7 +30,7 @@ async function ownAttempt(supa: Supa, userId: string, attemptId: string) {
   const { data: attempt } = await supa
     .from("quiz_attempts")
     .select(
-      "id, quiz_id, user_id, attempt_number, started_at, status, quizzes(time_limit_seconds, due_at, status)",
+      "id, quiz_id, user_id, attempt_number, started_at, status, quizzes(time_limit_seconds, due_at, status, is_graded)",
     )
     .eq("id", attemptId)
     .single();
@@ -42,8 +43,16 @@ async function ownAttempt(supa: Supa, userId: string, attemptId: string) {
   const quizJoin = (
     attempt as unknown as {
       quizzes:
-        | { time_limit_seconds: number | null; due_at: string | null }
-        | { time_limit_seconds: number | null; due_at: string | null }[]
+        | {
+            time_limit_seconds: number | null;
+            due_at: string | null;
+            is_graded: boolean;
+          }
+        | {
+            time_limit_seconds: number | null;
+            due_at: string | null;
+            is_graded: boolean;
+          }[]
         | null;
     }
   ).quizzes;
@@ -184,7 +193,18 @@ export async function submitAttempt(
     .eq("status", "IN_PROGRESS");
   if (error) throw new Error(`Gagal submit: ${error.message}`);
   revalidatePath("/quizzes");
-  return { status: "SUBMITTED" };
+
+  // Nilai otomatis bila flag menyala; gagal nilai -> tetap SUBMITTED
+  // (tombol "Hitung nilai" di riwayat mencoba lagi).
+  if (attempt.quizzes?.is_graded) {
+    await gradeAttempt(attemptId).catch(() => undefined);
+  }
+  const { data: final } = await supabase
+    .from("quiz_attempts")
+    .select("status")
+    .eq("id", attemptId)
+    .single();
+  return { status: (final?.status as string) ?? "SUBMITTED" };
 }
 
 /** Bungkus FormData untuk tombol mulai (revalidate terpusat di startAttempt). */

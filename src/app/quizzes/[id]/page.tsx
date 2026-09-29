@@ -102,6 +102,7 @@ export default async function QuizDetailPage({
           shuffle_options: quiz.shuffle_options,
           time_limit_seconds: quiz.time_limit_seconds,
           max_attempts: quiz.max_attempts,
+          passing_score: quiz.passing_score,
         }}
       />
 

@@ -8,6 +8,7 @@ import {
   orderQuestions,
   startAttemptForm,
 } from "./actions";
+import { gradeAttempt } from "./grade";
 import { AttemptRunner, type AttemptQuestion } from "./attempt-runner";
 
 type QuizInfo = {
@@ -16,6 +17,7 @@ type QuizInfo = {
   shuffle_options: boolean;
   time_limit_seconds: number | null;
   max_attempts: number;
+  passing_score: number | null;
 };
 
 /** Area pengerjaan: mulai, lanjutkan, riwayat attempt. */
@@ -129,6 +131,64 @@ export async function AttemptSection({ quiz }: { quiz: QuizInfo }) {
     deadlineMs = attemptDeadline(active.started_at, quiz.time_limit_seconds);
   }
 
+  // Detail hasil attempt GRADED: benar/salah + pembahasan per soal.
+  const gradedIds = list.filter((a) => a.status === "GRADED").map((a) => a.id);
+  const { data: gradedAnswers } = gradedIds.length
+    ? await supabase
+        .from("quiz_answers")
+        .select(
+          "attempt_id, is_correct, points_awarded, questions(prompt, explanation, question_options(option_text, is_correct))",
+        )
+        .in("attempt_id", gradedIds)
+    : { data: [] as unknown[] };
+  const resultByAttempt = new Map<
+    string,
+    {
+      prompt: string;
+      correct: boolean | null;
+      awarded: number | null;
+      explanation: string | null;
+      picked: string[];
+      key: string[];
+    }[]
+  >();
+  for (const r of (gradedAnswers ?? []) as {
+    attempt_id: string;
+    is_correct: boolean | null;
+    points_awarded: number | null;
+    questions: {
+      prompt: string;
+      explanation: string | null;
+      question_options: { option_text: string; is_correct: boolean }[];
+    } | null;
+  }[]) {
+    const q = r.questions;
+    if (!q) continue;
+    resultByAttempt.set(r.attempt_id, [
+      ...(resultByAttempt.get(r.attempt_id) ?? []),
+      {
+        prompt: q.prompt,
+        correct: r.is_correct,
+        awarded: r.points_awarded,
+        explanation: q.explanation,
+        picked: [],
+        key: q.question_options
+          .filter((o) => o.is_correct)
+          .map((o) => o.option_text),
+      },
+    ]);
+  }
+
+  async function retryGrade(formData: FormData): Promise<void> {
+    "use server";
+    await gradeAttempt(String(formData.get("attempt_id") ?? ""));
+  }
+
+  const passOf = (score: number | null): boolean | null =>
+    score === null || quiz.passing_score === null
+      ? null
+      : score >= quiz.passing_score;
+
   return (
     <Card>
       <CardHeader>
@@ -156,18 +216,63 @@ export async function AttemptSection({ quiz }: { quiz: QuizInfo }) {
           <p className="text-muted-foreground text-sm">Kuota attempt habis.</p>
         )}
         {list.filter((a) => a.status !== "IN_PROGRESS").length > 0 ? (
-          <div className="flex flex-col gap-1 border-t pt-2 text-sm">
+          <div className="flex flex-col gap-3 border-t pt-2 text-sm">
             {list
               .filter((a) => a.status !== "IN_PROGRESS")
-              .map((a) => (
-                <div key={a.id} className="flex items-center gap-2">
-                  <span>Attempt #{a.attempt_number}</span>
-                  <Badge>{a.status}</Badge>
-                  {a.score != null ? (
-                    <Badge variant="secondary">Nilai {a.score}</Badge>
-                  ) : null}
-                </div>
-              ))}
+              .map((a) => {
+                const pass = passOf(a.score);
+                return (
+                  <div
+                    key={a.id}
+                    className="flex flex-col gap-1 rounded-md border p-2"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span>Attempt #{a.attempt_number}</span>
+                      <Badge>{a.status}</Badge>
+                      {a.score != null ? (
+                        <Badge variant="secondary">Nilai {a.score}</Badge>
+                      ) : null}
+                      {pass === true ? (
+                        <Badge variant="default">Lulus</Badge>
+                      ) : pass === false ? (
+                        <Badge variant="destructive">Belum lulus</Badge>
+                      ) : null}
+                      {a.status === "SUBMITTED" ? (
+                        <form action={retryGrade} className="ml-auto">
+                          <input type="hidden" name="attempt_id" value={a.id} />
+                          <Button type="submit" size="sm" variant="outline">
+                            Hitung nilai
+                          </Button>
+                        </form>
+                      ) : null}
+                    </div>
+                    {(resultByAttempt.get(a.id) ?? []).map((r, i) => (
+                      <div key={i} className="ml-2 text-sm">
+                        <span>
+                          {i + 1}. {r.prompt}{" "}
+                          {r.correct === true ? (
+                            <Badge variant="secondary">
+                              Benar +{r.awarded}
+                            </Badge>
+                          ) : r.correct === false ? (
+                            <Badge variant="destructive">Salah</Badge>
+                          ) : null}
+                        </span>
+                        {r.correct === false ? (
+                          <div className="text-muted-foreground">
+                            Kunci: {r.key.join(", ") || "—"}
+                            {r.explanation ? ` · ${r.explanation}` : ""}
+                          </div>
+                        ) : r.explanation ? (
+                          <div className="text-muted-foreground">
+                            {r.explanation}
+                          </div>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
           </div>
         ) : null}
       </CardContent>
