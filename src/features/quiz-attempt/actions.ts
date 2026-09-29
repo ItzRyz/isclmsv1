@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { gradeAttempt } from "./grade";
-import { seededShuffle } from "./shuffle";
+import { attemptDeadline } from "./helpers";
 
 const answerSchema = z.object({
   question_id: z.string().uuid(),
@@ -63,15 +63,6 @@ async function ownAttempt(supa: Supa, userId: string, attemptId: string) {
     started_at: attempt.started_at as string,
     quizzes: quiz ?? null,
   };
-}
-
-/** Batas waktu attempt (null = tanpa batas). */
-export function attemptDeadline(
-  startedAt: string,
-  timeLimitSeconds: number | null,
-): number | null {
-  if (!timeLimitSeconds) return null;
-  return new Date(startedAt).getTime() + timeLimitSeconds * 1000;
 }
 
 /** Mulai attempt baru: cek jendela + sisa kuota. Kembalikan id attempt. */
@@ -210,23 +201,4 @@ export async function submitAttempt(
 /** Bungkus FormData untuk tombol mulai (revalidate terpusat di startAttempt). */
 export async function startAttemptForm(formData: FormData): Promise<void> {
   await startAttempt(String(formData.get("quiz_id") ?? ""));
-}
-export function orderQuestions<T extends { id: string }>(
-  questions: T[],
-  attemptId: string,
-  shuffle: boolean,
-): T[] {
-  return shuffle ? seededShuffle(questions, `q:${attemptId}`) : questions;
-}
-
-/** Urutan opsi tampil (acak deterministik bila flag menyala). */
-export function orderOptions<T extends { id: string }>(
-  options: T[],
-  attemptId: string,
-  questionId: string,
-  shuffle: boolean,
-): T[] {
-  return shuffle
-    ? seededShuffle(options, `o:${attemptId}:${questionId}`)
-    : options;
 }

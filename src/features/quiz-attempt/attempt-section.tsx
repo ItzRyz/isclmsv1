@@ -2,12 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
-import {
-  attemptDeadline,
-  orderOptions,
-  orderQuestions,
-  startAttemptForm,
-} from "./actions";
+import { startAttemptForm } from "./actions";
+import { attemptDeadline, orderOptions, orderQuestions } from "./helpers";
 import { gradeAttempt } from "./grade";
 import { AttemptRunner, type AttemptQuestion } from "./attempt-runner";
 
