@@ -1,0 +1,20 @@
+// use prisma-8
+
+model User {
+  id    Uuid   @id @default(uuid())
+  email String @unique
+  name  String?
+  posts Post[]
+
+  @@map("user")
+}
+
+model Post {
+  id       Uuid   @id @default(uuid())
+  title    String
+  content  String?
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Uuid
+
+  @@map("post")
+}
