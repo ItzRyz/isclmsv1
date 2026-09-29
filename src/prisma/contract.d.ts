@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'f2b9f5f1e906bf7120a180b54c3d814ac5252563833c0bf4ceb07622b610c2d6'>;
+  StorageHashBase<'838b4c81f7d9363a8e1f4d84abc05136a4df5234175cd83aebf48956a22cb2db'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -427,6 +427,33 @@ export type FieldOutputTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly username: CodecTypes['pg/text@1']['output'] | null;
     };
+    readonly RoadmapEdges: {
+      readonly edgeType: CodecTypes['pg/text@1']['output'];
+      readonly fromNodeId: CodecTypes['pg/uuid@1']['output'];
+      readonly toNodeId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly RoadmapNodes: {
+      readonly courseId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly materialId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly moduleId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly position: CodecTypes['pg/int4@1']['output'];
+      readonly roadmapId: CodecTypes['pg/uuid@1']['output'];
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly x: CodecTypes['pg/int4@1']['output'] | null;
+      readonly y: CodecTypes['pg/int4@1']['output'] | null;
+    };
+    readonly Roadmaps: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly slug: CodecTypes['pg/text@1']['output'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly RolePermissions: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly permissionId: CodecTypes['pg/uuid@1']['output'];
@@ -636,6 +663,33 @@ export type FieldInputTypes = {
       readonly studentNumber: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly username: CodecTypes['pg/text@1']['input'] | null;
+    };
+    readonly RoadmapEdges: {
+      readonly edgeType: CodecTypes['pg/text@1']['input'];
+      readonly fromNodeId: CodecTypes['pg/uuid@1']['input'];
+      readonly toNodeId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly RoadmapNodes: {
+      readonly courseId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly materialId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly moduleId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly position: CodecTypes['pg/int4@1']['input'];
+      readonly roadmapId: CodecTypes['pg/uuid@1']['input'];
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly x: CodecTypes['pg/int4@1']['input'] | null;
+      readonly y: CodecTypes['pg/int4@1']['input'] | null;
+    };
+    readonly Roadmaps: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly slug: CodecTypes['pg/text@1']['input'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly RolePermissions: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -847,6 +901,33 @@ export type StorageColumnTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly username: CodecTypes['pg/text@1']['output'] | null;
     };
+    readonly roadmap_edges: {
+      readonly edge_type: CodecTypes['pg/text@1']['output'];
+      readonly from_node_id: CodecTypes['pg/uuid@1']['output'];
+      readonly to_node_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly roadmap_nodes: {
+      readonly course_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly material_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly module_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly position: CodecTypes['pg/int4@1']['output'];
+      readonly roadmap_id: CodecTypes['pg/uuid@1']['output'];
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly x: CodecTypes['pg/int4@1']['output'] | null;
+      readonly y: CodecTypes['pg/int4@1']['output'] | null;
+    };
+    readonly roadmaps: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly slug: CodecTypes['pg/text@1']['output'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly role_permissions: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly permission_id: CodecTypes['pg/uuid@1']['output'];
@@ -1057,6 +1138,33 @@ export type StorageColumnInputTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly username: CodecTypes['pg/text@1']['input'] | null;
     };
+    readonly roadmap_edges: {
+      readonly edge_type: CodecTypes['pg/text@1']['input'];
+      readonly from_node_id: CodecTypes['pg/uuid@1']['input'];
+      readonly to_node_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly roadmap_nodes: {
+      readonly course_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly material_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly module_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly position: CodecTypes['pg/int4@1']['input'];
+      readonly roadmap_id: CodecTypes['pg/uuid@1']['input'];
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly x: CodecTypes['pg/int4@1']['input'] | null;
+      readonly y: CodecTypes['pg/int4@1']['input'] | null;
+    };
+    readonly roadmaps: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly slug: CodecTypes['pg/text@1']['input'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
     readonly role_permissions: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly permission_id: CodecTypes['pg/uuid@1']['input'];
@@ -1173,7 +1281,9 @@ export namespace Models {
     modules: public_Modules[];
     profiles: public_Profiles | null;
     profilesProfiles: public_Profiles | null;
-    readonly [RelationKeys]?: 'division' | 'modules' | 'profiles' | 'profilesProfiles';
+    roadmapNodes: public_RoadmapNodes[];
+    readonly [RelationKeys]?:
+      'division' | 'modules' | 'profiles' | 'profilesProfiles' | 'roadmapNodes';
   };
   export type public_Divisions = {
     code: CodecTypes['pg/text@1']['output'];
@@ -1188,8 +1298,9 @@ export namespace Models {
     classes: public_Classes[];
     courses: public_Courses[];
     organization: public_Organizations;
+    roadmaps: public_Roadmaps[];
     userDivisions: public_UserDivisions[];
-    readonly [RelationKeys]?: 'classes' | 'courses' | 'organization' | 'userDivisions';
+    readonly [RelationKeys]?: 'classes' | 'courses' | 'organization' | 'roadmaps' | 'userDivisions';
   };
   export type public_LearningActivities = {
     activityType: CodecTypes['pg/text@1']['output'];
@@ -1277,6 +1388,7 @@ export namespace Models {
     module: public_Modules;
     profiles: public_Profiles | null;
     profilesProfiles: public_Profiles | null;
+    roadmapNodes: public_RoadmapNodes[];
     readonly [RelationKeys]?:
       | 'materialBookmarks'
       | 'materialFiles'
@@ -1286,7 +1398,8 @@ export namespace Models {
       | 'materialProgresses'
       | 'module'
       | 'profiles'
-      | 'profilesProfiles';
+      | 'profilesProfiles'
+      | 'roadmapNodes';
   };
   export type public_Modules = {
     courseId: CodecTypes['pg/uuid@1']['output'];
@@ -1300,7 +1413,8 @@ export namespace Models {
     updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     course: public_Courses;
     materials: public_Materials[];
-    readonly [RelationKeys]?: 'course' | 'materials';
+    roadmapNodes: public_RoadmapNodes[];
+    readonly [RelationKeys]?: 'course' | 'materials' | 'roadmapNodes';
   };
   export type public_Organizations = {
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1360,6 +1474,47 @@ export namespace Models {
       | 'userDivisions'
       | 'userRoles'
       | 'userRolesUserRoles';
+  };
+  export type public_RoadmapEdges = {
+    edgeType: CodecTypes['pg/text@1']['output'];
+    fromNodeId: CodecTypes['pg/uuid@1']['output'];
+    toNodeId: CodecTypes['pg/uuid@1']['output'];
+    fromNode: public_RoadmapNodes;
+    toNode: public_RoadmapNodes;
+    readonly [RelationKeys]?: 'fromNode' | 'toNode';
+  };
+  export type public_RoadmapNodes = {
+    courseId: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    materialId: CodecTypes['pg/uuid@1']['output'] | null;
+    moduleId: CodecTypes['pg/uuid@1']['output'] | null;
+    position: CodecTypes['pg/int4@1']['output'];
+    roadmapId: CodecTypes['pg/uuid@1']['output'];
+    title: CodecTypes['pg/text@1']['output'];
+    x: CodecTypes['pg/int4@1']['output'] | null;
+    y: CodecTypes['pg/int4@1']['output'] | null;
+    course: public_Courses | null;
+    material: public_Materials | null;
+    module: public_Modules | null;
+    roadmap: public_Roadmaps;
+    roadmapEdges: public_RoadmapEdges[];
+    roadmapEdgesRoadmapEdges: public_RoadmapEdges[];
+    readonly [RelationKeys]?:
+      'course' | 'material' | 'module' | 'roadmap' | 'roadmapEdges' | 'roadmapEdgesRoadmapEdges';
+  };
+  export type public_Roadmaps = {
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    description: CodecTypes['pg/text@1']['output'] | null;
+    divisionId: CodecTypes['pg/uuid@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
+    slug: CodecTypes['pg/text@1']['output'];
+    status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    division: public_Divisions;
+    roadmapNodes: public_RoadmapNodes[];
+    readonly [RelationKeys]?: 'division' | 'roadmapNodes';
   };
   export type public_RolePermissions = {
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1424,6 +1579,9 @@ export declare const models: {
     Organizations: Models.public_Organizations;
     Permissions: Models.public_Permissions;
     Profiles: Models.public_Profiles;
+    RoadmapEdges: Models.public_RoadmapEdges;
+    RoadmapNodes: Models.public_RoadmapNodes;
+    Roadmaps: Models.public_Roadmaps;
     RolePermissions: Models.public_RolePermissions;
     Roles: Models.public_Roles;
     UserDivisions: Models.public_UserDivisions;
@@ -2905,6 +3063,270 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
+            readonly roadmap_edges: {
+              columns: {
+                readonly edge_type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'PREREQUISITE'>;
+                  };
+                };
+                readonly from_node_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly to_node_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['from_node_id', 'to_node_id'];
+                readonly name: 'roadmap_edges_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_edges';
+                    readonly columns: readonly ['from_node_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_nodes';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'roadmap_edges_from_node_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_edges';
+                    readonly columns: readonly ['to_node_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_nodes';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'roadmap_edges_to_node_id_fkey';
+                },
+              ];
+            };
+            readonly roadmap_nodes: {
+              columns: {
+                readonly course_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly material_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly module_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly position: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                };
+                readonly roadmap_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly title: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly x: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
+                };
+                readonly y: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'roadmap_nodes_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'roadmap_nodes_roadmap_id';
+                  readonly columns: readonly ['roadmap_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_nodes';
+                    readonly columns: readonly ['course_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'courses';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'roadmap_nodes_course_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_nodes';
+                    readonly columns: readonly ['material_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'materials';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'roadmap_nodes_material_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_nodes';
+                    readonly columns: readonly ['module_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'modules';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'roadmap_nodes_module_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmap_nodes';
+                    readonly columns: readonly ['roadmap_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmaps';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'roadmap_nodes_roadmap_id_fkey';
+                },
+              ];
+            };
+            readonly roadmaps: {
+              columns: {
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly division_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly slug: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'content_status';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'DRAFT'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'roadmaps_pkey' };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['division_id', 'slug'];
+                  readonly name: 'roadmaps_division_id_slug_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'roadmaps';
+                    readonly columns: readonly ['division_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'divisions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'roadmaps_division_id_fkey';
+                },
+              ];
+            };
             readonly role_permissions: {
               columns: {
                 readonly created_at: {
@@ -3269,6 +3691,15 @@ type ContractBase = Omit<
       readonly model: 'Permissions';
     };
     readonly profiles: { readonly namespace: 'public' & NamespaceId; readonly model: 'Profiles' };
+    readonly roadmap_edges: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'RoadmapEdges';
+    };
+    readonly roadmap_nodes: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'RoadmapNodes';
+    };
+    readonly roadmaps: { readonly namespace: 'public' & NamespaceId; readonly model: 'Roadmaps' };
     readonly role_permissions: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'RolePermissions';
@@ -3819,6 +4250,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
+              readonly roadmapNodes: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapNodes';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['courseId'];
+                };
+              };
             };
             readonly storage: {
               readonly table: 'courses';
@@ -3923,6 +4365,17 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['organizationId'];
                   readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly roadmaps: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Roadmaps';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['divisionId'];
                 };
               };
               readonly userDivisions: {
@@ -4505,6 +4958,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
+              readonly roadmapNodes: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapNodes';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['materialId'];
+                };
+              };
             };
             readonly storage: {
               readonly table: 'materials';
@@ -4595,6 +5059,17 @@ type ContractBase = Omit<
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Materials';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['moduleId'];
+                };
+              };
+              readonly roadmapNodes: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapNodes';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
@@ -4957,6 +5432,277 @@ type ContractBase = Omit<
                 readonly studentNumber: { readonly column: 'student_number' };
                 readonly updatedAt: { readonly column: 'updated_at' };
                 readonly username: { readonly column: 'username' };
+              };
+            };
+          };
+          readonly RoadmapEdges: {
+            readonly fields: {
+              readonly edgeType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fromNodeId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly toNodeId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly fromNode: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapNodes';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['fromNodeId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly toNode: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapNodes';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['toNodeId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'roadmap_edges';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly edgeType: { readonly column: 'edge_type' };
+                readonly fromNodeId: { readonly column: 'from_node_id' };
+                readonly toNodeId: { readonly column: 'to_node_id' };
+              };
+            };
+          };
+          readonly RoadmapNodes: {
+            readonly fields: {
+              readonly courseId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly materialId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly moduleId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly position: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly roadmapId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly title: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly x: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly y: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: {
+              readonly course: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Courses';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['courseId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly material: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Materials';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['materialId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly module: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Modules';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['moduleId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly roadmap: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Roadmaps';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['roadmapId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly roadmapEdges: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapEdges';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['fromNodeId'];
+                };
+              };
+              readonly roadmapEdgesRoadmapEdges: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapEdges';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['toNodeId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'roadmap_nodes';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly courseId: { readonly column: 'course_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly id: { readonly column: 'id' };
+                readonly materialId: { readonly column: 'material_id' };
+                readonly moduleId: { readonly column: 'module_id' };
+                readonly position: { readonly column: 'position' };
+                readonly roadmapId: { readonly column: 'roadmap_id' };
+                readonly title: { readonly column: 'title' };
+                readonly x: { readonly column: 'x' };
+                readonly y: { readonly column: 'y' };
+              };
+            };
+          };
+          readonly Roadmaps: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly divisionId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly slug: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly division: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Divisions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['divisionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly roadmapNodes: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RoadmapNodes';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['roadmapId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'roadmaps';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly description: { readonly column: 'description' };
+                readonly divisionId: { readonly column: 'division_id' };
+                readonly id: { readonly column: 'id' };
+                readonly name: { readonly column: 'name' };
+                readonly slug: { readonly column: 'slug' };
+                readonly status: { readonly column: 'status' };
+                readonly updatedAt: { readonly column: 'updated_at' };
               };
             };
           };

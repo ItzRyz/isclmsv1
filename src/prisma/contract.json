@@ -76,6 +76,18 @@
       "model": "Profiles",
       "namespace": "public"
     },
+    "roadmap_edges": {
+      "model": "RoadmapEdges",
+      "namespace": "public"
+    },
+    "roadmap_nodes": {
+      "model": "RoadmapNodes",
+      "namespace": "public"
+    },
+    "roadmaps": {
+      "model": "Roadmaps",
+      "namespace": "public"
+    },
     "role_permissions": {
       "model": "RolePermissions",
       "namespace": "public"
@@ -899,6 +911,21 @@
                   "model": "Profiles",
                   "namespace": "public"
                 }
+              },
+              "roadmapNodes": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "courseId"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapNodes",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -1063,6 +1090,21 @@
                 },
                 "to": {
                   "model": "Organizations",
+                  "namespace": "public"
+                }
+              },
+              "roadmaps": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "Roadmaps",
                   "namespace": "public"
                 }
               },
@@ -1918,6 +1960,21 @@
                   "model": "Profiles",
                   "namespace": "public"
                 }
+              },
+              "roadmapNodes": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materialId"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapNodes",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -2073,6 +2130,21 @@
                 },
                 "to": {
                   "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "roadmapNodes": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "moduleId"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapNodes",
                   "namespace": "public"
                 }
               }
@@ -2608,6 +2680,412 @@
               },
               "namespaceId": "public",
               "table": "profiles"
+            }
+          },
+          "RoadmapEdges": {
+            "fields": {
+              "edgeType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "fromNodeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "toNodeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "fromNode": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "fromNodeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapNodes",
+                  "namespace": "public"
+                }
+              },
+              "toNode": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "toNodeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapNodes",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "edgeType": {
+                  "column": "edge_type"
+                },
+                "fromNodeId": {
+                  "column": "from_node_id"
+                },
+                "toNodeId": {
+                  "column": "to_node_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "roadmap_edges"
+            }
+          },
+          "RoadmapNodes": {
+            "fields": {
+              "courseId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "materialId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "moduleId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "position": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "roadmapId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "x": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "y": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "course": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "courseId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "material": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "materialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "module": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "moduleId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Modules",
+                  "namespace": "public"
+                }
+              },
+              "roadmap": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "roadmapId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Roadmaps",
+                  "namespace": "public"
+                }
+              },
+              "roadmapEdges": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "fromNodeId"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapEdges",
+                  "namespace": "public"
+                }
+              },
+              "roadmapEdgesRoadmapEdges": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "toNodeId"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapEdges",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "courseId": {
+                  "column": "course_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "materialId": {
+                  "column": "material_id"
+                },
+                "moduleId": {
+                  "column": "module_id"
+                },
+                "position": {
+                  "column": "position"
+                },
+                "roadmapId": {
+                  "column": "roadmap_id"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "x": {
+                  "column": "x"
+                },
+                "y": {
+                  "column": "y"
+                }
+              },
+              "namespaceId": "public",
+              "table": "roadmap_nodes"
+            }
+          },
+          "Roadmaps": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "division": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "roadmapNodes": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "roadmapId"
+                  ]
+                },
+                "to": {
+                  "model": "RoadmapNodes",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "roadmaps"
             }
           },
           "RolePermissions": {
@@ -3560,6 +4038,81 @@
               "using": "(auth.uid() = id)",
               "withCheck": "(auth.uid() = id)"
             },
+            "roadmap_edges_select": {
+              "kind": "policy",
+              "name": "roadmap_edges_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "roadmap_edges",
+              "using": "true"
+            },
+            "roadmap_edges_write": {
+              "kind": "policy",
+              "name": "roadmap_edges_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "roadmap_edges",
+              "using": "has_permission(auth.uid(), 'roadmap.manage'::text)",
+              "withCheck": "has_permission(auth.uid(), 'roadmap.manage'::text)"
+            },
+            "roadmap_nodes_select": {
+              "kind": "policy",
+              "name": "roadmap_nodes_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "roadmap_nodes",
+              "using": "true"
+            },
+            "roadmap_nodes_write": {
+              "kind": "policy",
+              "name": "roadmap_nodes_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "roadmap_nodes",
+              "using": "has_permission(auth.uid(), 'roadmap.manage'::text)",
+              "withCheck": "has_permission(auth.uid(), 'roadmap.manage'::text)"
+            },
+            "roadmaps_select": {
+              "kind": "policy",
+              "name": "roadmaps_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "roadmaps",
+              "using": "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'roadmap.manage'::text))"
+            },
+            "roadmaps_write": {
+              "kind": "policy",
+              "name": "roadmaps_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "roadmaps",
+              "using": "has_permission(auth.uid(), 'roadmap.manage'::text)",
+              "withCheck": "has_permission(auth.uid(), 'roadmap.manage'::text)"
+            },
             "role_permissions_select_all": {
               "kind": "policy",
               "name": "role_permissions_select_all",
@@ -3736,6 +4289,21 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "profiles"
+            },
+            "roadmap_edges": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "roadmap_edges"
+            },
+            "roadmap_nodes": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "roadmap_nodes"
+            },
+            "roadmaps": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "roadmaps"
             },
             "role_permissions": {
               "kind": "rls",
@@ -5625,6 +6193,349 @@
                 }
               ]
             },
+            "roadmap_edges": {
+              "checks": [
+                {
+                  "expression": "(from_node_id <> to_node_id)",
+                  "name": "roadmap_edges_check"
+                }
+              ],
+              "columns": {
+                "edge_type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "PREREQUISITE"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "from_node_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "to_node_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "roadmap_edges_from_node_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "from_node_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_edges"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_nodes"
+                  }
+                },
+                {
+                  "name": "roadmap_edges_to_node_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "to_node_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_edges"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_nodes"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "from_node_id",
+                  "to_node_id"
+                ],
+                "name": "roadmap_edges_pkey"
+              },
+              "uniques": []
+            },
+            "roadmap_nodes": {
+              "checks": [
+                {
+                  "expression": "(((((course_id IS NOT NULL))::integer + ((module_id IS NOT NULL))::integer) + ((material_id IS NOT NULL))::integer) <= 1)",
+                  "name": "roadmap_nodes_check"
+                }
+              ],
+              "columns": {
+                "course_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "module_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "position": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "roadmap_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "x": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "y": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "roadmap_nodes_course_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "course_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_nodes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  }
+                },
+                {
+                  "name": "roadmap_nodes_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_nodes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                },
+                {
+                  "name": "roadmap_nodes_module_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "module_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_nodes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "modules"
+                  }
+                },
+                {
+                  "name": "roadmap_nodes_roadmap_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "roadmap_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmap_nodes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmaps"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "roadmap_id"
+                  ],
+                  "name": "roadmap_nodes_roadmap_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "roadmap_nodes_pkey"
+              },
+              "uniques": []
+            },
+            "roadmaps": {
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "roadmaps_division_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "roadmaps"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "roadmaps_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "division_id",
+                    "slug"
+                  ],
+                  "name": "roadmaps_division_id_slug_key"
+                }
+              ]
+            },
             "role_permissions": {
               "columns": {
                 "created_at": {
@@ -6030,7 +6941,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "f2b9f5f1e906bf7120a180b54c3d814ac5252563833c0bf4ceb07622b610c2d6"
+    "storageHash": "838b4c81f7d9363a8e1f4d84abc05136a4df5234175cd83aebf48956a22cb2db"
   },
   "capabilities": {
     "postgres": {

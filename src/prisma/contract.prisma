@@ -108,6 +108,7 @@ namespace public {
     updatedAt      Timestamptz           @default(now()) @map("updated_at")
     classes        Classes[]
     courses        Courses[]
+    roadmaps       Roadmaps[]
     userDivisions  UserDivisions[]
     organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
 
@@ -167,6 +168,7 @@ namespace public {
     createdAt        Timestamptz            @default(now()) @map("created_at")
     updatedAt        Timestamptz            @default(now()) @map("updated_at")
     modules          Modules[]
+    roadmapNodes     RoadmapNodes[]
     profiles         Profiles?              @relation(name: "courses_created_by_fkey", fields: [createdBy], references: [id], map: "courses_created_by_fkey", index: false)
     division         Divisions              @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "courses_division_id_fkey")
     profilesProfiles Profiles?              @relation(name: "courses_updated_by_fkey", fields: [updatedBy], references: [id], map: "courses_updated_by_fkey", index: false)
@@ -193,17 +195,18 @@ namespace public {
   }
 
   model Modules {
-    id          Uuid                   @id(map: "modules_pkey") @default(sql`gen_random_uuid()`)
-    courseId    Uuid                   @map("course_id")
-    title       String
-    slug        String
-    position    Int                    @default(0)
-    description String?
-    status      pg.enum(ContentStatus) @default("DRAFT")
-    createdAt   Timestamptz            @default(now()) @map("created_at")
-    updatedAt   Timestamptz            @default(now()) @map("updated_at")
-    materials   Materials[]
-    course      Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "modules_course_id_fkey")
+    id           Uuid                   @id(map: "modules_pkey") @default(sql`gen_random_uuid()`)
+    courseId     Uuid                   @map("course_id")
+    title        String
+    slug         String
+    position     Int                    @default(0)
+    description  String?
+    status       pg.enum(ContentStatus) @default("DRAFT")
+    createdAt    Timestamptz            @default(now()) @map("created_at")
+    updatedAt    Timestamptz            @default(now()) @map("updated_at")
+    materials    Materials[]
+    roadmapNodes RoadmapNodes[]
+    course       Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "modules_course_id_fkey")
 
     @@unique([courseId, position], map: "modules_course_id_position_key")
     @@index([courseId], map: "modules_course_id")
@@ -232,6 +235,7 @@ namespace public {
     materialFiles                              MaterialFiles[]
     materialLinks                              MaterialLinks[]
     materialProgresses                         MaterialProgress[]
+    roadmapNodes                               RoadmapNodes[]
     materialPrerequisites                      MaterialPrerequisites[] @relation(name: "material_prerequisites_material_id_fkey")
     materialPrerequisitesMaterialPrerequisites MaterialPrerequisites[] @relation(name: "material_prerequisites_prerequisite_material_id_fkey")
     profiles                                   Profiles?               @relation(name: "materials_created_by_fkey", fields: [createdBy], references: [id], map: "materials_created_by_fkey", index: false)
@@ -326,6 +330,60 @@ namespace public {
 
     @@rls
     @@map("permissions")
+  }
+
+  model Roadmaps {
+    id           Uuid                   @id(map: "roadmaps_pkey") @default(sql`gen_random_uuid()`)
+    divisionId   Uuid                   @map("division_id")
+    name         String
+    slug         String
+    description  String?
+    status       pg.enum(ContentStatus) @default("DRAFT")
+    createdAt    Timestamptz            @default(now()) @map("created_at")
+    updatedAt    Timestamptz            @default(now()) @map("updated_at")
+    roadmapNodes RoadmapNodes[]
+    division     Divisions              @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "roadmaps_division_id_fkey", index: false)
+
+    @@unique([divisionId, slug], map: "roadmaps_division_id_slug_key")
+    @@rls
+    @@map("roadmaps")
+  }
+
+  model RoadmapNodes {
+    id                       Uuid           @id(map: "roadmap_nodes_pkey") @default(sql`gen_random_uuid()`)
+    roadmapId                Uuid           @map("roadmap_id")
+    courseId                 Uuid?          @map("course_id")
+    moduleId                 Uuid?          @map("module_id")
+    materialId               Uuid?          @map("material_id")
+    title                    String
+    position                 Int            @default(0)
+    x                        Int?
+    y                        Int?
+    createdAt                Timestamptz    @default(now()) @map("created_at")
+    roadmapEdges             RoadmapEdges[] @relation(name: "roadmap_edges_from_node_id_fkey")
+    roadmapEdgesRoadmapEdges RoadmapEdges[] @relation(name: "roadmap_edges_to_node_id_fkey")
+    course                   Courses?       @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "roadmap_nodes_course_id_fkey", index: false)
+    material                 Materials?     @relation(fields: [materialId], references: [id], onDelete: Cascade, map: "roadmap_nodes_material_id_fkey", index: false)
+    module                   Modules?       @relation(fields: [moduleId], references: [id], onDelete: Cascade, map: "roadmap_nodes_module_id_fkey", index: false)
+    roadmap                  Roadmaps       @relation(fields: [roadmapId], references: [id], onDelete: Cascade, map: "roadmap_nodes_roadmap_id_fkey")
+
+    @@index([roadmapId], map: "roadmap_nodes_roadmap_id")
+    @@check(expression: "(((((course_id IS NOT NULL))::integer + ((module_id IS NOT NULL))::integer) + ((material_id IS NOT NULL))::integer) <= 1)", map: "roadmap_nodes_check")
+    @@rls
+    @@map("roadmap_nodes")
+  }
+
+  model RoadmapEdges {
+    fromNodeId Uuid         @map("from_node_id")
+    toNodeId   Uuid         @map("to_node_id")
+    edgeType   String       @default("PREREQUISITE") @map("edge_type")
+    fromNode   RoadmapNodes @relation(name: "roadmap_edges_from_node_id_fkey", fields: [fromNodeId], references: [id], onDelete: Cascade, map: "roadmap_edges_from_node_id_fkey", index: false)
+    toNode     RoadmapNodes @relation(name: "roadmap_edges_to_node_id_fkey", fields: [toNodeId], references: [id], onDelete: Cascade, map: "roadmap_edges_to_node_id_fkey", index: false)
+
+    @@id([fromNodeId, toNodeId], map: "roadmap_edges_pkey")
+    @@check(expression: "(from_node_id <> to_node_id)", map: "roadmap_edges_check")
+    @@rls
+    @@map("roadmap_edges")
   }
 
   model Roles {
@@ -719,6 +777,51 @@ namespace public {
     using = "(auth.uid() = id)"
     withCheck = "(auth.uid() = id)"
     @@map("profiles_update_own")
+  }
+
+  policy_select roadmap_edges_select {
+    target = RoadmapEdges
+    roles = [authenticated]
+    using = "true"
+    @@map("roadmap_edges_select")
+  }
+
+  policy_all roadmap_edges_write {
+    target = RoadmapEdges
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'roadmap.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'roadmap.manage'::text)"
+    @@map("roadmap_edges_write")
+  }
+
+  policy_select roadmap_nodes_select {
+    target = RoadmapNodes
+    roles = [authenticated]
+    using = "true"
+    @@map("roadmap_nodes_select")
+  }
+
+  policy_all roadmap_nodes_write {
+    target = RoadmapNodes
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'roadmap.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'roadmap.manage'::text)"
+    @@map("roadmap_nodes_write")
+  }
+
+  policy_select roadmaps_select {
+    target = Roadmaps
+    roles = [authenticated]
+    using = "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'roadmap.manage'::text))"
+    @@map("roadmaps_select")
+  }
+
+  policy_all roadmaps_write {
+    target = Roadmaps
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'roadmap.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'roadmap.manage'::text)"
+    @@map("roadmaps_write")
   }
 
   policy_select role_permissions_select_all {
