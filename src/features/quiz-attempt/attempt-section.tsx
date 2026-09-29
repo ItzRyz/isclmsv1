@@ -199,7 +199,6 @@ export async function AttemptSection({ quiz }: { quiz: QuizInfo }) {
         {active ? (
           <AttemptRunner
             attemptId={active.id}
-            quizId={quiz.id}
             deadlineMs={deadlineMs}
             questions={questions}
           />

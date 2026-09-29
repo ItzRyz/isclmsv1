@@ -16,12 +16,10 @@ export type AttemptQuestion = {
 
 export function AttemptRunner({
   attemptId,
-  quizId,
   deadlineMs,
   questions,
 }: {
   attemptId: string;
-  quizId: string;
   deadlineMs: number | null;
   questions: AttemptQuestion[];
 }) {
@@ -70,7 +68,6 @@ export function AttemptRunner({
     } finally {
       setBusy(false);
     }
-    void quizId;
   }
 
   return (

@@ -91,6 +91,14 @@ export async function startAttempt(quizId: string): Promise<string> {
   if ((existing ?? []).length >= (quiz.max_attempts as number)) {
     throw new Error("ATTEMPT_LIMIT_REACHED: kuota habis");
   }
+  const { data: qCount } = await supabase
+    .from("quiz_questions")
+    .select("question_id")
+    .eq("quiz_id", quizId)
+    .limit(1);
+  if (!qCount || qCount.length === 0) {
+    throw new Error("EMPTY_QUIZ: kuis belum punya soal");
+  }
   const { data: created, error } = await supabase
     .from("quiz_attempts")
     .insert({
@@ -115,13 +123,39 @@ export async function saveAnswers(input: {
   if (!parsed.success) throw new Error("VALIDATION_ERROR");
   const supabase = await createClient();
   const userId = await sessionUserId(supabase);
-  await ownAttempt(supabase, userId, parsed.data.attempt_id);
+  const attempt = await ownAttempt(supabase, userId, parsed.data.attempt_id);
 
-  const qIds = parsed.data.answers.map((a) => a.question_id);
+  // Tolak simpan jawaban basi (sekalian tandai EXPIRED).
+  const dl = attemptDeadline(
+    attempt.started_at,
+    attempt.quizzes?.time_limit_seconds ?? null,
+  );
+  if (dl !== null && Date.now() > dl) {
+    await supabase
+      .from("quiz_attempts")
+      .update({ status: "EXPIRED" })
+      .eq("id", parsed.data.attempt_id);
+    throw new Error("EXPIRED: waktu habis");
+  }
+
+  // Soal harus milik kuis ini (tolak injeksi soal luar).
+  const { data: scoped } = await supabase
+    .from("quiz_questions")
+    .select("question_id")
+    .eq("quiz_id", attempt.quiz_id);
+  const allowed = new Set(
+    ((scoped ?? []) as { question_id: string }[]).map((r) => r.question_id),
+  );
+  const filtered = parsed.data.answers.filter((a) =>
+    allowed.has(a.question_id),
+  );
   const { data: options } = await supabase
     .from("question_options")
     .select("id, question_id")
-    .in("question_id", qIds);
+    .in(
+      "question_id",
+      filtered.map((a) => a.question_id),
+    );
   const validByQ = new Map<string, Set<string>>();
   for (const o of (options ?? []) as { id: string; question_id: string }[]) {
     validByQ.set(
@@ -129,7 +163,7 @@ export async function saveAnswers(input: {
       (validByQ.get(o.question_id) ?? new Set()).add(o.id),
     );
   }
-  for (const a of parsed.data.answers) {
+  for (const a of filtered) {
     const valid = validByQ.get(a.question_id) ?? new Set<string>();
     const clean = a.selected.filter((id) => valid.has(id));
     const { error } = await supabase.from("quiz_answers").upsert(
