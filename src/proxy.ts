@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
+import { updateSession } from "@/lib/supabase/proxy";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Spec .md di root tidak boleh bisa diakses via URL prod.
   if (request.nextUrl.pathname.toLowerCase().endsWith(".md")) {
     return new NextResponse("Not Found", { status: 404 });

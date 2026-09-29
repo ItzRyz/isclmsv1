@@ -104,6 +104,13 @@ if (cfgPath) {
   violations.push({ file: "next.config.ts", line: 0, rule: "missing-next-config" });
 }
 
+// Rule 4: konvensi Next.js 16 — middleware.ts deprecated, gunakan proxy.ts
+for (const legacy of [join(ROOT, "middleware.ts"), join(ROOT, "src", "middleware.ts")]) {
+  if (existsSync(legacy)) {
+    violations.push({ file: rel(legacy), line: 0, rule: "deprecated-middleware-use-proxy" });
+  }
+}
+
 if (violations.length > 0) {
   console.error(`SPEC-LEAK-CHECK FAILED: ${violations.length} pelanggaran`);
   for (const v of violations.slice(0, 50)) {
