@@ -18,6 +18,7 @@ import {
   updateMaterial,
 } from "@/features/materials/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
+import { logActivity } from "@/features/activity/log";
 import { BookmarkButton } from "@/features/bookmarks/bookmark-button";
 import { ProgressButton } from "@/features/progress/progress-button";
 import { FileList } from "@/features/storage/file-list";
@@ -71,6 +72,19 @@ export default async function MaterialDetailPage({
     .from("material_links")
     .select("id, url, title")
     .eq("material_id", id);
+
+  // Catat view (best-effort, tidak boleh menggagalkan halaman).
+  const {
+    data: { user: viewer },
+  } = await supabase.auth.getUser();
+  if (viewer) {
+    await logActivity(supabase, {
+      userId: viewer.id,
+      type: "material.view",
+      entityType: "material",
+      entityId: id,
+    }).catch(() => undefined);
+  }
 
   const mod = Array.isArray(material.modules)
     ? material.modules[0]
