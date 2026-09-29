@@ -1,20 +1,209 @@
 // use prisma-8
 
-model User {
-  id    Uuid   @id @default(uuid())
-  email String @unique
-  name  String?
-  posts Post[]
+// P0-108: kontrak identity + organization, cermin supabase/migrations/.
+// Status/scope ditulis String di kontrak (kolom PG memakai enum
+// account_status/scope_type/entity_status); DateTime = timestamptz
+// (butuh global Temporal saat runtime membaca — pasang polyfill
+// sebelum query pertama, atau ganti ke TimestamptzString).
+// Emit masih menunggu perbaikan RC upstream (lihat src/prisma/db.ts).
 
-  @@map("user")
+model Profile {
+  id            Uuid   @id
+  fullName      String?
+  username      String?  @unique
+  studentNumber String?  @unique
+  avatarPath    String?
+  phone         String?
+  status        String   @default("ACTIVE")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+
+  userRoles        UserRole[]
+  userDivisions    UserDivision[]
+  classMemberships ClassMember[]
+  auditLogs        AuditLog[]
+
+  @@map("profiles")
 }
 
-model Post {
-  id       Uuid   @id @default(uuid())
-  title    String
-  content  String?
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId Uuid
+model Role {
+  id          Uuid     @id @default(uuid())
+  code        String   @unique
+  name        String
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
 
-  @@map("post")
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          Uuid     @id @default(uuid())
+  code        String   @unique
+  resource    String
+  action      String
+  description String?
+
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model UserRole {
+  userId     Uuid
+  roleId     Uuid
+  assignedBy Uuid?
+  createdAt  DateTime @default(now())
+
+  user Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  roleId       Uuid
+  permissionId Uuid
+  scope        String
+  createdAt    DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId, scope])
+  @@map("role_permissions")
+}
+
+model Organization {
+  id          Uuid     @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logoPath    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  divisions       Division[]
+  batches         Batch[]
+  academicPeriods AcademicPeriod[]
+
+  @@map("organizations")
+}
+
+model Division {
+  id             Uuid   @id @default(uuid())
+  organizationId Uuid
+  name           String
+  code           String @unique
+  slug           String @unique
+  description    String?
+  status         String @default("ACTIVE")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+
+  organization  Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userDivisions UserDivision[]
+  classes       Class[]
+
+  @@map("divisions")
+}
+
+model UserDivision {
+  userId         Uuid
+  divisionId     Uuid
+  membershipType String    @default("MEMBER")
+  startedAt      DateTime  @default(now())
+  endedAt        DateTime?
+  createdAt      DateTime  @default(now())
+
+  user     Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  division Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, divisionId])
+  @@map("user_divisions")
+}
+
+model Batch {
+  id             Uuid    @id @default(uuid())
+  organizationId Uuid
+  name           String
+  code           String  @unique
+  startDate      String?
+  endDate        String?
+  status         String  @default("ACTIVE")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  classes      Class[]
+
+  @@map("batches")
+}
+
+model AcademicPeriod {
+  id             Uuid    @id @default(uuid())
+  organizationId Uuid
+  name           String
+  code           String  @unique
+  startDate      String?
+  endDate        String?
+  status         String  @default("ACTIVE")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  classes      Class[]
+
+  @@map("academic_periods")
+}
+
+model Class {
+  id               Uuid    @id @default(uuid())
+  divisionId       Uuid
+  batchId          Uuid?
+  academicPeriodId Uuid?
+  name             String
+  code             String  @unique
+  capacity         Int?
+  status           String  @default("ACTIVE")
+  createdAt        DateTime @default(now())
+
+  division       Division        @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  batch          Batch?          @relation(fields: [batchId], references: [id])
+  academicPeriod AcademicPeriod? @relation(fields: [academicPeriodId], references: [id])
+  members        ClassMember[]
+
+  @@map("classes")
+}
+
+model ClassMember {
+  classId  Uuid
+  userId   Uuid
+  joinedAt DateTime @default(now())
+  leftAt   DateTime?
+  status   String   @default("ACTIVE")
+
+  class Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
+  user  Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([classId, userId])
+  @@map("class_members")
+}
+
+model AuditLog {
+  id         Uuid     @id @default(uuid())
+  actorId    Uuid?
+  action     String
+  entityType String
+  entityId   String?
+  oldValues  Json?
+  newValues  Json?
+  requestId  String?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  actor Profile? @relation(fields: [actorId], references: [id])
+
+  @@map("audit_logs")
 }
