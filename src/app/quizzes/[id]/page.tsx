@@ -18,6 +18,7 @@ import {
   removeQuizQuestion,
   updateQuiz,
 } from "@/features/quizzes/actions";
+import { AttemptSection } from "@/features/quiz-attempt/attempt-section";
 
 function toLocalInput(iso: string | null): string {
   if (!iso) return "";
@@ -94,11 +95,15 @@ export default async function QuizDetailPage({
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Mulai mengerjakan menyusul P1-504</CardTitle>
-        </CardHeader>
-      </Card>
+      <AttemptSection
+        quiz={{
+          id: quiz.id,
+          shuffle_questions: quiz.shuffle_questions,
+          shuffle_options: quiz.shuffle_options,
+          time_limit_seconds: quiz.time_limit_seconds,
+          max_attempts: quiz.max_attempts,
+        }}
+      />
 
       <Card>
         <CardHeader>
