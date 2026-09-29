@@ -20,6 +20,18 @@
       "model": "Assignments",
       "namespace": "public"
     },
+    "attendance_corrections": {
+      "model": "AttendanceCorrections",
+      "namespace": "public"
+    },
+    "attendance_records": {
+      "model": "AttendanceRecords",
+      "namespace": "public"
+    },
+    "attendance_sessions": {
+      "model": "AttendanceSessions",
+      "namespace": "public"
+    },
     "audit_logs": {
       "model": "AuditLogs",
       "namespace": "public"
@@ -779,6 +791,494 @@
               "table": "assignments"
             }
           },
+          "AttendanceCorrections": {
+            "fields": {
+              "attendanceRecordId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "correctedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "newStatus": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "oldStatus": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "reason": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "attendanceRecord": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "attendanceRecordId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceRecords",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "correctedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "attendanceRecordId": {
+                  "column": "attendance_record_id"
+                },
+                "correctedBy": {
+                  "column": "corrected_by"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "newStatus": {
+                  "column": "new_status"
+                },
+                "oldStatus": {
+                  "column": "old_status"
+                },
+                "reason": {
+                  "column": "reason"
+                }
+              },
+              "namespaceId": "public",
+              "table": "attendance_corrections"
+            }
+          },
+          "AttendanceRecords": {
+            "fields": {
+              "attendanceSessionId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "checkedInAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "distanceMeters": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "latitude": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "longitude": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "method": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "sourceMetadata": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/jsonb@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "attendanceCorrections": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "attendanceRecordId"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceCorrections",
+                  "namespace": "public"
+                }
+              },
+              "attendanceSession": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "attendanceSessionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceSessions",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "attendanceSessionId": {
+                  "column": "attendance_session_id"
+                },
+                "checkedInAt": {
+                  "column": "checked_in_at"
+                },
+                "distanceMeters": {
+                  "column": "distance_meters"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "latitude": {
+                  "column": "latitude"
+                },
+                "longitude": {
+                  "column": "longitude"
+                },
+                "method": {
+                  "column": "method"
+                },
+                "sourceMetadata": {
+                  "column": "source_metadata"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "attendance_records"
+            }
+          },
+          "AttendanceSessions": {
+            "fields": {
+              "classId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "endsAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "geofenceEnabled": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "latitude": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "longitude": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "radiusMeters": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "sessionTokenHash": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "startsAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "attendanceRecords": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "attendanceSessionId"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceRecords",
+                  "namespace": "public"
+                }
+              },
+              "class": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "classId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Classes",
+                  "namespace": "public"
+                }
+              },
+              "division": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "classId": {
+                  "column": "class_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "endsAt": {
+                  "column": "ends_at"
+                },
+                "geofenceEnabled": {
+                  "column": "geofence_enabled"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "latitude": {
+                  "column": "latitude"
+                },
+                "longitude": {
+                  "column": "longitude"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "radiusMeters": {
+                  "column": "radius_meters"
+                },
+                "sessionTokenHash": {
+                  "column": "session_token_hash"
+                },
+                "startsAt": {
+                  "column": "starts_at"
+                },
+                "status": {
+                  "column": "status"
+                }
+              },
+              "namespaceId": "public",
+              "table": "attendance_sessions"
+            }
+          },
           "AuditLogs": {
             "fields": {
               "action": {
@@ -1216,6 +1716,21 @@
                   "namespace": "public"
                 }
               },
+              "attendanceSessions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "classId"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceSessions",
+                  "namespace": "public"
+                }
+              },
               "batch": {
                 "cardinality": "N:1",
                 "nullable": true,
@@ -1631,6 +2146,21 @@
               }
             },
             "relations": {
+              "attendanceSessions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceSessions",
+                  "namespace": "public"
+                }
+              },
               "classes": {
                 "cardinality": "1:N",
                 "on": {
@@ -3334,6 +3864,51 @@
                 },
                 "to": {
                   "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
+              "attendanceCorrections": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "correctedBy"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceCorrections",
+                  "namespace": "public"
+                }
+              },
+              "attendanceRecords": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceRecords",
+                  "namespace": "public"
+                }
+              },
+              "attendanceSessions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "AttendanceSessions",
                   "namespace": "public"
                 }
               },
@@ -6279,6 +6854,92 @@
               "using": "has_permission(auth.uid(), 'assignment.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'assignment.update'::text)"
             },
+            "attendance_corrections_insert": {
+              "kind": "policy",
+              "name": "attendance_corrections_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "attendance_corrections",
+              "withCheck": "has_permission(auth.uid(), 'attendance.correct'::text)"
+            },
+            "attendance_corrections_select": {
+              "kind": "policy",
+              "name": "attendance_corrections_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "attendance_corrections",
+              "using": "(has_permission(auth.uid(), 'attendance.view'::text) OR has_permission(auth.uid(), 'attendance.correct'::text))"
+            },
+            "attendance_records_insert": {
+              "kind": "policy",
+              "name": "attendance_records_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "attendance_records",
+              "withCheck": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'attendance.correct'::text) OR has_permission(auth.uid(), 'attendance.open_session'::text))"
+            },
+            "attendance_records_select": {
+              "kind": "policy",
+              "name": "attendance_records_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "attendance_records",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'attendance.view'::text) OR has_permission(auth.uid(), 'attendance.correct'::text))"
+            },
+            "attendance_records_update": {
+              "kind": "policy",
+              "name": "attendance_records_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "attendance_records",
+              "using": "has_permission(auth.uid(), 'attendance.correct'::text)",
+              "withCheck": "has_permission(auth.uid(), 'attendance.correct'::text)"
+            },
+            "attendance_sessions_select": {
+              "kind": "policy",
+              "name": "attendance_sessions_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "attendance_sessions",
+              "using": "true"
+            },
+            "attendance_sessions_write": {
+              "kind": "policy",
+              "name": "attendance_sessions_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "attendance_sessions",
+              "using": "has_permission(auth.uid(), 'attendance.open_session'::text)",
+              "withCheck": "has_permission(auth.uid(), 'attendance.open_session'::text)"
+            },
             "audit_logs_insert": {
               "kind": "policy",
               "name": "audit_logs_insert",
@@ -7377,6 +8038,21 @@
               "namespaceId": "public",
               "tableName": "assignments"
             },
+            "attendance_corrections": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "attendance_corrections"
+            },
+            "attendance_records": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "attendance_records"
+            },
+            "attendance_sessions": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "attendance_sessions"
+            },
             "audit_logs": {
               "kind": "rls",
               "namespaceId": "public",
@@ -8046,6 +8722,418 @@
                   "name": "assignments_course_id_slug_key"
                 }
               ]
+            },
+            "attendance_corrections": {
+              "columns": {
+                "attendance_record_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "corrected_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "new_status": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "old_status": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "reason": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "attendance_corrections_attendance_record_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "attendance_record_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_corrections"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_records"
+                  }
+                },
+                {
+                  "name": "attendance_corrections_corrected_by_fkey",
+                  "source": {
+                    "columns": [
+                      "corrected_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_corrections"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "attendance_corrections_pkey"
+              },
+              "uniques": []
+            },
+            "attendance_records": {
+              "checks": [
+                {
+                  "expression": "(status = ANY (ARRAY['PRESENT'::text, 'LATE'::text, 'PERMITTED'::text, 'SICK'::text, 'ABSENT'::text]))",
+                  "name": "attendance_records_status_check"
+                }
+              ],
+              "columns": {
+                "attendance_session_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "checked_in_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "distance_meters": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "latitude": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "longitude": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "method": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "QR_SCAN"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "source_metadata": {
+                  "codecId": "pg/jsonb@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": {}
+                  },
+                  "nativeType": "jsonb",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "PRESENT"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "attendance_records_attendance_session_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "attendance_session_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_records"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_sessions"
+                  }
+                },
+                {
+                  "name": "attendance_records_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_records"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "attendance_session_id"
+                  ],
+                  "name": "attendance_records_session_id",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "attendance_records_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "attendance_records_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "attendance_session_id",
+                    "user_id"
+                  ],
+                  "name": "attendance_records_attendance_session_id_user_id_key"
+                }
+              ]
+            },
+            "attendance_sessions": {
+              "checks": [
+                {
+                  "expression": "(ends_at > starts_at)",
+                  "name": "attendance_sessions_check"
+                },
+                {
+                  "expression": "((class_id IS NULL) <> (division_id IS NULL))",
+                  "name": "attendance_sessions_check1"
+                },
+                {
+                  "expression": "((radius_meters IS NULL) OR (radius_meters > 0))",
+                  "name": "attendance_sessions_radius_meters_check"
+                },
+                {
+                  "expression": "(status = ANY (ARRAY['OPEN'::text, 'CLOSED'::text]))",
+                  "name": "attendance_sessions_status_check"
+                }
+              ],
+              "columns": {
+                "class_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "ends_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "geofence_enabled": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "latitude": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "longitude": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "radius_meters": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "session_token_hash": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "starts_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "OPEN"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "attendance_sessions_class_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "class_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_sessions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "classes"
+                  }
+                },
+                {
+                  "name": "attendance_sessions_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_sessions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "attendance_sessions_division_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "attendance_sessions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "attendance_sessions_pkey"
+              },
+              "uniques": []
             },
             "audit_logs": {
               "columns": {
@@ -12135,7 +13223,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "81a678bfef7ff85d3e35e26ccebf080b6498949467360c0d605de9383d6619c9"
+    "storageHash": "a8bbd596eeb5c79c8601433776f5959f4ef9ff28c41422040362236398e2dee1"
   },
   "capabilities": {
     "postgres": {

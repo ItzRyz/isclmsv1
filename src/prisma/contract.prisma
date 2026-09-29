@@ -34,20 +34,21 @@ namespace public {
   }
 
   model Divisions {
-    id             Uuid                  @id(map: "divisions_pkey") @default(sql`gen_random_uuid()`)
-    organizationId Uuid                  @map("organization_id")
-    name           String
-    code           String                @unique(map: "divisions_code_key")
-    slug           String                @unique(map: "divisions_slug_key")
-    description    String?
-    status         pg.enum(EntityStatus) @default("ACTIVE")
-    createdAt      Timestamptz           @default(now()) @map("created_at")
-    updatedAt      Timestamptz           @default(now()) @map("updated_at")
-    classes        Classes[]
-    courses        Courses[]
-    roadmaps       Roadmaps[]
-    userDivisions  UserDivisions[]
-    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
+    id                 Uuid                  @id(map: "divisions_pkey") @default(sql`gen_random_uuid()`)
+    organizationId     Uuid                  @map("organization_id")
+    name               String
+    code               String                @unique(map: "divisions_code_key")
+    slug               String                @unique(map: "divisions_slug_key")
+    description        String?
+    status             pg.enum(EntityStatus) @default("ACTIVE")
+    createdAt          Timestamptz           @default(now()) @map("created_at")
+    updatedAt          Timestamptz           @default(now()) @map("updated_at")
+    attendanceSessions AttendanceSessions[]
+    classes            Classes[]
+    courses            Courses[]
+    roadmaps           Roadmaps[]
+    userDivisions      UserDivisions[]
+    organization       Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
 
     @@rls
     @@map("divisions")
@@ -65,6 +66,9 @@ namespace public {
     createdAt               Timestamptz               @default(now()) @map("created_at")
     updatedAt               Timestamptz               @default(now()) @map("updated_at")
     assignmentGroupMembers  AssignmentGroupMembers[]
+    attendanceCorrections   AttendanceCorrections[]
+    attendanceRecords       AttendanceRecords[]
+    attendanceSessions      AttendanceSessions[]
     auditLogs               AuditLogs[]
     classMembers            ClassMembers[]
     learningActivities      LearningActivities[]
@@ -205,6 +209,108 @@ namespace public {
     @@map("assignment_group_members")
   }
 
+  model Batches {
+    id             Uuid                  @id(map: "batches_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid                  @map("organization_id")
+    name           String
+    code           String                @unique(map: "batches_code_key")
+    startDate      Date?                 @map("start_date")
+    endDate        Date?                 @map("end_date")
+    status         pg.enum(EntityStatus) @default("ACTIVE")
+    classes        Classes[]
+    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "batches_organization_id_fkey", index: false)
+
+    @@rls
+    @@map("batches")
+  }
+
+  model Classes {
+    id                 Uuid                  @id(map: "classes_pkey") @default(sql`gen_random_uuid()`)
+    divisionId         Uuid                  @map("division_id")
+    batchId            Uuid?                 @map("batch_id")
+    academicPeriodId   Uuid?                 @map("academic_period_id")
+    name               String
+    code               String                @unique(map: "classes_code_key")
+    capacity           Int?
+    status             pg.enum(EntityStatus) @default("ACTIVE")
+    createdAt          Timestamptz           @default(now()) @map("created_at")
+    attendanceSessions AttendanceSessions[]
+    classMembers       ClassMembers[]
+    academicPeriod     AcademicPeriods?      @relation(fields: [academicPeriodId], references: [id], map: "classes_academic_period_id_fkey", index: false)
+    batch              Batches?              @relation(fields: [batchId], references: [id], map: "classes_batch_id_fkey", index: false)
+    division           Divisions             @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "classes_division_id_fkey")
+
+    @@index([divisionId], map: "classes_division_id")
+    @@rls
+    @@map("classes")
+  }
+
+  model AttendanceSessions {
+    id                Uuid                @id(map: "attendance_sessions_pkey") @default(sql`gen_random_uuid()`)
+    classId           Uuid?               @map("class_id")
+    divisionId        Uuid?               @map("division_id")
+    name              String
+    startsAt          Timestamptz         @map("starts_at")
+    endsAt            Timestamptz         @map("ends_at")
+    geofenceEnabled   Boolean             @default(false) @map("geofence_enabled")
+    latitude          Float?
+    longitude         Float?
+    radiusMeters      Int?                @map("radius_meters")
+    sessionTokenHash  String?             @map("session_token_hash")
+    status            String              @default("OPEN")
+    createdBy         Uuid?               @map("created_by")
+    createdAt         Timestamptz         @default(now()) @map("created_at")
+    attendanceRecords AttendanceRecords[]
+    class             Classes?            @relation(fields: [classId], references: [id], onDelete: Cascade, map: "attendance_sessions_class_id_fkey", index: false)
+    profiles          Profiles?           @relation(fields: [createdBy], references: [id], map: "attendance_sessions_created_by_fkey", index: false)
+    division          Divisions?          @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "attendance_sessions_division_id_fkey", index: false)
+
+    @@check(expression: "(ends_at > starts_at)", map: "attendance_sessions_check")
+    @@check(expression: "((class_id IS NULL) <> (division_id IS NULL))", map: "attendance_sessions_check1")
+    @@check(expression: "((radius_meters IS NULL) OR (radius_meters > 0))", map: "attendance_sessions_radius_meters_check")
+    @@check(expression: "(status = ANY (ARRAY['OPEN'::text, 'CLOSED'::text]))", map: "attendance_sessions_status_check")
+    @@rls
+    @@map("attendance_sessions")
+  }
+
+  model AttendanceRecords {
+    id                    Uuid                    @id(map: "attendance_records_pkey") @default(sql`gen_random_uuid()`)
+    attendanceSessionId   Uuid                    @map("attendance_session_id")
+    userId                Uuid                    @map("user_id")
+    status                String                  @default("PRESENT")
+    method                String                  @default("QR_SCAN")
+    checkedInAt           Timestamptz             @default(now()) @map("checked_in_at")
+    latitude              Float?
+    longitude             Float?
+    distanceMeters        Float?                  @map("distance_meters")
+    sourceMetadata        Jsonb                   @default(json`{}`) @map("source_metadata")
+    attendanceCorrections AttendanceCorrections[]
+    attendanceSession     AttendanceSessions      @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade, map: "attendance_records_attendance_session_id_fkey")
+    user                  Profiles                @relation(fields: [userId], references: [id], onDelete: Cascade, map: "attendance_records_user_id_fkey")
+
+    @@unique([attendanceSessionId, userId], map: "attendance_records_attendance_session_id_user_id_key")
+    @@index([attendanceSessionId], map: "attendance_records_session_id")
+    @@index([userId], map: "attendance_records_user_id")
+    @@check(expression: "(status = ANY (ARRAY['PRESENT'::text, 'LATE'::text, 'PERMITTED'::text, 'SICK'::text, 'ABSENT'::text]))", map: "attendance_records_status_check")
+    @@rls
+    @@map("attendance_records")
+  }
+
+  model AttendanceCorrections {
+    id                 Uuid              @id(map: "attendance_corrections_pkey") @default(sql`gen_random_uuid()`)
+    attendanceRecordId Uuid              @map("attendance_record_id")
+    oldStatus          String            @map("old_status")
+    newStatus          String            @map("new_status")
+    reason             String
+    correctedBy        Uuid?             @map("corrected_by")
+    createdAt          Timestamptz       @default(now()) @map("created_at")
+    attendanceRecord   AttendanceRecords @relation(fields: [attendanceRecordId], references: [id], onDelete: Cascade, map: "attendance_corrections_attendance_record_id_fkey", index: false)
+    profiles           Profiles?         @relation(fields: [correctedBy], references: [id], map: "attendance_corrections_corrected_by_fkey", index: false)
+
+    @@rls
+    @@map("attendance_corrections")
+  }
+
   model AuditLogs {
     id         Uuid        @id(map: "audit_logs_pkey") @default(sql`gen_random_uuid()`)
     actorId    Uuid?       @map("actor_id")
@@ -223,41 +329,6 @@ namespace public {
     @@index([entityType, entityId], map: "audit_logs_entity")
     @@rls
     @@map("audit_logs")
-  }
-
-  model Batches {
-    id             Uuid                  @id(map: "batches_pkey") @default(sql`gen_random_uuid()`)
-    organizationId Uuid                  @map("organization_id")
-    name           String
-    code           String                @unique(map: "batches_code_key")
-    startDate      Date?                 @map("start_date")
-    endDate        Date?                 @map("end_date")
-    status         pg.enum(EntityStatus) @default("ACTIVE")
-    classes        Classes[]
-    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "batches_organization_id_fkey", index: false)
-
-    @@rls
-    @@map("batches")
-  }
-
-  model Classes {
-    id               Uuid                  @id(map: "classes_pkey") @default(sql`gen_random_uuid()`)
-    divisionId       Uuid                  @map("division_id")
-    batchId          Uuid?                 @map("batch_id")
-    academicPeriodId Uuid?                 @map("academic_period_id")
-    name             String
-    code             String                @unique(map: "classes_code_key")
-    capacity         Int?
-    status           pg.enum(EntityStatus) @default("ACTIVE")
-    createdAt        Timestamptz           @default(now()) @map("created_at")
-    classMembers     ClassMembers[]
-    academicPeriod   AcademicPeriods?      @relation(fields: [academicPeriodId], references: [id], map: "classes_academic_period_id_fkey", index: false)
-    batch            Batches?              @relation(fields: [batchId], references: [id], map: "classes_batch_id_fkey", index: false)
-    division         Divisions             @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "classes_division_id_fkey")
-
-    @@index([divisionId], map: "classes_division_id")
-    @@rls
-    @@map("classes")
   }
 
   model ClassMembers {
@@ -873,6 +944,57 @@ namespace public {
     using = "has_permission(auth.uid(), 'assignment.update'::text)"
     withCheck = "has_permission(auth.uid(), 'assignment.update'::text)"
     @@map("assignments_update")
+  }
+
+  policy_insert attendance_corrections_insert {
+    target = AttendanceCorrections
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'attendance.correct'::text)"
+    @@map("attendance_corrections_insert")
+  }
+
+  policy_select attendance_corrections_select {
+    target = AttendanceCorrections
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'attendance.view'::text) OR has_permission(auth.uid(), 'attendance.correct'::text))"
+    @@map("attendance_corrections_select")
+  }
+
+  policy_insert attendance_records_insert {
+    target = AttendanceRecords
+    roles = [authenticated]
+    withCheck = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'attendance.correct'::text) OR has_permission(auth.uid(), 'attendance.open_session'::text))"
+    @@map("attendance_records_insert")
+  }
+
+  policy_select attendance_records_select {
+    target = AttendanceRecords
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'attendance.view'::text) OR has_permission(auth.uid(), 'attendance.correct'::text))"
+    @@map("attendance_records_select")
+  }
+
+  policy_update attendance_records_update {
+    target = AttendanceRecords
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'attendance.correct'::text)"
+    withCheck = "has_permission(auth.uid(), 'attendance.correct'::text)"
+    @@map("attendance_records_update")
+  }
+
+  policy_select attendance_sessions_select {
+    target = AttendanceSessions
+    roles = [authenticated]
+    using = "true"
+    @@map("attendance_sessions_select")
+  }
+
+  policy_all attendance_sessions_write {
+    target = AttendanceSessions
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'attendance.open_session'::text)"
+    withCheck = "has_permission(auth.uid(), 'attendance.open_session'::text)"
+    @@map("attendance_sessions_write")
   }
 
   policy_insert audit_logs_insert {

@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'81a678bfef7ff85d3e35e26ccebf080b6498949467360c0d605de9383d6619c9'>;
+  StorageHashBase<'a8bbd596eeb5c79c8601433776f5959f4ef9ff28c41422040362236398e2dee1'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -289,6 +289,43 @@ export type FieldOutputTypes = {
       readonly title: CodecTypes['pg/text@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
+    };
+    readonly AttendanceCorrections: {
+      readonly attendanceRecordId: CodecTypes['pg/uuid@1']['output'];
+      readonly correctedBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly newStatus: CodecTypes['pg/text@1']['output'];
+      readonly oldStatus: CodecTypes['pg/text@1']['output'];
+      readonly reason: CodecTypes['pg/text@1']['output'];
+    };
+    readonly AttendanceRecords: {
+      readonly attendanceSessionId: CodecTypes['pg/uuid@1']['output'];
+      readonly checkedInAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly distanceMeters: CodecTypes['pg/float8@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly latitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly method: CodecTypes['pg/text@1']['output'];
+      readonly sourceMetadata: CodecTypes['pg/jsonb@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly AttendanceSessions: {
+      readonly classId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly endsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly geofenceEnabled: CodecTypes['pg/bool@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly latitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly radiusMeters: CodecTypes['pg/int4@1']['output'] | null;
+      readonly sessionTokenHash: CodecTypes['pg/text@1']['output'] | null;
+      readonly startsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
     };
     readonly AuditLogs: {
       readonly action: CodecTypes['pg/text@1']['output'];
@@ -702,6 +739,43 @@ export type FieldInputTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updatedBy: CodecTypes['pg/uuid@1']['input'] | null;
     };
+    readonly AttendanceCorrections: {
+      readonly attendanceRecordId: CodecTypes['pg/uuid@1']['input'];
+      readonly correctedBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly newStatus: CodecTypes['pg/text@1']['input'];
+      readonly oldStatus: CodecTypes['pg/text@1']['input'];
+      readonly reason: CodecTypes['pg/text@1']['input'];
+    };
+    readonly AttendanceRecords: {
+      readonly attendanceSessionId: CodecTypes['pg/uuid@1']['input'];
+      readonly checkedInAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly distanceMeters: CodecTypes['pg/float8@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly latitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly method: CodecTypes['pg/text@1']['input'];
+      readonly sourceMetadata: CodecTypes['pg/jsonb@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly AttendanceSessions: {
+      readonly classId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly endsAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly geofenceEnabled: CodecTypes['pg/bool@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly latitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly radiusMeters: CodecTypes['pg/int4@1']['input'] | null;
+      readonly sessionTokenHash: CodecTypes['pg/text@1']['input'] | null;
+      readonly startsAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+    };
     readonly AuditLogs: {
       readonly action: CodecTypes['pg/text@1']['input'];
       readonly actorId: CodecTypes['pg/uuid@1']['input'] | null;
@@ -1114,6 +1188,43 @@ export type StorageColumnTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updated_by: CodecTypes['pg/uuid@1']['output'] | null;
     };
+    readonly attendance_corrections: {
+      readonly attendance_record_id: CodecTypes['pg/uuid@1']['output'];
+      readonly corrected_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly new_status: CodecTypes['pg/text@1']['output'];
+      readonly old_status: CodecTypes['pg/text@1']['output'];
+      readonly reason: CodecTypes['pg/text@1']['output'];
+    };
+    readonly attendance_records: {
+      readonly attendance_session_id: CodecTypes['pg/uuid@1']['output'];
+      readonly checked_in_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly distance_meters: CodecTypes['pg/float8@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly latitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly method: CodecTypes['pg/text@1']['output'];
+      readonly source_metadata: CodecTypes['pg/jsonb@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly attendance_sessions: {
+      readonly class_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly ends_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly geofence_enabled: CodecTypes['pg/bool@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly latitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['output'] | null;
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly radius_meters: CodecTypes['pg/int4@1']['output'] | null;
+      readonly session_token_hash: CodecTypes['pg/text@1']['output'] | null;
+      readonly starts_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+    };
     readonly audit_logs: {
       readonly action: CodecTypes['pg/text@1']['output'];
       readonly actor_id: CodecTypes['pg/uuid@1']['output'] | null;
@@ -1525,6 +1636,43 @@ export type StorageColumnInputTypes = {
       readonly type: CodecTypes['pg/text@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updated_by: CodecTypes['pg/uuid@1']['input'] | null;
+    };
+    readonly attendance_corrections: {
+      readonly attendance_record_id: CodecTypes['pg/uuid@1']['input'];
+      readonly corrected_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly new_status: CodecTypes['pg/text@1']['input'];
+      readonly old_status: CodecTypes['pg/text@1']['input'];
+      readonly reason: CodecTypes['pg/text@1']['input'];
+    };
+    readonly attendance_records: {
+      readonly attendance_session_id: CodecTypes['pg/uuid@1']['input'];
+      readonly checked_in_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly distance_meters: CodecTypes['pg/float8@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly latitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly method: CodecTypes['pg/text@1']['input'];
+      readonly source_metadata: CodecTypes['pg/jsonb@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly attendance_sessions: {
+      readonly class_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly ends_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly geofence_enabled: CodecTypes['pg/bool@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly latitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly longitude: CodecTypes['pg/float8@1']['input'] | null;
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly radius_meters: CodecTypes['pg/int4@1']['input'] | null;
+      readonly session_token_hash: CodecTypes['pg/text@1']['input'] | null;
+      readonly starts_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
     };
     readonly audit_logs: {
       readonly action: CodecTypes['pg/text@1']['input'];
@@ -1963,6 +2111,55 @@ export namespace Models {
       | 'rubrics'
       | 'submissions';
   };
+  export type public_AttendanceCorrections = {
+    attendanceRecordId: CodecTypes['pg/uuid@1']['output'];
+    correctedBy: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    newStatus: CodecTypes['pg/text@1']['output'];
+    oldStatus: CodecTypes['pg/text@1']['output'];
+    reason: CodecTypes['pg/text@1']['output'];
+    attendanceRecord: public_AttendanceRecords;
+    profiles: public_Profiles | null;
+    readonly [RelationKeys]?: 'attendanceRecord' | 'profiles';
+  };
+  export type public_AttendanceRecords = {
+    attendanceSessionId: CodecTypes['pg/uuid@1']['output'];
+    checkedInAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    distanceMeters: CodecTypes['pg/float8@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    latitude: CodecTypes['pg/float8@1']['output'] | null;
+    longitude: CodecTypes['pg/float8@1']['output'] | null;
+    method: CodecTypes['pg/text@1']['output'];
+    sourceMetadata: CodecTypes['pg/jsonb@1']['output'];
+    status: CodecTypes['pg/text@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    attendanceCorrections: public_AttendanceCorrections[];
+    attendanceSession: public_AttendanceSessions;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'attendanceCorrections' | 'attendanceSession' | 'user';
+  };
+  export type public_AttendanceSessions = {
+    classId: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+    divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+    endsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    geofenceEnabled: CodecTypes['pg/bool@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    latitude: CodecTypes['pg/float8@1']['output'] | null;
+    longitude: CodecTypes['pg/float8@1']['output'] | null;
+    name: CodecTypes['pg/text@1']['output'];
+    radiusMeters: CodecTypes['pg/int4@1']['output'] | null;
+    sessionTokenHash: CodecTypes['pg/text@1']['output'] | null;
+    startsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    status: CodecTypes['pg/text@1']['output'];
+    attendanceRecords: public_AttendanceRecords[];
+    class: public_Classes | null;
+    division: public_Divisions | null;
+    profiles: public_Profiles | null;
+    readonly [RelationKeys]?: 'attendanceRecords' | 'class' | 'division' | 'profiles';
+  };
   export type public_AuditLogs = {
     action: CodecTypes['pg/text@1']['output'];
     actorId: CodecTypes['pg/uuid@1']['output'] | null;
@@ -2011,10 +2208,12 @@ export namespace Models {
     name: CodecTypes['pg/text@1']['output'];
     status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     academicPeriod: public_AcademicPeriods | null;
+    attendanceSessions: public_AttendanceSessions[];
     batch: public_Batches | null;
     classMembers: public_ClassMembers[];
     division: public_Divisions;
-    readonly [RelationKeys]?: 'academicPeriod' | 'batch' | 'classMembers' | 'division';
+    readonly [RelationKeys]?:
+      'academicPeriod' | 'attendanceSessions' | 'batch' | 'classMembers' | 'division';
   };
   export type public_Courses = {
     code: CodecTypes['pg/text@1']['output'] | null;
@@ -2057,12 +2256,14 @@ export namespace Models {
     slug: CodecTypes['pg/text@1']['output'];
     status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    attendanceSessions: public_AttendanceSessions[];
     classes: public_Classes[];
     courses: public_Courses[];
     organization: public_Organizations;
     roadmaps: public_Roadmaps[];
     userDivisions: public_UserDivisions[];
-    readonly [RelationKeys]?: 'classes' | 'courses' | 'organization' | 'roadmaps' | 'userDivisions';
+    readonly [RelationKeys]?:
+      'attendanceSessions' | 'classes' | 'courses' | 'organization' | 'roadmaps' | 'userDivisions';
   };
   export type public_LearningActivities = {
     activityType: CodecTypes['pg/text@1']['output'];
@@ -2240,6 +2441,9 @@ export namespace Models {
     assignmentGroupMembers: public_AssignmentGroupMembers[];
     assignments: public_Assignments[];
     assignmentsAssignments: public_Assignments[];
+    attendanceCorrections: public_AttendanceCorrections[];
+    attendanceRecords: public_AttendanceRecords[];
+    attendanceSessions: public_AttendanceSessions[];
     auditLogs: public_AuditLogs[];
     classMembers: public_ClassMembers[];
     courses: public_Courses[];
@@ -2264,6 +2468,9 @@ export namespace Models {
       | 'assignmentGroupMembers'
       | 'assignments'
       | 'assignmentsAssignments'
+      | 'attendanceCorrections'
+      | 'attendanceRecords'
+      | 'attendanceSessions'
       | 'auditLogs'
       | 'classMembers'
       | 'courses'
@@ -2552,6 +2759,9 @@ export declare const models: {
     AssignmentGroupMembers: Models.public_AssignmentGroupMembers;
     AssignmentGroups: Models.public_AssignmentGroups;
     Assignments: Models.public_Assignments;
+    AttendanceCorrections: Models.public_AttendanceCorrections;
+    AttendanceRecords: Models.public_AttendanceRecords;
+    AttendanceSessions: Models.public_AttendanceSessions;
     AuditLogs: Models.public_AuditLogs;
     Batches: Models.public_Batches;
     ClassMembers: Models.public_ClassMembers;
@@ -2986,6 +3196,339 @@ type ContractBase = Omit<
                     readonly columns: readonly ['id'];
                   };
                   readonly name: 'assignments_updated_by_fkey';
+                },
+              ];
+            };
+            readonly attendance_corrections: {
+              columns: {
+                readonly attendance_record_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly corrected_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly new_status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly old_status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly reason: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'attendance_corrections_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_corrections';
+                    readonly columns: readonly ['attendance_record_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_records';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'attendance_corrections_attendance_record_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_corrections';
+                    readonly columns: readonly ['corrected_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'attendance_corrections_corrected_by_fkey';
+                },
+              ];
+            };
+            readonly attendance_records: {
+              columns: {
+                readonly attendance_session_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly checked_in_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly distance_meters: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly latitude: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly longitude: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly method: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'QR_SCAN'>;
+                  };
+                };
+                readonly source_metadata: {
+                  readonly nativeType: 'jsonb';
+                  readonly codecId: 'pg/jsonb@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/jsonb@1', {}>;
+                  };
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'PRESENT'>;
+                  };
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'attendance_records_pkey';
+              };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['attendance_session_id', 'user_id'];
+                  readonly name: 'attendance_records_attendance_session_id_user_id_key';
+                },
+              ];
+              indexes: readonly [
+                {
+                  readonly name: 'attendance_records_session_id';
+                  readonly columns: readonly ['attendance_session_id'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'attendance_records_user_id';
+                  readonly columns: readonly ['user_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_records';
+                    readonly columns: readonly ['attendance_session_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_sessions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'attendance_records_attendance_session_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_records';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'attendance_records_user_id_fkey';
+                },
+              ];
+            };
+            readonly attendance_sessions: {
+              columns: {
+                readonly class_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly created_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly division_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly ends_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                };
+                readonly geofence_enabled: {
+                  readonly nativeType: 'bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly latitude: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly longitude: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly radius_meters: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
+                };
+                readonly session_token_hash: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly starts_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'OPEN'>;
+                  };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'attendance_sessions_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_sessions';
+                    readonly columns: readonly ['class_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'classes';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'attendance_sessions_class_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_sessions';
+                    readonly columns: readonly ['created_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'attendance_sessions_created_by_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'attendance_sessions';
+                    readonly columns: readonly ['division_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'divisions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'attendance_sessions_division_id_fkey';
                 },
               ];
             };
@@ -6208,6 +6751,18 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Assignments';
     };
+    readonly attendance_corrections: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'AttendanceCorrections';
+    };
+    readonly attendance_records: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'AttendanceRecords';
+    };
+    readonly attendance_sessions: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'AttendanceSessions';
+    };
     readonly audit_logs: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'AuditLogs';
@@ -6733,6 +7288,318 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly AttendanceCorrections: {
+            readonly fields: {
+              readonly attendanceRecordId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly correctedBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly newStatus: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly oldStatus: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly reason: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly attendanceRecord: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceRecords';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['attendanceRecordId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['correctedBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'attendance_corrections';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly attendanceRecordId: { readonly column: 'attendance_record_id' };
+                readonly correctedBy: { readonly column: 'corrected_by' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly id: { readonly column: 'id' };
+                readonly newStatus: { readonly column: 'new_status' };
+                readonly oldStatus: { readonly column: 'old_status' };
+                readonly reason: { readonly column: 'reason' };
+              };
+            };
+          };
+          readonly AttendanceRecords: {
+            readonly fields: {
+              readonly attendanceSessionId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly checkedInAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly distanceMeters: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly latitude: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly longitude: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly method: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sourceMetadata: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/jsonb@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly attendanceCorrections: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceCorrections';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['attendanceRecordId'];
+                };
+              };
+              readonly attendanceSession: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceSessions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['attendanceSessionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'attendance_records';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly attendanceSessionId: { readonly column: 'attendance_session_id' };
+                readonly checkedInAt: { readonly column: 'checked_in_at' };
+                readonly distanceMeters: { readonly column: 'distance_meters' };
+                readonly id: { readonly column: 'id' };
+                readonly latitude: { readonly column: 'latitude' };
+                readonly longitude: { readonly column: 'longitude' };
+                readonly method: { readonly column: 'method' };
+                readonly sourceMetadata: { readonly column: 'source_metadata' };
+                readonly status: { readonly column: 'status' };
+                readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly AttendanceSessions: {
+            readonly fields: {
+              readonly classId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly createdBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly divisionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly endsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly geofenceEnabled: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly latitude: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly longitude: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly radiusMeters: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly sessionTokenHash: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly startsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly attendanceRecords: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceRecords';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['attendanceSessionId'];
+                };
+              };
+              readonly class: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Classes';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['classId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly division: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Divisions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['divisionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'attendance_sessions';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly classId: { readonly column: 'class_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly createdBy: { readonly column: 'created_by' };
+                readonly divisionId: { readonly column: 'division_id' };
+                readonly endsAt: { readonly column: 'ends_at' };
+                readonly geofenceEnabled: { readonly column: 'geofence_enabled' };
+                readonly id: { readonly column: 'id' };
+                readonly latitude: { readonly column: 'latitude' };
+                readonly longitude: { readonly column: 'longitude' };
+                readonly name: { readonly column: 'name' };
+                readonly radiusMeters: { readonly column: 'radius_meters' };
+                readonly sessionTokenHash: { readonly column: 'session_token_hash' };
+                readonly startsAt: { readonly column: 'starts_at' };
+                readonly status: { readonly column: 'status' };
+              };
+            };
+          };
           readonly AuditLogs: {
             readonly fields: {
               readonly action: {
@@ -6946,6 +7813,17 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['academicPeriodId'];
                   readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly attendanceSessions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceSessions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['classId'];
                 };
               };
               readonly batch: {
@@ -7296,6 +8174,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly attendanceSessions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceSessions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['divisionId'];
+                };
+              };
               readonly classes: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -8440,6 +9329,39 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['updatedBy'];
+                };
+              };
+              readonly attendanceCorrections: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceCorrections';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['correctedBy'];
+                };
+              };
+              readonly attendanceRecords: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceRecords';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly attendanceSessions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AttendanceSessions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdBy'];
                 };
               };
               readonly auditLogs: {
