@@ -33,3 +33,26 @@ export function isEditableStatus(status: string): boolean {
     status === "NOT_STARTED"
   );
 }
+
+/**
+ * P1-404: mesin status submission.
+ * NOT_STARTED -> DRAFT -> SUBMITTED/LATE -> GRADED
+ * SUBMITTED/LATE -> REVISION_REQUIRED -> RESUBMITTED -> GRADED
+ * GRADED terminal (perubahan nilai = koreksi via revisi/feedback baru).
+ */
+const TRANSITIONS: Record<string, string[]> = {
+  NOT_STARTED: ["DRAFT"],
+  DRAFT: ["SUBMITTED", "LATE"],
+  SUBMITTED: ["GRADED", "REVISION_REQUIRED"],
+  LATE: ["GRADED", "REVISION_REQUIRED"],
+  REVISION_REQUIRED: ["RESUBMITTED", "DRAFT"],
+  RESUBMITTED: ["GRADED", "REVISION_REQUIRED"],
+  GRADED: [],
+};
+
+export function assertTransition(from: string, to: string): void {
+  const allowed = TRANSITIONS[from];
+  if (!allowed || !allowed.includes(to)) {
+    throw new Error(`TRANSITION_INVALID: ${from} -> ${to} tidak diizinkan`);
+  }
+}
