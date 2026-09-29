@@ -1,0 +1,3 @@
+# Canonical migration history lives here as *.sql (Supabase SQL).
+# Prisma contract source: src/prisma/contract.prisma (tipe + client).
+# Jangan buat prisma/migrations — satu sumber kebenaran saja.
