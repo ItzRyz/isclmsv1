@@ -17,6 +17,11 @@ import {
   publishCourse,
   updateCourse,
 } from "@/features/courses/actions";
+import {
+  createModule,
+  deleteModule,
+  moveModule,
+} from "@/features/modules/actions";
 
 export default async function CourseDetailPage({
   params,
@@ -68,6 +73,7 @@ export default async function CourseDetailPage({
 
   const canEdit = await can("course.update").catch(() => false);
   const canDelete = await can("course.delete").catch(() => false);
+  const canManageModules = await can("module.update").catch(() => false);
   const division = Array.isArray(course.divisions)
     ? course.divisions[0]
     : course.divisions;
@@ -124,7 +130,11 @@ export default async function CourseDetailPage({
       <Card>
         <CardHeader>
           <CardTitle>Modul ({(modules ?? []).length})</CardTitle>
-          <CardDescription>Kelola modul menyusul P1-302.</CardDescription>
+          {canManageModules ? null : (
+            <CardDescription>
+              Hanya staf pengelola yang bisa mengubah.
+            </CardDescription>
+          )}
         </CardHeader>
         <CardContent className="flex flex-col gap-1 text-sm">
           {(
@@ -134,15 +144,75 @@ export default async function CourseDetailPage({
               position: number;
               status: string;
             }[]
-          ).map((m) => (
+          ).map((m, i, arr) => (
             <div key={m.id} className="flex items-center gap-2 py-1">
               <Badge variant="outline">{m.position}</Badge>
               <span className="flex-1">{m.title}</span>
               <Badge>{m.status}</Badge>
+              {canManageModules ? (
+                <>
+                  <form action={moveModule}>
+                    <input type="hidden" name="module_id" value={m.id} />
+                    <input type="hidden" name="direction" value="up" />
+                    <Button
+                      type="submit"
+                      size="sm"
+                      variant="ghost"
+                      disabled={i === 0}
+                    >
+                      ↑
+                    </Button>
+                  </form>
+                  <form action={moveModule}>
+                    <input type="hidden" name="module_id" value={m.id} />
+                    <input type="hidden" name="direction" value="down" />
+                    <Button
+                      type="submit"
+                      size="sm"
+                      variant="ghost"
+                      disabled={i === arr.length - 1}
+                    >
+                      ↓
+                    </Button>
+                  </form>
+                  <form action={deleteModule}>
+                    <input type="hidden" name="module_id" value={m.id} />
+                    <input type="hidden" name="course_id" value={course.id} />
+                    <Button type="submit" size="sm" variant="ghost">
+                      Hapus
+                    </Button>
+                  </form>
+                </>
+              ) : null}
             </div>
           ))}
           {(modules ?? []).length === 0 ? (
             <span className="text-muted-foreground">Belum ada modul.</span>
+          ) : null}
+          {canManageModules ? (
+            <form
+              action={createModule}
+              className="mt-2 flex flex-col gap-3 border-t pt-4"
+            >
+              <input type="hidden" name="course_id" value={course.id} />
+              <div className="flex gap-3">
+                <Input
+                  name="title"
+                  placeholder="Judul modul"
+                  required
+                  minLength={3}
+                  maxLength={160}
+                />
+                <Input
+                  name="slug"
+                  placeholder="slug-modul"
+                  required
+                  minLength={2}
+                  maxLength={80}
+                />
+              </div>
+              <Button type="submit">Tambah modul</Button>
+            </form>
           ) : null}
         </CardContent>
       </Card>
