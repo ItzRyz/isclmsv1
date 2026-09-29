@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { normalize, round2, weightedTotal } from "./calc";
+import { kkmOf, letterFor, normalize, round2, weightedTotal } from "./calc";
 
 describe("round2", () => {
   test("half-up 2 desimal", () => {
@@ -59,5 +59,24 @@ describe("weightedTotal", () => {
     ]);
     expect(r.parts[0]?.weighted).toBe(32);
     expect(r.parts[0]?.normalized).toBe(80);
+  });
+});
+
+describe("letterFor/kkmOf", () => {
+  const scales = [
+    { letter: "A", min_score: 90, max_score: 100, is_passing: true },
+    { letter: "B", min_score: 75, max_score: 89, is_passing: true },
+    { letter: "C", min_score: 0, max_score: 74, is_passing: false },
+  ];
+
+  test("huruf + lulus sesuai pita", () => {
+    expect(letterFor(scales, 95)).toEqual({ letter: "A", passing: true });
+    expect(letterFor(scales, 80)).toEqual({ letter: "B", passing: true });
+    expect(letterFor(scales, 50)).toEqual({ letter: "C", passing: false });
+  });
+
+  test("KKM = bawah pita lulus", () => {
+    expect(kkmOf(scales)).toBe(75);
+    expect(kkmOf([])).toBeNull();
   });
 });

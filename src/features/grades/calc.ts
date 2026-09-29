@@ -44,3 +44,26 @@ export function weightedTotal(parts: GradePart[]): {
   );
   return { total, parts: detailed };
 }
+
+/** Huruf untuk skor + status lulus. Murni, dipakai rapor. */
+export function letterFor(
+  scales: {
+    letter: string;
+    min_score: number;
+    max_score: number;
+    is_passing: boolean;
+  }[],
+  score: number,
+): { letter: string; passing: boolean } {
+  const hit = scales.find((s) => score >= s.min_score && score <= s.max_score);
+  if (!hit) return { letter: "?", passing: false };
+  return { letter: hit.letter, passing: hit.is_passing };
+}
+
+/** KKM = batas bawah pita lulus terendah. */
+export function kkmOf(
+  scales: { min_score: number; is_passing: boolean }[],
+): number | null {
+  const passing = scales.filter((s) => s.is_passing).map((s) => s.min_score);
+  return passing.length ? Math.min(...passing) : null;
+}
