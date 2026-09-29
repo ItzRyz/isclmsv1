@@ -18,6 +18,7 @@ import {
   updateMaterial,
 } from "@/features/materials/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
+import { BookmarkButton } from "@/features/bookmarks/bookmark-button";
 import { FileList } from "@/features/storage/file-list";
 import { UploadForm } from "@/features/storage/upload-form";
 
@@ -125,6 +126,9 @@ export default async function MaterialDetailPage({
             </a>
           ))}
           <FileList materialId={material.id} />
+          <div>
+            <BookmarkButton materialId={material.id} />
+          </div>
           {staff && !visible ? (
             <Badge variant="outline">
               Pratinjau staf (belum tayang publik)
