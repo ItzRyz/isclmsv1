@@ -21,6 +21,7 @@ import {
 import { IndividualSubmissionSection } from "@/features/submissions/submission-section";
 import { GroupSection } from "@/features/groups/group-section";
 import { RubricSection } from "@/features/rubrics/rubric-section";
+import { GradeSection } from "@/features/grading/grade-section";
 
 function toLocalInput(iso: string | null): string {
   if (!iso) return "";
@@ -53,6 +54,7 @@ export default async function AssignmentDetailPage({
   const canPublish = await can("assignment.publish").catch(() => false);
   const canManageGroups = await can("assignment.update").catch(() => false);
   const canRubric = await can("assignment.update").catch(() => false);
+  const canGrade = await can("assignment.grade").catch(() => false);
   // Waktu render server untuk label deadline (halaman dinamis per request).
   // eslint-disable-next-line react-hooks/purity
   const now = Date.now();
@@ -113,6 +115,8 @@ export default async function AssignmentDetailPage({
       )}
 
       <RubricSection assignmentId={assignment.id} manageable={canRubric} />
+
+      <GradeSection assignmentId={assignment.id} canGrade={canGrade} />
 
       {canEdit || canPublish ? (
         <Card>
