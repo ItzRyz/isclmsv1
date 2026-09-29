@@ -18,6 +18,7 @@ import {
   publishAssignment,
   updateAssignment,
 } from "@/features/assignments/actions";
+import { IndividualSubmissionSection } from "@/features/submissions/submission-section";
 
 function toLocalInput(iso: string | null): string {
   if (!iso) return "";
@@ -95,12 +96,19 @@ export default async function AssignmentDetailPage({
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Pengumpulan</CardTitle>
-          <CardDescription>Menyusul P1-402/403.</CardDescription>
-        </CardHeader>
-      </Card>
+      {assignment.type === "INDIVIDUAL" ? (
+        <IndividualSubmissionSection
+          assignmentId={assignment.id}
+          submissionType={assignment.submission_type}
+        />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>Pengumpulan kelompok</CardTitle>
+            <CardDescription>Menyusul P1-403.</CardDescription>
+          </CardHeader>
+        </Card>
+      )}
 
       {canEdit || canPublish ? (
         <Card>
