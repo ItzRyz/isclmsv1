@@ -76,6 +76,14 @@
       "model": "Modules",
       "namespace": "public"
     },
+    "notification_preferences": {
+      "model": "NotificationPreferences",
+      "namespace": "public"
+    },
+    "notifications": {
+      "model": "Notifications",
+      "namespace": "public"
+    },
     "organizations": {
       "model": "Organizations",
       "namespace": "public"
@@ -2735,6 +2743,202 @@
               "table": "modules"
             }
           },
+          "NotificationPreferences": {
+            "fields": {
+              "emailEnabled": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "eventType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "inAppEnabled": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "emailEnabled": {
+                  "column": "email_enabled"
+                },
+                "eventType": {
+                  "column": "event_type"
+                },
+                "inAppEnabled": {
+                  "column": "in_app_enabled"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "notification_preferences"
+            }
+          },
+          "Notifications": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "body": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "entityId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "entityType": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "readAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "recipientId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "recipient": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "recipientId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "body": {
+                  "column": "body"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "entityId": {
+                  "column": "entity_id"
+                },
+                "entityType": {
+                  "column": "entity_type"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "readAt": {
+                  "column": "read_at"
+                },
+                "recipientId": {
+                  "column": "recipient_id"
+                },
+                "title": {
+                  "column": "title"
+                }
+              },
+              "namespaceId": "public",
+              "table": "notifications"
+            }
+          },
           "Organizations": {
             "fields": {
               "createdAt": {
@@ -3196,6 +3400,36 @@
                 },
                 "to": {
                   "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "notificationPreferences": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "NotificationPreferences",
+                  "namespace": "public"
+                }
+              },
+              "notifications": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "recipientId"
+                  ]
+                },
+                "to": {
+                  "model": "Notifications",
                   "namespace": "public"
                 }
               },
@@ -5462,6 +5696,56 @@
               "using": "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))",
               "withCheck": "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
             },
+            "notification_preferences_all": {
+              "kind": "policy",
+              "name": "notification_preferences_all",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "notification_preferences",
+              "using": "(user_id = auth.uid())",
+              "withCheck": "(user_id = auth.uid())"
+            },
+            "notifications_insert": {
+              "kind": "policy",
+              "name": "notifications_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "notifications",
+              "withCheck": "true"
+            },
+            "notifications_select_own": {
+              "kind": "policy",
+              "name": "notifications_select_own",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "notifications",
+              "using": "(recipient_id = auth.uid())"
+            },
+            "notifications_update_own": {
+              "kind": "policy",
+              "name": "notifications_update_own",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "notifications",
+              "using": "(recipient_id = auth.uid())",
+              "withCheck": "(recipient_id = auth.uid())"
+            },
             "organizations_select": {
               "kind": "policy",
               "name": "organizations_select",
@@ -5985,6 +6269,16 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "modules"
+            },
+            "notification_preferences": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "notification_preferences"
+            },
+            "notifications": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "notifications"
             },
             "organizations": {
               "kind": "rls",
@@ -8104,6 +8398,176 @@
                 }
               ]
             },
+            "notification_preferences": {
+              "columns": {
+                "email_enabled": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "event_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "in_app_enabled": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "notification_preferences_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "notification_preferences"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "user_id",
+                  "event_type"
+                ],
+                "name": "notification_preferences_pkey"
+              },
+              "uniques": []
+            },
+            "notifications": {
+              "columns": {
+                "body": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "entity_id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "entity_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "read_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "recipient_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "notifications_recipient_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "recipient_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "notifications"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "read_at"
+                  ],
+                  "name": "notifications_read_at",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "recipient_id"
+                  ],
+                  "name": "notifications_recipient_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "notifications_pkey"
+              },
+              "uniques": []
+            },
             "organizations": {
               "columns": {
                 "created_at": {
@@ -9711,7 +10175,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "a21eb2f67686d227f8461d443ed95adf7fc56a5be6949ef774a0d273375273a5"
+    "storageHash": "2d655a639e6dc3081f5bd412b8d723c0fcce7787592c7da3759049c48ede3d49"
   },
   "capabilities": {
     "postgres": {

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyMany } from "@/features/notifications/notify";
 import { assertTransition } from "@/features/submissions/status";
 import { gradeSchema } from "./schemas";
 
@@ -179,5 +180,22 @@ export async function gradeSubmission(formData: FormData): Promise<void> {
     old_values: { status: sub.status },
     new_values: { status: "GRADED", score: parsed.data.score },
   });
+  const owners: string[] = [];
+  if (sub.user_id) owners.push(sub.user_id as string);
+  if (sub.assignment_group_id) {
+    const { data: members } = await supabase
+      .from("assignment_group_members")
+      .select("user_id")
+      .eq("assignment_group_id", sub.assignment_group_id as string);
+    owners.push(
+      ...((members ?? []) as { user_id: string }[]).map((m) => m.user_id),
+    );
+  }
+  await notifyMany(supabase, owners, {
+    type: "submission.graded",
+    title: `Nilai keluar: ${parsed.data.score}/${maxScore}`,
+    entity_type: "submissions",
+    entity_id: parsed.data.submission_id,
+  }).catch(() => undefined);
   revalidatePath("/assignments");
 }

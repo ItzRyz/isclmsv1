@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyMany } from "@/features/notifications/notify";
 import { assertTransition } from "@/features/submissions/status";
 
 const requestSchema = z.object({
@@ -28,7 +29,9 @@ export async function requestRevision(formData: FormData): Promise<void> {
   const supabase = await createClient();
   const { data: sub } = await supabase
     .from("submissions")
-    .select("id, status, assignments(revision_allowed)")
+    .select(
+      "id, status, user_id, assignment_group_id, assignments(revision_allowed)",
+    )
     .eq("id", parsed.data.submission_id)
     .single();
   if (!sub) throw new Error("NOT_FOUND");
@@ -61,6 +64,24 @@ export async function requestRevision(formData: FormData): Promise<void> {
     old_values: { status: sub.status },
     new_values: { status: "REVISION_REQUIRED" },
   });
+  const owners: string[] = [];
+  if ((sub.user_id as string | null) ?? null)
+    owners.push(sub.user_id as string);
+  if (sub.assignment_group_id) {
+    const { data: members } = await supabase
+      .from("assignment_group_members")
+      .select("user_id")
+      .eq("assignment_group_id", sub.assignment_group_id as string);
+    owners.push(
+      ...((members ?? []) as { user_id: string }[]).map((m) => m.user_id),
+    );
+  }
+  await notifyMany(supabase, owners, {
+    type: "submission.revision_request",
+    title: "Revisi diminta untuk submissionmu",
+    entity_type: "submissions",
+    entity_id: parsed.data.submission_id,
+  }).catch(() => undefined);
   revalidatePath("/assignments");
 }
 

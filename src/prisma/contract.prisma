@@ -55,33 +55,35 @@ namespace public {
 
   // WARNING: Foreign key "id" -> "auth.users" exists in the database, but its target schema is outside the introspected scope, so no relation field was generated. If the target schema is described by an extension pack, add it to extensions and re-run infer.
   model Profiles {
-    id                     Uuid                     @id(map: "profiles_pkey")
-    fullName               String?                  @map("full_name")
-    username               String?                  @unique(map: "profiles_username_key")
-    studentNumber          String?                  @unique(map: "profiles_student_number_key") @map("student_number")
-    avatarPath             String?                  @map("avatar_path")
-    phone                  String?
-    status                 pg.enum(AccountStatus)   @default("ACTIVE")
-    createdAt              Timestamptz              @default(now()) @map("created_at")
-    updatedAt              Timestamptz              @default(now()) @map("updated_at")
-    assignmentGroupMembers AssignmentGroupMembers[]
-    auditLogs              AuditLogs[]
-    classMembers           ClassMembers[]
-    learningActivities     LearningActivities[]
-    materialBookmarks      MaterialBookmarks[]
-    materialProgresses     MaterialProgress[]
-    submissionFeedbacks    SubmissionFeedback[]
-    userDivisions          UserDivisions[]
-    assignments            Assignments[]            @relation(name: "assignments_created_by_fkey")
-    assignmentsAssignments Assignments[]            @relation(name: "assignments_updated_by_fkey")
-    courses                Courses[]                @relation(name: "courses_created_by_fkey")
-    coursesCourses         Courses[]                @relation(name: "courses_updated_by_fkey")
-    materials              Materials[]              @relation(name: "materials_created_by_fkey")
-    materialsMaterials     Materials[]              @relation(name: "materials_updated_by_fkey")
-    submissions            Submissions[]            @relation(name: "submissions_graded_by_fkey")
-    submissionsSubmissions Submissions[]            @relation(name: "submissions_user_id_fkey")
-    userRoles              UserRoles[]              @relation(name: "user_roles_assigned_by_fkey")
-    userRolesUserRoles     UserRoles[]              @relation(name: "user_roles_user_id_fkey")
+    id                      Uuid                      @id(map: "profiles_pkey")
+    fullName                String?                   @map("full_name")
+    username                String?                   @unique(map: "profiles_username_key")
+    studentNumber           String?                   @unique(map: "profiles_student_number_key") @map("student_number")
+    avatarPath              String?                   @map("avatar_path")
+    phone                   String?
+    status                  pg.enum(AccountStatus)    @default("ACTIVE")
+    createdAt               Timestamptz               @default(now()) @map("created_at")
+    updatedAt               Timestamptz               @default(now()) @map("updated_at")
+    assignmentGroupMembers  AssignmentGroupMembers[]
+    auditLogs               AuditLogs[]
+    classMembers            ClassMembers[]
+    learningActivities      LearningActivities[]
+    materialBookmarks       MaterialBookmarks[]
+    materialProgresses      MaterialProgress[]
+    notificationPreferences NotificationPreferences[]
+    notifications           Notifications[]
+    submissionFeedbacks     SubmissionFeedback[]
+    userDivisions           UserDivisions[]
+    assignments             Assignments[]             @relation(name: "assignments_created_by_fkey")
+    assignmentsAssignments  Assignments[]             @relation(name: "assignments_updated_by_fkey")
+    courses                 Courses[]                 @relation(name: "courses_created_by_fkey")
+    coursesCourses          Courses[]                 @relation(name: "courses_updated_by_fkey")
+    materials               Materials[]               @relation(name: "materials_created_by_fkey")
+    materialsMaterials      Materials[]               @relation(name: "materials_updated_by_fkey")
+    submissions             Submissions[]             @relation(name: "submissions_graded_by_fkey")
+    submissionsSubmissions  Submissions[]             @relation(name: "submissions_user_id_fkey")
+    userRoles               UserRoles[]               @relation(name: "user_roles_assigned_by_fkey")
+    userRolesUserRoles      UserRoles[]               @relation(name: "user_roles_user_id_fkey")
 
     @@rls
     @@map("profiles")
@@ -387,6 +389,37 @@ namespace public {
     @@check(expression: "((progress_percent >= 0) AND (progress_percent <= 100))", map: "material_progress_progress_percent_check")
     @@rls
     @@map("material_progress")
+  }
+
+  model NotificationPreferences {
+    userId       Uuid        @map("user_id")
+    eventType    String      @map("event_type")
+    inAppEnabled Boolean     @default(true) @map("in_app_enabled")
+    emailEnabled Boolean     @default(true) @map("email_enabled")
+    updatedAt    Timestamptz @default(now()) @map("updated_at")
+    user         Profiles    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "notification_preferences_user_id_fkey", index: false)
+
+    @@id([userId, eventType], map: "notification_preferences_pkey")
+    @@rls
+    @@map("notification_preferences")
+  }
+
+  model Notifications {
+    id          Uuid         @id(map: "notifications_pkey") @default(sql`gen_random_uuid()`)
+    recipientId Uuid         @map("recipient_id")
+    _type       String       @map("type")
+    title       String
+    body        String?
+    entityType  String?      @map("entity_type")
+    entityId    String?      @map("entity_id")
+    readAt      Timestamptz? @map("read_at")
+    createdAt   Timestamptz  @default(now()) @map("created_at")
+    recipient   Profiles     @relation(fields: [recipientId], references: [id], onDelete: Cascade, map: "notifications_recipient_id_fkey")
+
+    @@index([readAt], map: "notifications_read_at")
+    @@index([recipientId], map: "notifications_recipient_id")
+    @@rls
+    @@map("notifications")
   }
 
   model Permissions {
@@ -956,6 +989,36 @@ namespace public {
     using = "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
     withCheck = "(has_permission(auth.uid(), 'module.create'::text) OR has_permission(auth.uid(), 'module.update'::text) OR has_permission(auth.uid(), 'module.delete'::text))"
     @@map("modules_write")
+  }
+
+  policy_all notification_preferences_all {
+    target = NotificationPreferences
+    roles = [authenticated]
+    using = "(user_id = auth.uid())"
+    withCheck = "(user_id = auth.uid())"
+    @@map("notification_preferences_all")
+  }
+
+  policy_insert notifications_insert {
+    target = Notifications
+    roles = [authenticated]
+    withCheck = "true"
+    @@map("notifications_insert")
+  }
+
+  policy_select notifications_select_own {
+    target = Notifications
+    roles = [authenticated]
+    using = "(recipient_id = auth.uid())"
+    @@map("notifications_select_own")
+  }
+
+  policy_update notifications_update_own {
+    target = Notifications
+    roles = [authenticated]
+    using = "(recipient_id = auth.uid())"
+    withCheck = "(recipient_id = auth.uid())"
+    @@map("notifications_update_own")
   }
 
   policy_select organizations_select {

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import { divisionMemberIds, notifyMany } from "@/features/notifications/notify";
 import { createAssignmentSchema, updateAssignmentSchema } from "./schemas";
 
 export async function createAssignment(formData: FormData): Promise<void> {
@@ -70,12 +71,32 @@ export async function publishAssignment(formData: FormData): Promise<void> {
   const assignmentId = String(formData.get("assignment_id") ?? "");
   await requirePermission("assignment.publish");
   const supabase = await createClient();
+  const { data: asg } = await supabase
+    .from("assignments")
+    .select("id, title, course_id, courses(division_id)")
+    .eq("id", assignmentId)
+    .single();
   const { error } = await supabase
     .from("assignments")
     .update({ status: "PUBLISHED" })
     .eq("id", assignmentId)
     .eq("status", "DRAFT");
   if (error) throw new Error(`Gagal publish tugas: ${error.message}`);
+  const courses = (asg as { courses: { division_id: string } | null } | null)
+    ?.courses;
+  const div = Array.isArray(courses) ? courses[0] : courses;
+  if (div && asg) {
+    await notifyMany(
+      supabase,
+      await divisionMemberIds(supabase, div.division_id),
+      {
+        type: "assignment.published",
+        title: `Tugas baru: ${(asg as { title: string }).title}`,
+        entity_type: "assignments",
+        entity_id: assignmentId,
+      },
+    ).catch(() => undefined);
+  }
   revalidatePath(`/assignments/${assignmentId}`);
 }
 
