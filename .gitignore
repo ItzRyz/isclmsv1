@@ -44,6 +44,10 @@ node_modules/
 dist/
 .env
 
+# prisma local workflow state (refs/snapshots, reproducible via contract emit).
+# Riwayat migrasi kanonis tetap di supabase/migrations/.
+migrations/
+
 # engineering spec / requirement docs (internal, local-only — never committed)
 # Hanya README.md yang boleh terlacak.
 AGENTS.md

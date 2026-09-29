@@ -1,209 +1,453 @@
 // use prisma-8
+// Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
 
-// P0-108: kontrak identity + organization, cermin supabase/migrations/.
-// Status/scope ditulis String di kontrak (kolom PG memakai enum
-// account_status/scope_type/entity_status); DateTime = timestamptz
-// (butuh global Temporal saat runtime membaca — pasang polyfill
-// sebelum query pertama, atau ganti ke TimestamptzString).
-// Emit masih menunggu perbaikan RC upstream (lihat src/prisma/db.ts).
+namespace public {
+  model Organizations {
+    id              Uuid              @id(map: "organizations_pkey") @default(sql`gen_random_uuid()`)
+    name            String
+    slug            String            @unique(map: "organizations_slug_key")
+    description     String?
+    logoPath        String?           @map("logo_path")
+    createdAt       Timestamptz       @default(now()) @map("created_at")
+    updatedAt       Timestamptz       @default(now()) @map("updated_at")
+    academicPeriods AcademicPeriods[]
+    batches         Batches[]
+    divisions       Divisions[]
 
-model Profile {
-  id            Uuid   @id
-  fullName      String?
-  username      String?  @unique
-  studentNumber String?  @unique
-  avatarPath    String?
-  phone         String?
-  status        String   @default("ACTIVE")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now())
+    @@rls
+    @@map("organizations")
+  }
 
-  userRoles        UserRole[]
-  userDivisions    UserDivision[]
-  classMemberships ClassMember[]
-  auditLogs        AuditLog[]
+  model AcademicPeriods {
+    id             Uuid                  @id(map: "academic_periods_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid                  @map("organization_id")
+    name           String
+    code           String                @unique(map: "academic_periods_code_key")
+    startDate      Date?                 @map("start_date")
+    endDate        Date?                 @map("end_date")
+    status         pg.enum(EntityStatus) @default("ACTIVE")
+    classes        Classes[]
+    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "academic_periods_organization_id_fkey", index: false)
 
-  @@map("profiles")
-}
+    @@rls
+    @@map("academic_periods")
+  }
 
-model Role {
-  id          Uuid     @id @default(uuid())
-  code        String   @unique
-  name        String
-  description String?
-  isSystem    Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  // WARNING: Foreign key "id" -> "auth.users" exists in the database, but its target schema is outside the introspected scope, so no relation field was generated. If the target schema is described by an extension pack, add it to extensions and re-run infer.
+  model Profiles {
+    id                 Uuid                   @id(map: "profiles_pkey")
+    fullName           String?                @map("full_name")
+    username           String?                @unique(map: "profiles_username_key")
+    studentNumber      String?                @unique(map: "profiles_student_number_key") @map("student_number")
+    avatarPath         String?                @map("avatar_path")
+    phone              String?
+    status             pg.enum(AccountStatus) @default("ACTIVE")
+    createdAt          Timestamptz            @default(now()) @map("created_at")
+    updatedAt          Timestamptz            @default(now()) @map("updated_at")
+    auditLogs          AuditLogs[]
+    classMembers       ClassMembers[]
+    userDivisions      UserDivisions[]
+    userRoles          UserRoles[]            @relation(name: "user_roles_assigned_by_fkey")
+    userRolesUserRoles UserRoles[]            @relation(name: "user_roles_user_id_fkey")
 
-  userRoles       UserRole[]
-  rolePermissions RolePermission[]
+    @@rls
+    @@map("profiles")
+  }
 
-  @@map("roles")
-}
+  model AuditLogs {
+    id         Uuid        @id(map: "audit_logs_pkey") @default(sql`gen_random_uuid()`)
+    actorId    Uuid?       @map("actor_id")
+    action     String
+    entityType String      @map("entity_type")
+    entityId   String?     @map("entity_id")
+    oldValues  Jsonb?      @map("old_values")
+    newValues  Jsonb?      @map("new_values")
+    requestId  String?     @map("request_id")
+    ipAddress  String?     @map("ip_address")
+    userAgent  String?     @map("user_agent")
+    createdAt  Timestamptz @default(now()) @map("created_at")
+    actor      Profiles?   @relation(fields: [actorId], references: [id], map: "audit_logs_actor_id_fkey")
 
-model Permission {
-  id          Uuid     @id @default(uuid())
-  code        String   @unique
-  resource    String
-  action      String
-  description String?
+    @@index([actorId], map: "audit_logs_actor_id")
+    @@index([entityType, entityId], map: "audit_logs_entity")
+    @@rls
+    @@map("audit_logs")
+  }
 
-  rolePermissions RolePermission[]
+  model Batches {
+    id             Uuid                  @id(map: "batches_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid                  @map("organization_id")
+    name           String
+    code           String                @unique(map: "batches_code_key")
+    startDate      Date?                 @map("start_date")
+    endDate        Date?                 @map("end_date")
+    status         pg.enum(EntityStatus) @default("ACTIVE")
+    classes        Classes[]
+    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "batches_organization_id_fkey", index: false)
 
-  @@map("permissions")
-}
+    @@rls
+    @@map("batches")
+  }
 
-model UserRole {
-  userId     Uuid
-  roleId     Uuid
-  assignedBy Uuid?
-  createdAt  DateTime @default(now())
+  model Divisions {
+    id             Uuid                  @id(map: "divisions_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid                  @map("organization_id")
+    name           String
+    code           String                @unique(map: "divisions_code_key")
+    slug           String                @unique(map: "divisions_slug_key")
+    description    String?
+    status         pg.enum(EntityStatus) @default("ACTIVE")
+    createdAt      Timestamptz           @default(now()) @map("created_at")
+    updatedAt      Timestamptz           @default(now()) @map("updated_at")
+    classes        Classes[]
+    userDivisions  UserDivisions[]
+    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
 
-  user Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    @@rls
+    @@map("divisions")
+  }
 
-  @@id([userId, roleId])
-  @@map("user_roles")
-}
+  model Classes {
+    id               Uuid                  @id(map: "classes_pkey") @default(sql`gen_random_uuid()`)
+    divisionId       Uuid                  @map("division_id")
+    batchId          Uuid?                 @map("batch_id")
+    academicPeriodId Uuid?                 @map("academic_period_id")
+    name             String
+    code             String                @unique(map: "classes_code_key")
+    capacity         Int?
+    status           pg.enum(EntityStatus) @default("ACTIVE")
+    createdAt        Timestamptz           @default(now()) @map("created_at")
+    classMembers     ClassMembers[]
+    academicPeriod   AcademicPeriods?      @relation(fields: [academicPeriodId], references: [id], map: "classes_academic_period_id_fkey", index: false)
+    batch            Batches?              @relation(fields: [batchId], references: [id], map: "classes_batch_id_fkey", index: false)
+    division         Divisions             @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "classes_division_id_fkey")
 
-model RolePermission {
-  roleId       Uuid
-  permissionId Uuid
-  scope        String
-  createdAt    DateTime @default(now())
+    @@index([divisionId], map: "classes_division_id")
+    @@rls
+    @@map("classes")
+  }
 
-  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  model ClassMembers {
+    classId  Uuid                  @map("class_id")
+    userId   Uuid                  @map("user_id")
+    joinedAt Timestamptz           @default(now()) @map("joined_at")
+    leftAt   Timestamptz?          @map("left_at")
+    status   pg.enum(EntityStatus) @default("ACTIVE")
+    class    Classes               @relation(fields: [classId], references: [id], onDelete: Cascade, map: "class_members_class_id_fkey")
+    user     Profiles              @relation(fields: [userId], references: [id], onDelete: Cascade, map: "class_members_user_id_fkey")
 
-  @@id([roleId, permissionId, scope])
-  @@map("role_permissions")
-}
+    @@id([classId, userId], map: "class_members_pkey")
+    @@index([classId], map: "class_members_class_id")
+    @@index([userId], map: "class_members_user_id")
+    @@rls
+    @@map("class_members")
+  }
 
-model Organization {
-  id          Uuid     @id @default(uuid())
-  name        String
-  slug        String   @unique
-  description String?
-  logoPath    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  model Permissions {
+    id              Uuid              @id(map: "permissions_pkey") @default(sql`gen_random_uuid()`)
+    code            String            @unique(map: "permissions_code_key")
+    resource        String
+    action          String
+    description     String?
+    createdAt       Timestamptz       @default(now()) @map("created_at")
+    rolePermissions RolePermissions[]
 
-  divisions       Division[]
-  batches         Batch[]
-  academicPeriods AcademicPeriod[]
+    @@rls
+    @@map("permissions")
+  }
 
-  @@map("organizations")
-}
+  model Roles {
+    id              Uuid              @id(map: "roles_pkey") @default(sql`gen_random_uuid()`)
+    code            String            @unique(map: "roles_code_key")
+    name            String
+    description     String?
+    isSystem        Boolean           @default(false) @map("is_system")
+    createdAt       Timestamptz       @default(now()) @map("created_at")
+    rolePermissions RolePermissions[]
+    userRoles       UserRoles[]
 
-model Division {
-  id             Uuid   @id @default(uuid())
-  organizationId Uuid
-  name           String
-  code           String @unique
-  slug           String @unique
-  description    String?
-  status         String @default("ACTIVE")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
+    @@rls
+    @@map("roles")
+  }
 
-  organization  Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  userDivisions UserDivision[]
-  classes       Class[]
+  model RolePermissions {
+    roleId       Uuid               @map("role_id")
+    permissionId Uuid               @map("permission_id")
+    scope        pg.enum(ScopeType)
+    createdAt    Timestamptz        @default(now()) @map("created_at")
+    permission   Permissions        @relation(fields: [permissionId], references: [id], onDelete: Cascade, map: "role_permissions_permission_id_fkey", index: false)
+    role         Roles              @relation(fields: [roleId], references: [id], onDelete: Cascade, map: "role_permissions_role_id_fkey", index: false)
 
-  @@map("divisions")
-}
+    @@id([roleId, permissionId, scope], map: "role_permissions_pkey")
+    @@rls
+    @@map("role_permissions")
+  }
 
-model UserDivision {
-  userId         Uuid
-  divisionId     Uuid
-  membershipType String    @default("MEMBER")
-  startedAt      DateTime  @default(now())
-  endedAt        DateTime?
-  createdAt      DateTime  @default(now())
+  model UserDivisions {
+    userId         Uuid         @map("user_id")
+    divisionId     Uuid         @map("division_id")
+    membershipType String       @default("MEMBER") @map("membership_type")
+    startedAt      Timestamptz  @default(now()) @map("started_at")
+    endedAt        Timestamptz? @map("ended_at")
+    createdAt      Timestamptz  @default(now()) @map("created_at")
+    division       Divisions    @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "user_divisions_division_id_fkey")
+    user           Profiles     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "user_divisions_user_id_fkey")
 
-  user     Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  division Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+    @@id([userId, divisionId], map: "user_divisions_pkey")
+    @@index([divisionId], map: "user_divisions_division_id")
+    @@index([userId], map: "user_divisions_user_id")
+    @@rls
+    @@map("user_divisions")
+  }
 
-  @@id([userId, divisionId])
-  @@map("user_divisions")
-}
+  model UserRoles {
+    userId     Uuid        @map("user_id")
+    roleId     Uuid        @map("role_id")
+    assignedBy Uuid?       @map("assigned_by")
+    createdAt  Timestamptz @default(now()) @map("created_at")
+    profiles   Profiles?   @relation(name: "user_roles_assigned_by_fkey", fields: [assignedBy], references: [id], map: "user_roles_assigned_by_fkey", index: false)
+    role       Roles       @relation(fields: [roleId], references: [id], onDelete: Cascade, map: "user_roles_role_id_fkey")
+    user       Profiles    @relation(name: "user_roles_user_id_fkey", fields: [userId], references: [id], onDelete: Cascade, map: "user_roles_user_id_fkey")
 
-model Batch {
-  id             Uuid    @id @default(uuid())
-  organizationId Uuid
-  name           String
-  code           String  @unique
-  startDate      String?
-  endDate        String?
-  status         String  @default("ACTIVE")
+    @@id([userId, roleId], map: "user_roles_pkey")
+    @@index([roleId], map: "user_roles_role_id")
+    @@index([userId], map: "user_roles_user_id")
+    @@rls
+    @@map("user_roles")
+  }
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  classes      Class[]
+  native_enum AccountStatus {
+    ACTIVE = "ACTIVE"
+    INACTIVE = "INACTIVE"
+    SUSPENDED = "SUSPENDED"
+    @@map("account_status")
+  }
 
-  @@map("batches")
-}
+  native_enum EntityStatus {
+    ACTIVE = "ACTIVE"
+    INACTIVE = "INACTIVE"
+    ARCHIVED = "ARCHIVED"
+    @@map("entity_status")
+  }
 
-model AcademicPeriod {
-  id             Uuid    @id @default(uuid())
-  organizationId Uuid
-  name           String
-  code           String  @unique
-  startDate      String?
-  endDate        String?
-  status         String  @default("ACTIVE")
+  native_enum ScopeType {
+    GLOBAL = "GLOBAL"
+    ORGANIZATION = "ORGANIZATION"
+    DIVISION = "DIVISION"
+    CLASS = "CLASS"
+    COURSE = "COURSE"
+    OWN = "OWN"
+    @@map("scope_type")
+  }
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  classes      Class[]
+  policy_insert audit_logs_insert {
+    target = AuditLogs
+    roles = [authenticated]
+    withCheck = "(actor_id = auth.uid())"
+    @@map("audit_logs_insert")
+  }
 
-  @@map("academic_periods")
-}
+  policy_select audit_logs_select {
+    target = AuditLogs
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'audit.view'::text)"
+    @@map("audit_logs_select")
+  }
 
-model Class {
-  id               Uuid    @id @default(uuid())
-  divisionId       Uuid
-  batchId          Uuid?
-  academicPeriodId Uuid?
-  name             String
-  code             String  @unique
-  capacity         Int?
-  status           String  @default("ACTIVE")
-  createdAt        DateTime @default(now())
+  policy_select batches_select {
+    target = Batches
+    roles = [authenticated]
+    using = "true"
+    @@map("batches_select")
+  }
 
-  division       Division        @relation(fields: [divisionId], references: [id], onDelete: Cascade)
-  batch          Batch?          @relation(fields: [batchId], references: [id])
-  academicPeriod AcademicPeriod? @relation(fields: [academicPeriodId], references: [id])
-  members        ClassMember[]
+  policy_all batches_write {
+    target = Batches
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'class.create'::text)"
+    withCheck = "has_permission(auth.uid(), 'class.create'::text)"
+    @@map("batches_write")
+  }
 
-  @@map("classes")
-}
+  policy_select class_members_select {
+    target = ClassMembers
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'member.view'::text))"
+    @@map("class_members_select")
+  }
 
-model ClassMember {
-  classId  Uuid
-  userId   Uuid
-  joinedAt DateTime @default(now())
-  leftAt   DateTime?
-  status   String   @default("ACTIVE")
+  policy_all class_members_write {
+    target = ClassMembers
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'member.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'member.manage'::text)"
+    @@map("class_members_write")
+  }
 
-  class Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
-  user  Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  policy_delete classes_delete {
+    target = Classes
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'class.delete'::text)"
+    @@map("classes_delete")
+  }
 
-  @@id([classId, userId])
-  @@map("class_members")
-}
+  policy_insert classes_insert {
+    target = Classes
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'class.create'::text)"
+    @@map("classes_insert")
+  }
 
-model AuditLog {
-  id         Uuid     @id @default(uuid())
-  actorId    Uuid?
-  action     String
-  entityType String
-  entityId   String?
-  oldValues  Json?
-  newValues  Json?
-  requestId  String?
-  ipAddress  String?
-  userAgent  String?
-  createdAt  DateTime @default(now())
+  policy_select classes_select {
+    target = Classes
+    roles = [authenticated]
+    using = "true"
+    @@map("classes_select")
+  }
 
-  actor Profile? @relation(fields: [actorId], references: [id])
+  policy_update classes_update {
+    target = Classes
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'class.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'class.update'::text)"
+    @@map("classes_update")
+  }
 
-  @@map("audit_logs")
+  policy_delete divisions_delete {
+    target = Divisions
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'division.delete'::text)"
+    @@map("divisions_delete")
+  }
+
+  policy_insert divisions_insert {
+    target = Divisions
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'division.create'::text)"
+    @@map("divisions_insert")
+  }
+
+  policy_select divisions_select {
+    target = Divisions
+    roles = [authenticated]
+    using = "true"
+    @@map("divisions_select")
+  }
+
+  policy_update divisions_update {
+    target = Divisions
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'division.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'division.update'::text)"
+    @@map("divisions_update")
+  }
+
+  policy_select organizations_select {
+    target = Organizations
+    roles = [authenticated]
+    using = "true"
+    @@map("organizations_select")
+  }
+
+  policy_all organizations_write {
+    target = Organizations
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'settings.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'settings.manage'::text)"
+    @@map("organizations_write")
+  }
+
+  policy_select periods_select {
+    target = AcademicPeriods
+    roles = [authenticated]
+    using = "true"
+    @@map("periods_select")
+  }
+
+  policy_all periods_write {
+    target = AcademicPeriods
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'class.create'::text)"
+    withCheck = "has_permission(auth.uid(), 'class.create'::text)"
+    @@map("periods_write")
+  }
+
+  policy_select permissions_select_all {
+    target = Permissions
+    roles = [authenticated]
+    using = "true"
+    @@map("permissions_select_all")
+  }
+
+  policy_select profiles_select_own {
+    target = Profiles
+    roles = [authenticated]
+    using = "(auth.uid() = id)"
+    @@map("profiles_select_own")
+  }
+
+  policy_select profiles_select_staff {
+    target = Profiles
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'user.view'::text) OR has_permission(auth.uid(), 'member.view'::text))"
+    @@map("profiles_select_staff")
+  }
+
+  policy_update profiles_update_own {
+    target = Profiles
+    roles = [authenticated]
+    using = "(auth.uid() = id)"
+    withCheck = "(auth.uid() = id)"
+    @@map("profiles_update_own")
+  }
+
+  policy_select role_permissions_select_all {
+    target = RolePermissions
+    roles = [authenticated]
+    using = "true"
+    @@map("role_permissions_select_all")
+  }
+
+  policy_select roles_select_all {
+    target = Roles
+    roles = [authenticated]
+    using = "true"
+    @@map("roles_select_all")
+  }
+
+  policy_select user_divisions_select {
+    target = UserDivisions
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'member.view'::text))"
+    @@map("user_divisions_select")
+  }
+
+  policy_all user_divisions_write {
+    target = UserDivisions
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'member.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'member.manage'::text)"
+    @@map("user_divisions_write")
+  }
+
+  policy_delete user_roles_delete {
+    target = UserRoles
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'user.assign_role'::text)"
+    @@map("user_roles_delete")
+  }
+
+  policy_insert user_roles_insert {
+    target = UserRoles
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'user.assign_role'::text)"
+    @@map("user_roles_insert")
+  }
+
+  policy_select user_roles_select {
+    target = UserRoles
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'user.view'::text) OR has_permission(auth.uid(), 'role.view'::text))"
+    @@map("user_roles_select")
+  }
 }

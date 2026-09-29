@@ -21,6 +21,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Artefak generate Prisma (jangan lint, jangan edit manual):
+    "src/prisma/contract.d.ts",
   ]),
 ]);
 
