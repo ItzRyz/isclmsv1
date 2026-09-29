@@ -135,10 +135,25 @@ export default async function CourseDetailPage({
           {typeof course.estimated_hours === "number" ? (
             <Badge variant="outline">~{course.estimated_hours} jam</Badge>
           ) : null}
-          {progress ? (
-            <Badge variant="secondary">
-              Progres: {progress.done}/{progress.total} materi wajib
-            </Badge>
+          {progress && progress.total > 0 ? (
+            <div className="flex w-full flex-col gap-1">
+              <div className="text-muted-foreground flex justify-between text-xs">
+                <span>
+                  Progres: {progress.done}/{progress.total} materi wajib
+                </span>
+                <span>
+                  {Math.round((progress.done / progress.total) * 100)}%
+                </span>
+              </div>
+              <div className="bg-muted h-2 w-full overflow-hidden rounded-full">
+                <div
+                  className="bg-primary h-full"
+                  style={{
+                    width: `${Math.round((progress.done / progress.total) * 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
           ) : null}
           {canEdit && course.status === "DRAFT" ? (
             <form action={publishCourse}>

@@ -19,6 +19,7 @@ import {
 } from "@/features/materials/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
 import { BookmarkButton } from "@/features/bookmarks/bookmark-button";
+import { ProgressButton } from "@/features/progress/progress-button";
 import { FileList } from "@/features/storage/file-list";
 import { UploadForm } from "@/features/storage/upload-form";
 
@@ -126,8 +127,9 @@ export default async function MaterialDetailPage({
             </a>
           ))}
           <FileList materialId={material.id} />
-          <div>
+          <div className="flex flex-wrap gap-2">
             <BookmarkButton materialId={material.id} />
+            <ProgressButton materialId={material.id} />
           </div>
           {staff && !visible ? (
             <Badge variant="outline">
