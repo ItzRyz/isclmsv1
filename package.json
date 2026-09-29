@@ -17,7 +17,8 @@
     "check:no-spec-leak": "bun scripts/check-no-spec-leak.ts",
     "prebuild": "bun scripts/check-no-spec-leak.ts",
     "contract:emit": "prisma contract emit",
-    "db:verify": "prisma db verify"
+    "db:verify": "prisma db verify",
+    "db:ping": "bun scripts/check-supabase-db.ts"
   },
   "dependencies": {
     "@prisma/orm-postgres": "^8.0.0-rc.13",
@@ -39,10 +40,12 @@
     "@prisma/cli-engine": "0.6.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
+    "pg": "^8.23.0",
     "prisma": "8.0.0-rc.17",
     "supabase": "2.118.0",
     "tailwindcss": "^4",
