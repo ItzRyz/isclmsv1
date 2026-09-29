@@ -19,6 +19,7 @@ import {
   updateAssignment,
 } from "@/features/assignments/actions";
 import { IndividualSubmissionSection } from "@/features/submissions/submission-section";
+import { GroupSection } from "@/features/groups/group-section";
 
 function toLocalInput(iso: string | null): string {
   if (!iso) return "";
@@ -49,6 +50,7 @@ export default async function AssignmentDetailPage({
   const canEdit = await can("assignment.update").catch(() => false);
   const canDelete = await can("assignment.delete").catch(() => false);
   const canPublish = await can("assignment.publish").catch(() => false);
+  const canManageGroups = await can("assignment.update").catch(() => false);
   // Waktu render server untuk label deadline (halaman dinamis per request).
   // eslint-disable-next-line react-hooks/purity
   const now = Date.now();
@@ -102,12 +104,10 @@ export default async function AssignmentDetailPage({
           submissionType={assignment.submission_type}
         />
       ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle>Pengumpulan kelompok</CardTitle>
-            <CardDescription>Menyusul P1-403.</CardDescription>
-          </CardHeader>
-        </Card>
+        <GroupSection
+          assignmentId={assignment.id}
+          manageable={canManageGroups}
+        />
       )}
 
       {canEdit || canPublish ? (

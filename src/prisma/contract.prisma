@@ -1167,15 +1167,15 @@ namespace public {
   policy_select submissions_select {
     target = Submissions
     roles = [authenticated]
-    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text) OR has_permission(auth.uid(), 'submission.view'::text))"
+    using = "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text) OR has_permission(auth.uid(), 'submission.view'::text))"
     @@map("submissions_select")
   }
 
   policy_update submissions_update {
     target = Submissions
     roles = [authenticated]
-    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text))"
-    withCheck = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text))"
+    using = "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
+    withCheck = "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
     @@map("submissions_update")
   }
 
