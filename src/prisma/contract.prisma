@@ -33,32 +33,169 @@ namespace public {
     @@map("academic_periods")
   }
 
+  model Divisions {
+    id             Uuid                  @id(map: "divisions_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid                  @map("organization_id")
+    name           String
+    code           String                @unique(map: "divisions_code_key")
+    slug           String                @unique(map: "divisions_slug_key")
+    description    String?
+    status         pg.enum(EntityStatus) @default("ACTIVE")
+    createdAt      Timestamptz           @default(now()) @map("created_at")
+    updatedAt      Timestamptz           @default(now()) @map("updated_at")
+    classes        Classes[]
+    courses        Courses[]
+    roadmaps       Roadmaps[]
+    userDivisions  UserDivisions[]
+    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
+
+    @@rls
+    @@map("divisions")
+  }
+
   // WARNING: Foreign key "id" -> "auth.users" exists in the database, but its target schema is outside the introspected scope, so no relation field was generated. If the target schema is described by an extension pack, add it to extensions and re-run infer.
   model Profiles {
-    id                 Uuid                   @id(map: "profiles_pkey")
-    fullName           String?                @map("full_name")
-    username           String?                @unique(map: "profiles_username_key")
-    studentNumber      String?                @unique(map: "profiles_student_number_key") @map("student_number")
-    avatarPath         String?                @map("avatar_path")
-    phone              String?
-    status             pg.enum(AccountStatus) @default("ACTIVE")
-    createdAt          Timestamptz            @default(now()) @map("created_at")
-    updatedAt          Timestamptz            @default(now()) @map("updated_at")
-    auditLogs          AuditLogs[]
-    classMembers       ClassMembers[]
-    learningActivities LearningActivities[]
-    materialBookmarks  MaterialBookmarks[]
-    materialProgresses MaterialProgress[]
-    userDivisions      UserDivisions[]
-    courses            Courses[]              @relation(name: "courses_created_by_fkey")
-    coursesCourses     Courses[]              @relation(name: "courses_updated_by_fkey")
-    materials          Materials[]            @relation(name: "materials_created_by_fkey")
-    materialsMaterials Materials[]            @relation(name: "materials_updated_by_fkey")
-    userRoles          UserRoles[]            @relation(name: "user_roles_assigned_by_fkey")
-    userRolesUserRoles UserRoles[]            @relation(name: "user_roles_user_id_fkey")
+    id                     Uuid                     @id(map: "profiles_pkey")
+    fullName               String?                  @map("full_name")
+    username               String?                  @unique(map: "profiles_username_key")
+    studentNumber          String?                  @unique(map: "profiles_student_number_key") @map("student_number")
+    avatarPath             String?                  @map("avatar_path")
+    phone                  String?
+    status                 pg.enum(AccountStatus)   @default("ACTIVE")
+    createdAt              Timestamptz              @default(now()) @map("created_at")
+    updatedAt              Timestamptz              @default(now()) @map("updated_at")
+    assignmentGroupMembers AssignmentGroupMembers[]
+    auditLogs              AuditLogs[]
+    classMembers           ClassMembers[]
+    learningActivities     LearningActivities[]
+    materialBookmarks      MaterialBookmarks[]
+    materialProgresses     MaterialProgress[]
+    submissionFeedbacks    SubmissionFeedback[]
+    userDivisions          UserDivisions[]
+    assignments            Assignments[]            @relation(name: "assignments_created_by_fkey")
+    assignmentsAssignments Assignments[]            @relation(name: "assignments_updated_by_fkey")
+    courses                Courses[]                @relation(name: "courses_created_by_fkey")
+    coursesCourses         Courses[]                @relation(name: "courses_updated_by_fkey")
+    materials              Materials[]              @relation(name: "materials_created_by_fkey")
+    materialsMaterials     Materials[]              @relation(name: "materials_updated_by_fkey")
+    submissions            Submissions[]            @relation(name: "submissions_graded_by_fkey")
+    submissionsSubmissions Submissions[]            @relation(name: "submissions_user_id_fkey")
+    userRoles              UserRoles[]              @relation(name: "user_roles_assigned_by_fkey")
+    userRolesUserRoles     UserRoles[]              @relation(name: "user_roles_user_id_fkey")
 
     @@rls
     @@map("profiles")
+  }
+
+  model Courses {
+    id               Uuid                   @id(map: "courses_pkey") @default(sql`gen_random_uuid()`)
+    divisionId       Uuid                   @map("division_id")
+    name             String
+    slug             String
+    code             String?
+    description      String?
+    status           pg.enum(ContentStatus) @default("DRAFT")
+    difficulty       String?
+    estimatedHours   Int?                   @map("estimated_hours")
+    publishedAt      Timestamptz?           @map("published_at")
+    createdBy        Uuid?                  @map("created_by")
+    updatedBy        Uuid?                  @map("updated_by")
+    createdAt        Timestamptz            @default(now()) @map("created_at")
+    updatedAt        Timestamptz            @default(now()) @map("updated_at")
+    assignments      Assignments[]
+    modules          Modules[]
+    roadmapNodes     RoadmapNodes[]
+    profiles         Profiles?              @relation(name: "courses_created_by_fkey", fields: [createdBy], references: [id], map: "courses_created_by_fkey", index: false)
+    division         Divisions              @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "courses_division_id_fkey")
+    profilesProfiles Profiles?              @relation(name: "courses_updated_by_fkey", fields: [updatedBy], references: [id], map: "courses_updated_by_fkey", index: false)
+
+    @@unique([divisionId, slug], map: "courses_division_id_slug_key")
+    @@index([divisionId], map: "courses_division_id")
+    @@rls
+    @@map("courses")
+  }
+
+  model Modules {
+    id           Uuid                   @id(map: "modules_pkey") @default(sql`gen_random_uuid()`)
+    courseId     Uuid                   @map("course_id")
+    title        String
+    slug         String
+    position     Int                    @default(0)
+    description  String?
+    status       pg.enum(ContentStatus) @default("DRAFT")
+    createdAt    Timestamptz            @default(now()) @map("created_at")
+    updatedAt    Timestamptz            @default(now()) @map("updated_at")
+    assignments  Assignments[]
+    materials    Materials[]
+    roadmapNodes RoadmapNodes[]
+    course       Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "modules_course_id_fkey")
+
+    @@unique([courseId, position], map: "modules_course_id_position_key")
+    @@index([courseId], map: "modules_course_id")
+    @@rls
+    @@map("modules")
+  }
+
+  model Assignments {
+    id                  Uuid                   @id(map: "assignments_pkey") @default(sql`gen_random_uuid()`)
+    courseId            Uuid                   @map("course_id")
+    moduleId            Uuid?                  @map("module_id")
+    title               String
+    slug                String
+    description         String?
+    _type               String                 @default("INDIVIDUAL") @map("type")
+    submissionType      String                 @default("TEXT") @map("submission_type")
+    availableFrom       Timestamptz?           @map("available_from")
+    dueAt               Timestamptz            @map("due_at")
+    allowLateSubmission Boolean                @default(false) @map("allow_late_submission")
+    lateUntil           Timestamptz?           @map("late_until")
+    maxScore            Numeric                @default(100) @map("max_score")
+    revisionAllowed     Boolean                @default(false) @map("revision_allowed")
+    status              pg.enum(ContentStatus) @default("DRAFT")
+    createdBy           Uuid?                  @map("created_by")
+    updatedBy           Uuid?                  @map("updated_by")
+    createdAt           Timestamptz            @default(now()) @map("created_at")
+    updatedAt           Timestamptz            @default(now()) @map("updated_at")
+    assignmentGroups    AssignmentGroups[]
+    rubrics             Rubrics[]
+    submissions         Submissions[]
+    course              Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "assignments_course_id_fkey")
+    profiles            Profiles?              @relation(name: "assignments_created_by_fkey", fields: [createdBy], references: [id], map: "assignments_created_by_fkey", index: false)
+    module              Modules?               @relation(fields: [moduleId], references: [id], onDelete: SetNull, map: "assignments_module_id_fkey", index: false)
+    profilesProfiles    Profiles?              @relation(name: "assignments_updated_by_fkey", fields: [updatedBy], references: [id], map: "assignments_updated_by_fkey", index: false)
+
+    @@unique([courseId, slug], map: "assignments_course_id_slug_key")
+    @@index([courseId], map: "assignments_course_id")
+    @@index([dueAt], map: "assignments_due_at")
+    @@check(expression: "((late_until IS NULL) OR (late_until >= due_at))", map: "assignments_check")
+    @@check(expression: "(max_score > (0)::numeric)", map: "assignments_max_score_check")
+    @@rls
+    @@map("assignments")
+  }
+
+  model AssignmentGroups {
+    id                     Uuid                     @id(map: "assignment_groups_pkey") @default(sql`gen_random_uuid()`)
+    assignmentId           Uuid                     @map("assignment_id")
+    name                   String
+    createdAt              Timestamptz              @default(now()) @map("created_at")
+    assignmentGroupMembers AssignmentGroupMembers[]
+    submissions            Submissions[]
+    assignment             Assignments              @relation(fields: [assignmentId], references: [id], onDelete: Cascade, map: "assignment_groups_assignment_id_fkey", index: false)
+
+    @@rls
+    @@map("assignment_groups")
+  }
+
+  model AssignmentGroupMembers {
+    assignmentGroupId Uuid             @map("assignment_group_id")
+    userId            Uuid             @map("user_id")
+    joinedAt          Timestamptz      @default(now()) @map("joined_at")
+    assignmentGroup   AssignmentGroups @relation(fields: [assignmentGroupId], references: [id], onDelete: Cascade, map: "assignment_group_members_assignment_group_id_fkey", index: false)
+    user              Profiles         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "assignment_group_members_user_id_fkey", index: false)
+
+    @@id([assignmentGroupId, userId], map: "assignment_group_members_pkey")
+    @@rls
+    @@map("assignment_group_members")
   }
 
   model AuditLogs {
@@ -94,26 +231,6 @@ namespace public {
 
     @@rls
     @@map("batches")
-  }
-
-  model Divisions {
-    id             Uuid                  @id(map: "divisions_pkey") @default(sql`gen_random_uuid()`)
-    organizationId Uuid                  @map("organization_id")
-    name           String
-    code           String                @unique(map: "divisions_code_key")
-    slug           String                @unique(map: "divisions_slug_key")
-    description    String?
-    status         pg.enum(EntityStatus) @default("ACTIVE")
-    createdAt      Timestamptz           @default(now()) @map("created_at")
-    updatedAt      Timestamptz           @default(now()) @map("updated_at")
-    classes        Classes[]
-    courses        Courses[]
-    roadmaps       Roadmaps[]
-    userDivisions  UserDivisions[]
-    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
-
-    @@rls
-    @@map("divisions")
   }
 
   model Classes {
@@ -152,33 +269,6 @@ namespace public {
     @@map("class_members")
   }
 
-  model Courses {
-    id               Uuid                   @id(map: "courses_pkey") @default(sql`gen_random_uuid()`)
-    divisionId       Uuid                   @map("division_id")
-    name             String
-    slug             String
-    code             String?
-    description      String?
-    status           pg.enum(ContentStatus) @default("DRAFT")
-    difficulty       String?
-    estimatedHours   Int?                   @map("estimated_hours")
-    publishedAt      Timestamptz?           @map("published_at")
-    createdBy        Uuid?                  @map("created_by")
-    updatedBy        Uuid?                  @map("updated_by")
-    createdAt        Timestamptz            @default(now()) @map("created_at")
-    updatedAt        Timestamptz            @default(now()) @map("updated_at")
-    modules          Modules[]
-    roadmapNodes     RoadmapNodes[]
-    profiles         Profiles?              @relation(name: "courses_created_by_fkey", fields: [createdBy], references: [id], map: "courses_created_by_fkey", index: false)
-    division         Divisions              @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "courses_division_id_fkey")
-    profilesProfiles Profiles?              @relation(name: "courses_updated_by_fkey", fields: [updatedBy], references: [id], map: "courses_updated_by_fkey", index: false)
-
-    @@unique([divisionId, slug], map: "courses_division_id_slug_key")
-    @@index([divisionId], map: "courses_division_id")
-    @@rls
-    @@map("courses")
-  }
-
   model LearningActivities {
     id           Uuid        @id(map: "learning_activities_pkey") @default(sql`gen_random_uuid()`)
     userId       Uuid        @map("user_id")
@@ -192,26 +282,6 @@ namespace public {
     @@index([userId], map: "learning_activities_user_id")
     @@rls
     @@map("learning_activities")
-  }
-
-  model Modules {
-    id           Uuid                   @id(map: "modules_pkey") @default(sql`gen_random_uuid()`)
-    courseId     Uuid                   @map("course_id")
-    title        String
-    slug         String
-    position     Int                    @default(0)
-    description  String?
-    status       pg.enum(ContentStatus) @default("DRAFT")
-    createdAt    Timestamptz            @default(now()) @map("created_at")
-    updatedAt    Timestamptz            @default(now()) @map("updated_at")
-    materials    Materials[]
-    roadmapNodes RoadmapNodes[]
-    course       Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "modules_course_id_fkey")
-
-    @@unique([courseId, position], map: "modules_course_id_position_key")
-    @@index([courseId], map: "modules_course_id")
-    @@rls
-    @@map("modules")
   }
 
   model Materials {
@@ -413,6 +483,115 @@ namespace public {
     @@map("role_permissions")
   }
 
+  model Rubrics {
+    id           Uuid          @id(map: "rubrics_pkey") @default(sql`gen_random_uuid()`)
+    assignmentId Uuid          @map("assignment_id")
+    name         String
+    description  String?
+    maxScore     Numeric       @default(100) @map("max_score")
+    createdAt    Timestamptz   @default(now()) @map("created_at")
+    rubricItems  RubricItems[]
+    assignment   Assignments   @relation(fields: [assignmentId], references: [id], onDelete: Cascade, map: "rubrics_assignment_id_fkey", index: false)
+
+    @@check(expression: "(max_score > (0)::numeric)", map: "rubrics_max_score_check")
+    @@rls
+    @@map("rubrics")
+  }
+
+  model RubricItems {
+    id          Uuid    @id(map: "rubric_items_pkey") @default(sql`gen_random_uuid()`)
+    rubricId    Uuid    @map("rubric_id")
+    criterion   String
+    description String?
+    maxPoints   Numeric @map("max_points")
+    position    Int     @default(0)
+    rubric      Rubrics @relation(fields: [rubricId], references: [id], onDelete: Cascade, map: "rubric_items_rubric_id_fkey", index: false)
+
+    @@check(expression: "(max_points >= (0)::numeric)", map: "rubric_items_max_points_check")
+    @@rls
+    @@map("rubric_items")
+  }
+
+  model Submissions {
+    id                  Uuid                  @id(map: "submissions_pkey") @default(sql`gen_random_uuid()`)
+    assignmentId        Uuid                  @map("assignment_id")
+    userId              Uuid?                 @map("user_id")
+    assignmentGroupId   Uuid?                 @map("assignment_group_id")
+    status              String                @default("DRAFT")
+    textContent         String?               @map("text_content")
+    submittedAt         Timestamptz?          @map("submitted_at")
+    lastSavedAt         Timestamptz?          @map("last_saved_at")
+    gradedAt            Timestamptz?          @map("graded_at")
+    gradedBy            Uuid?                 @map("graded_by")
+    score               Numeric?
+    version             Int                   @default(1)
+    createdAt           Timestamptz           @default(now()) @map("created_at")
+    updatedAt           Timestamptz           @default(now()) @map("updated_at")
+    submissionFeedbacks SubmissionFeedback[]
+    submissionFiles     SubmissionFiles[]
+    submissionRevisions SubmissionRevisions[]
+    assignmentGroup     AssignmentGroups?     @relation(fields: [assignmentGroupId], references: [id], onDelete: Cascade, map: "submissions_assignment_group_id_fkey", index: false)
+    assignment          Assignments           @relation(fields: [assignmentId], references: [id], onDelete: Cascade, map: "submissions_assignment_id_fkey")
+    profiles            Profiles?             @relation(name: "submissions_graded_by_fkey", fields: [gradedBy], references: [id], map: "submissions_graded_by_fkey", index: false)
+    user                Profiles?             @relation(name: "submissions_user_id_fkey", fields: [userId], references: [id], onDelete: Cascade, map: "submissions_user_id_fkey")
+
+    @@index([assignmentId], map: "submissions_assignment_id")
+    @@index([userId], map: "submissions_user_id")
+    @@check(expression: "((user_id IS NULL) <> (assignment_group_id IS NULL))", map: "submissions_check")
+    @@check(expression: "(score >= (0)::numeric)", map: "submissions_score_check")
+    @@check(expression: "(status = ANY (ARRAY['NOT_STARTED'::text, 'DRAFT'::text, 'SUBMITTED'::text, 'LATE'::text, 'GRADED'::text, 'REVISION_REQUIRED'::text, 'RESUBMITTED'::text]))", map: "submissions_status_check")
+    @@check(expression: "(version >= 1)", map: "submissions_version_check")
+    @@rls
+    @@map("submissions")
+  }
+
+  model SubmissionFeedback {
+    id           Uuid        @id(map: "submission_feedback_pkey") @default(sql`gen_random_uuid()`)
+    submissionId Uuid        @map("submission_id")
+    mentorId     Uuid        @map("mentor_id")
+    body         String
+    createdAt    Timestamptz @default(now()) @map("created_at")
+    mentor       Profiles    @relation(fields: [mentorId], references: [id], map: "submission_feedback_mentor_id_fkey", index: false)
+    submission   Submissions @relation(fields: [submissionId], references: [id], onDelete: Cascade, map: "submission_feedback_submission_id_fkey", index: false)
+
+    @@rls
+    @@map("submission_feedback")
+  }
+
+  model SubmissionFiles {
+    id           Uuid        @id(map: "submission_files_pkey") @default(sql`gen_random_uuid()`)
+    submissionId Uuid        @map("submission_id")
+    bucket       String      @default("assignment-submissions")
+    storagePath  String      @map("storage_path")
+    originalName String      @map("original_name")
+    mimeType     String      @map("mime_type")
+    sizeBytes    BigInt      @map("size_bytes")
+    checksum     String?
+    createdAt    Timestamptz @default(now()) @map("created_at")
+    submission   Submissions @relation(fields: [submissionId], references: [id], onDelete: Cascade, map: "submission_files_submission_id_fkey", index: false)
+
+    @@unique([bucket, storagePath], map: "submission_files_bucket_storage_path_key")
+    @@rls
+    @@map("submission_files")
+  }
+
+  model SubmissionRevisions {
+    id           Uuid        @id(map: "submission_revisions_pkey") @default(sql`gen_random_uuid()`)
+    submissionId Uuid        @map("submission_id")
+    version      Int
+    textContent  String?     @map("text_content")
+    submittedAt  Timestamptz @default(now()) @map("submitted_at")
+    score        Numeric?
+    status       String      @default("SUBMITTED")
+    feedback     String?
+    createdAt    Timestamptz @default(now()) @map("created_at")
+    submission   Submissions @relation(fields: [submissionId], references: [id], onDelete: Cascade, map: "submission_revisions_submission_id_fkey", index: false)
+
+    @@check(expression: "(score >= (0)::numeric)", map: "submission_revisions_score_check")
+    @@rls
+    @@map("submission_revisions")
+  }
+
   model UserDivisions {
     userId         Uuid         @map("user_id")
     divisionId     Uuid         @map("division_id")
@@ -475,6 +654,65 @@ namespace public {
     COURSE = "COURSE"
     OWN = "OWN"
     @@map("scope_type")
+  }
+
+  policy_select assignment_group_members_select {
+    target = AssignmentGroupMembers
+    roles = [authenticated]
+    using = "true"
+    @@map("assignment_group_members_select")
+  }
+
+  policy_all assignment_group_members_write {
+    target = AssignmentGroupMembers
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))"
+    @@map("assignment_group_members_write")
+  }
+
+  policy_select assignment_groups_select {
+    target = AssignmentGroups
+    roles = [authenticated]
+    using = "true"
+    @@map("assignment_groups_select")
+  }
+
+  policy_all assignment_groups_write {
+    target = AssignmentGroups
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))"
+    @@map("assignment_groups_write")
+  }
+
+  policy_delete assignments_delete {
+    target = Assignments
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'assignment.delete'::text)"
+    @@map("assignments_delete")
+  }
+
+  policy_insert assignments_insert {
+    target = Assignments
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'assignment.create'::text)"
+    @@map("assignments_insert")
+  }
+
+  policy_select assignments_select {
+    target = Assignments
+    roles = [authenticated]
+    using = "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text) OR has_permission(auth.uid(), 'assignment.delete'::text) OR has_permission(auth.uid(), 'assignment.grade'::text))"
+    @@map("assignments_select")
+  }
+
+  policy_update assignments_update {
+    target = Assignments
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'assignment.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'assignment.update'::text)"
+    @@map("assignments_update")
   }
 
   policy_insert audit_logs_insert {
@@ -836,6 +1074,109 @@ namespace public {
     roles = [authenticated]
     using = "true"
     @@map("roles_select_all")
+  }
+
+  policy_select rubric_items_select {
+    target = RubricItems
+    roles = [authenticated]
+    using = "true"
+    @@map("rubric_items_select")
+  }
+
+  policy_all rubric_items_write {
+    target = RubricItems
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'assignment.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'assignment.update'::text)"
+    @@map("rubric_items_write")
+  }
+
+  policy_select rubrics_select {
+    target = Rubrics
+    roles = [authenticated]
+    using = "true"
+    @@map("rubrics_select")
+  }
+
+  policy_all rubrics_write {
+    target = Rubrics
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'assignment.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'assignment.update'::text)"
+    @@map("rubrics_write")
+  }
+
+  policy_select submission_feedback_select {
+    target = SubmissionFeedback
+    roles = [authenticated]
+    using = "true"
+    @@map("submission_feedback_select")
+  }
+
+  policy_all submission_feedback_write {
+    target = SubmissionFeedback
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'assignment.feedback'::text)"
+    withCheck = "has_permission(auth.uid(), 'assignment.feedback'::text)"
+    @@map("submission_feedback_write")
+  }
+
+  policy_select submission_files_select {
+    target = SubmissionFiles
+    roles = [authenticated]
+    using = "true"
+    @@map("submission_files_select")
+  }
+
+  policy_all submission_files_write {
+    target = SubmissionFiles
+    roles = [authenticated]
+    using = "true"
+    withCheck = "true"
+    @@map("submission_files_write")
+  }
+
+  policy_insert submission_revisions_insert {
+    target = SubmissionRevisions
+    roles = [authenticated]
+    withCheck = "true"
+    @@map("submission_revisions_insert")
+  }
+
+  policy_select submission_revisions_select {
+    target = SubmissionRevisions
+    roles = [authenticated]
+    using = "true"
+    @@map("submission_revisions_select")
+  }
+
+  policy_delete submissions_delete {
+    target = Submissions
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'assignment.delete'::text)"
+    @@map("submissions_delete")
+  }
+
+  policy_insert submissions_insert {
+    target = Submissions
+    roles = [authenticated]
+    withCheck = "((user_id = auth.uid()) OR (assignment_group_id IS NOT NULL))"
+    @@map("submissions_insert")
+  }
+
+  policy_select submissions_select {
+    target = Submissions
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text) OR has_permission(auth.uid(), 'submission.view'::text))"
+    @@map("submissions_select")
+  }
+
+  policy_update submissions_update {
+    target = Submissions
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text))"
+    withCheck = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text))"
+    @@map("submissions_update")
   }
 
   policy_select user_divisions_select {

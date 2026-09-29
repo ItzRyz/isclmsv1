@@ -8,6 +8,18 @@
       "model": "AcademicPeriods",
       "namespace": "public"
     },
+    "assignment_group_members": {
+      "model": "AssignmentGroupMembers",
+      "namespace": "public"
+    },
+    "assignment_groups": {
+      "model": "AssignmentGroups",
+      "namespace": "public"
+    },
+    "assignments": {
+      "model": "Assignments",
+      "namespace": "public"
+    },
     "audit_logs": {
       "model": "AuditLogs",
       "namespace": "public"
@@ -94,6 +106,30 @@
     },
     "roles": {
       "model": "Roles",
+      "namespace": "public"
+    },
+    "rubric_items": {
+      "model": "RubricItems",
+      "namespace": "public"
+    },
+    "rubrics": {
+      "model": "Rubrics",
+      "namespace": "public"
+    },
+    "submission_feedback": {
+      "model": "SubmissionFeedback",
+      "namespace": "public"
+    },
+    "submission_files": {
+      "model": "SubmissionFiles",
+      "namespace": "public"
+    },
+    "submission_revisions": {
+      "model": "SubmissionRevisions",
+      "namespace": "public"
+    },
+    "submissions": {
+      "model": "Submissions",
       "namespace": "public"
     },
     "user_divisions": {
@@ -223,6 +259,492 @@
               },
               "namespaceId": "public",
               "table": "academic_periods"
+            }
+          },
+          "AssignmentGroupMembers": {
+            "fields": {
+              "assignmentGroupId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "joinedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "assignmentGroup": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "assignmentGroupId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AssignmentGroups",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "assignmentGroupId": {
+                  "column": "assignment_group_id"
+                },
+                "joinedAt": {
+                  "column": "joined_at"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "assignment_group_members"
+            }
+          },
+          "AssignmentGroups": {
+            "fields": {
+              "assignmentId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "assignment": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "assignmentId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
+              "assignmentGroupMembers": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "assignmentGroupId"
+                  ]
+                },
+                "to": {
+                  "model": "AssignmentGroupMembers",
+                  "namespace": "public"
+                }
+              },
+              "submissions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "assignmentGroupId"
+                  ]
+                },
+                "to": {
+                  "model": "Submissions",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "assignmentId": {
+                  "column": "assignment_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                }
+              },
+              "namespaceId": "public",
+              "table": "assignment_groups"
+            }
+          },
+          "Assignments": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "allowLateSubmission": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "availableFrom": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "courseId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "dueAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "lateUntil": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "maxScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "moduleId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "revisionAllowed": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              },
+              "submissionType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "assignmentGroups": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "assignmentId"
+                  ]
+                },
+                "to": {
+                  "model": "AssignmentGroups",
+                  "namespace": "public"
+                }
+              },
+              "course": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "courseId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "module": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "moduleId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Modules",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "profilesProfiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "updatedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "rubrics": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "assignmentId"
+                  ]
+                },
+                "to": {
+                  "model": "Rubrics",
+                  "namespace": "public"
+                }
+              },
+              "submissions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "assignmentId"
+                  ]
+                },
+                "to": {
+                  "model": "Submissions",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "allowLateSubmission": {
+                  "column": "allow_late_submission"
+                },
+                "availableFrom": {
+                  "column": "available_from"
+                },
+                "courseId": {
+                  "column": "course_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "dueAt": {
+                  "column": "due_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "lateUntil": {
+                  "column": "late_until"
+                },
+                "maxScore": {
+                  "column": "max_score"
+                },
+                "moduleId": {
+                  "column": "module_id"
+                },
+                "revisionAllowed": {
+                  "column": "revision_allowed"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "submissionType": {
+                  "column": "submission_type"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "updatedBy": {
+                  "column": "updated_by"
+                }
+              },
+              "namespaceId": "public",
+              "table": "assignments"
             }
           },
           "AuditLogs": {
@@ -849,6 +1371,21 @@
               }
             },
             "relations": {
+              "assignments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "courseId"
+                  ]
+                },
+                "to": {
+                  "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
               "division": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -2102,6 +2639,21 @@
               }
             },
             "relations": {
+              "assignments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "moduleId"
+                  ]
+                },
+                "to": {
+                  "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
               "course": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -2467,6 +3019,51 @@
               }
             },
             "relations": {
+              "assignmentGroupMembers": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "AssignmentGroupMembers",
+                  "namespace": "public"
+                }
+              },
+              "assignments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
+              "assignmentsAssignments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "updatedBy"
+                  ]
+                },
+                "to": {
+                  "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
               "auditLogs": {
                 "cardinality": "1:N",
                 "on": {
@@ -2599,6 +3196,51 @@
                 },
                 "to": {
                   "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "submissionFeedbacks": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "mentorId"
+                  ]
+                },
+                "to": {
+                  "model": "SubmissionFeedback",
+                  "namespace": "public"
+                }
+              },
+              "submissions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "gradedBy"
+                  ]
+                },
+                "to": {
+                  "model": "Submissions",
+                  "namespace": "public"
+                }
+              },
+              "submissionsSubmissions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "Submissions",
                   "namespace": "public"
                 }
               },
@@ -3277,6 +3919,788 @@
               "table": "roles"
             }
           },
+          "RubricItems": {
+            "fields": {
+              "criterion": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "maxPoints": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "position": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "rubricId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "rubric": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "rubricId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Rubrics",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "criterion": {
+                  "column": "criterion"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "maxPoints": {
+                  "column": "max_points"
+                },
+                "position": {
+                  "column": "position"
+                },
+                "rubricId": {
+                  "column": "rubric_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "rubric_items"
+            }
+          },
+          "Rubrics": {
+            "fields": {
+              "assignmentId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "maxScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "assignment": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "assignmentId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
+              "rubricItems": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "rubricId"
+                  ]
+                },
+                "to": {
+                  "model": "RubricItems",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "assignmentId": {
+                  "column": "assignment_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "maxScore": {
+                  "column": "max_score"
+                },
+                "name": {
+                  "column": "name"
+                }
+              },
+              "namespaceId": "public",
+              "table": "rubrics"
+            }
+          },
+          "SubmissionFeedback": {
+            "fields": {
+              "body": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "mentorId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "submissionId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "mentor": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "mentorId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "submission": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "submissionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Submissions",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "body": {
+                  "column": "body"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "mentorId": {
+                  "column": "mentor_id"
+                },
+                "submissionId": {
+                  "column": "submission_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "submission_feedback"
+            }
+          },
+          "SubmissionFiles": {
+            "fields": {
+              "bucket": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "checksum": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "mimeType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "originalName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "sizeBytes": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "storagePath": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "submissionId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "submission": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "submissionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Submissions",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "bucket": {
+                  "column": "bucket"
+                },
+                "checksum": {
+                  "column": "checksum"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "mimeType": {
+                  "column": "mime_type"
+                },
+                "originalName": {
+                  "column": "original_name"
+                },
+                "sizeBytes": {
+                  "column": "size_bytes"
+                },
+                "storagePath": {
+                  "column": "storage_path"
+                },
+                "submissionId": {
+                  "column": "submission_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "submission_files"
+            }
+          },
+          "SubmissionRevisions": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "feedback": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "score": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "submissionId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "submittedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "textContent": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "version": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "submission": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "submissionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Submissions",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "feedback": {
+                  "column": "feedback"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "score": {
+                  "column": "score"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "submissionId": {
+                  "column": "submission_id"
+                },
+                "submittedAt": {
+                  "column": "submitted_at"
+                },
+                "textContent": {
+                  "column": "text_content"
+                },
+                "version": {
+                  "column": "version"
+                }
+              },
+              "namespaceId": "public",
+              "table": "submission_revisions"
+            }
+          },
+          "Submissions": {
+            "fields": {
+              "assignmentGroupId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "assignmentId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "gradedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "gradedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "lastSavedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "score": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "submittedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "textContent": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "version": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "assignment": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "assignmentId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Assignments",
+                  "namespace": "public"
+                }
+              },
+              "assignmentGroup": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "assignmentGroupId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AssignmentGroups",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "gradedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "submissionFeedbacks": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "submissionId"
+                  ]
+                },
+                "to": {
+                  "model": "SubmissionFeedback",
+                  "namespace": "public"
+                }
+              },
+              "submissionFiles": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "submissionId"
+                  ]
+                },
+                "to": {
+                  "model": "SubmissionFiles",
+                  "namespace": "public"
+                }
+              },
+              "submissionRevisions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "submissionId"
+                  ]
+                },
+                "to": {
+                  "model": "SubmissionRevisions",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "assignmentGroupId": {
+                  "column": "assignment_group_id"
+                },
+                "assignmentId": {
+                  "column": "assignment_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "gradedAt": {
+                  "column": "graded_at"
+                },
+                "gradedBy": {
+                  "column": "graded_by"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "lastSavedAt": {
+                  "column": "last_saved_at"
+                },
+                "score": {
+                  "column": "score"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "submittedAt": {
+                  "column": "submitted_at"
+                },
+                "textContent": {
+                  "column": "text_content"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "userId": {
+                  "column": "user_id"
+                },
+                "version": {
+                  "column": "version"
+                }
+              },
+              "namespaceId": "public",
+              "table": "submissions"
+            }
+          },
           "UserDivisions": {
             "fields": {
               "createdAt": {
@@ -3531,6 +4955,105 @@
             }
           },
           "policy": {
+            "assignment_group_members_select": {
+              "kind": "policy",
+              "name": "assignment_group_members_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignment_group_members",
+              "using": "true"
+            },
+            "assignment_group_members_write": {
+              "kind": "policy",
+              "name": "assignment_group_members_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignment_group_members",
+              "using": "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))"
+            },
+            "assignment_groups_select": {
+              "kind": "policy",
+              "name": "assignment_groups_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignment_groups",
+              "using": "true"
+            },
+            "assignment_groups_write": {
+              "kind": "policy",
+              "name": "assignment_groups_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignment_groups",
+              "using": "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text))"
+            },
+            "assignments_delete": {
+              "kind": "policy",
+              "name": "assignments_delete",
+              "namespaceId": "public",
+              "operation": "delete",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignments",
+              "using": "has_permission(auth.uid(), 'assignment.delete'::text)"
+            },
+            "assignments_insert": {
+              "kind": "policy",
+              "name": "assignments_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignments",
+              "withCheck": "has_permission(auth.uid(), 'assignment.create'::text)"
+            },
+            "assignments_select": {
+              "kind": "policy",
+              "name": "assignments_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignments",
+              "using": "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'assignment.create'::text) OR has_permission(auth.uid(), 'assignment.update'::text) OR has_permission(auth.uid(), 'assignment.delete'::text) OR has_permission(auth.uid(), 'assignment.grade'::text))"
+            },
+            "assignments_update": {
+              "kind": "policy",
+              "name": "assignments_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "assignments",
+              "using": "has_permission(auth.uid(), 'assignment.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'assignment.update'::text)"
+            },
             "audit_logs_insert": {
               "kind": "policy",
               "name": "audit_logs_insert",
@@ -4137,6 +5660,179 @@
               "tableName": "roles",
               "using": "true"
             },
+            "rubric_items_select": {
+              "kind": "policy",
+              "name": "rubric_items_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "rubric_items",
+              "using": "true"
+            },
+            "rubric_items_write": {
+              "kind": "policy",
+              "name": "rubric_items_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "rubric_items",
+              "using": "has_permission(auth.uid(), 'assignment.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'assignment.update'::text)"
+            },
+            "rubrics_select": {
+              "kind": "policy",
+              "name": "rubrics_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "rubrics",
+              "using": "true"
+            },
+            "rubrics_write": {
+              "kind": "policy",
+              "name": "rubrics_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "rubrics",
+              "using": "has_permission(auth.uid(), 'assignment.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'assignment.update'::text)"
+            },
+            "submission_feedback_select": {
+              "kind": "policy",
+              "name": "submission_feedback_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submission_feedback",
+              "using": "true"
+            },
+            "submission_feedback_write": {
+              "kind": "policy",
+              "name": "submission_feedback_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submission_feedback",
+              "using": "has_permission(auth.uid(), 'assignment.feedback'::text)",
+              "withCheck": "has_permission(auth.uid(), 'assignment.feedback'::text)"
+            },
+            "submission_files_select": {
+              "kind": "policy",
+              "name": "submission_files_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submission_files",
+              "using": "true"
+            },
+            "submission_files_write": {
+              "kind": "policy",
+              "name": "submission_files_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submission_files",
+              "using": "true",
+              "withCheck": "true"
+            },
+            "submission_revisions_insert": {
+              "kind": "policy",
+              "name": "submission_revisions_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submission_revisions",
+              "withCheck": "true"
+            },
+            "submission_revisions_select": {
+              "kind": "policy",
+              "name": "submission_revisions_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submission_revisions",
+              "using": "true"
+            },
+            "submissions_delete": {
+              "kind": "policy",
+              "name": "submissions_delete",
+              "namespaceId": "public",
+              "operation": "delete",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submissions",
+              "using": "has_permission(auth.uid(), 'assignment.delete'::text)"
+            },
+            "submissions_insert": {
+              "kind": "policy",
+              "name": "submissions_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submissions",
+              "withCheck": "((user_id = auth.uid()) OR (assignment_group_id IS NOT NULL))"
+            },
+            "submissions_select": {
+              "kind": "policy",
+              "name": "submissions_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submissions",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text) OR has_permission(auth.uid(), 'submission.view'::text))"
+            },
+            "submissions_update": {
+              "kind": "policy",
+              "name": "submissions_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "submissions",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text))",
+              "withCheck": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'assignment.grade'::text))"
+            },
             "user_divisions_select": {
               "kind": "policy",
               "name": "user_divisions_select",
@@ -4204,6 +5900,21 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "academic_periods"
+            },
+            "assignment_group_members": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "assignment_group_members"
+            },
+            "assignment_groups": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "assignment_groups"
+            },
+            "assignments": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "assignments"
             },
             "audit_logs": {
               "kind": "rls",
@@ -4315,6 +6026,36 @@
               "namespaceId": "public",
               "tableName": "roles"
             },
+            "rubric_items": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "rubric_items"
+            },
+            "rubrics": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "rubrics"
+            },
+            "submission_feedback": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "submission_feedback"
+            },
+            "submission_files": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "submission_files"
+            },
+            "submission_revisions": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "submission_revisions"
+            },
+            "submissions": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "submissions"
+            },
             "user_divisions": {
               "kind": "rls",
               "namespaceId": "public",
@@ -4415,6 +6156,393 @@
                     "code"
                   ],
                   "name": "academic_periods_code_key"
+                }
+              ]
+            },
+            "assignment_group_members": {
+              "columns": {
+                "assignment_group_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "joined_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "assignment_group_members_assignment_group_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "assignment_group_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignment_group_members"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignment_groups"
+                  }
+                },
+                {
+                  "name": "assignment_group_members_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignment_group_members"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "assignment_group_id",
+                  "user_id"
+                ],
+                "name": "assignment_group_members_pkey"
+              },
+              "uniques": []
+            },
+            "assignment_groups": {
+              "columns": {
+                "assignment_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "assignment_groups_assignment_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "assignment_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignment_groups"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignments"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "assignment_groups_pkey"
+              },
+              "uniques": []
+            },
+            "assignments": {
+              "checks": [
+                {
+                  "expression": "((late_until IS NULL) OR (late_until >= due_at))",
+                  "name": "assignments_check"
+                },
+                {
+                  "expression": "(max_score > (0)::numeric)",
+                  "name": "assignments_max_score_check"
+                }
+              ],
+              "columns": {
+                "allow_late_submission": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "available_from": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "course_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "due_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "late_until": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "max_score": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "100"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "module_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "revision_allowed": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "submission_type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "TEXT"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "INDIVIDUAL"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "updated_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "assignments_course_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "course_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  }
+                },
+                {
+                  "name": "assignments_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "assignments_module_id_fkey",
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "module_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "modules"
+                  }
+                },
+                {
+                  "name": "assignments_updated_by_fkey",
+                  "source": {
+                    "columns": [
+                      "updated_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "course_id"
+                  ],
+                  "name": "assignments_course_id",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "due_at"
+                  ],
+                  "name": "assignments_due_at",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "assignments_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "course_id",
+                    "slug"
+                  ],
+                  "name": "assignments_course_id_slug_key"
                 }
               ]
             },
@@ -6683,6 +8811,648 @@
                 }
               ]
             },
+            "rubric_items": {
+              "checks": [
+                {
+                  "expression": "(max_points >= (0)::numeric)",
+                  "name": "rubric_items_max_points_check"
+                }
+              ],
+              "columns": {
+                "criterion": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "max_points": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "position": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "rubric_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "rubric_items_rubric_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "rubric_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "rubric_items"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "rubrics"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "rubric_items_pkey"
+              },
+              "uniques": []
+            },
+            "rubrics": {
+              "checks": [
+                {
+                  "expression": "(max_score > (0)::numeric)",
+                  "name": "rubrics_max_score_check"
+                }
+              ],
+              "columns": {
+                "assignment_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "max_score": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "100"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "rubrics_assignment_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "assignment_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "rubrics"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignments"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "rubrics_pkey"
+              },
+              "uniques": []
+            },
+            "submission_feedback": {
+              "columns": {
+                "body": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "mentor_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "submission_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "submission_feedback_mentor_id_fkey",
+                  "source": {
+                    "columns": [
+                      "mentor_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submission_feedback"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "submission_feedback_submission_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "submission_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submission_feedback"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submissions"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "submission_feedback_pkey"
+              },
+              "uniques": []
+            },
+            "submission_files": {
+              "columns": {
+                "bucket": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "assignment-submissions"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "checksum": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "mime_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "original_name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "size_bytes": {
+                  "codecId": "pg/int8@1",
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "storage_path": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "submission_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "submission_files_submission_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "submission_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submission_files"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submissions"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "submission_files_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "bucket",
+                    "storage_path"
+                  ],
+                  "name": "submission_files_bucket_storage_path_key"
+                }
+              ]
+            },
+            "submission_revisions": {
+              "checks": [
+                {
+                  "expression": "(score >= (0)::numeric)",
+                  "name": "submission_revisions_score_check"
+                }
+              ],
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "feedback": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": true
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "SUBMITTED"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "submission_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "submitted_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "text_content": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "version": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "submission_revisions_submission_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "submission_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submission_revisions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submissions"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "submission_revisions_pkey"
+              },
+              "uniques": []
+            },
+            "submissions": {
+              "checks": [
+                {
+                  "expression": "((user_id IS NULL) <> (assignment_group_id IS NULL))",
+                  "name": "submissions_check"
+                },
+                {
+                  "expression": "(score >= (0)::numeric)",
+                  "name": "submissions_score_check"
+                },
+                {
+                  "expression": "(status = ANY (ARRAY['NOT_STARTED'::text, 'DRAFT'::text, 'SUBMITTED'::text, 'LATE'::text, 'GRADED'::text, 'REVISION_REQUIRED'::text, 'RESUBMITTED'::text]))",
+                  "name": "submissions_status_check"
+                },
+                {
+                  "expression": "(version >= 1)",
+                  "name": "submissions_version_check"
+                }
+              ],
+              "columns": {
+                "assignment_group_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "assignment_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "graded_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "graded_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "last_saved_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": true
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "submitted_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "text_content": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "version": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 1
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "submissions_assignment_group_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "assignment_group_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submissions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignment_groups"
+                  }
+                },
+                {
+                  "name": "submissions_assignment_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "assignment_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submissions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "assignments"
+                  }
+                },
+                {
+                  "name": "submissions_graded_by_fkey",
+                  "source": {
+                    "columns": [
+                      "graded_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submissions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "submissions_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "submissions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "assignment_id"
+                  ],
+                  "name": "submissions_assignment_id",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "submissions_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "submissions_pkey"
+              },
+              "uniques": []
+            },
             "user_divisions": {
               "columns": {
                 "created_at": {
@@ -6941,7 +9711,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "838b4c81f7d9363a8e1f4d84abc05136a4df5234175cd83aebf48956a22cb2db"
+    "storageHash": "8dd27728b9c4da4ee40963501affd9f1ddf1f36fbe72fb58f56645ea102a7b41"
   },
   "capabilities": {
     "postgres": {

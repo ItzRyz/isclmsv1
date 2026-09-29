@@ -24,6 +24,7 @@ import {
   moveModule,
 } from "@/features/modules/actions";
 import { createMaterial } from "@/features/materials/actions";
+import { createAssignment } from "@/features/assignments/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
 
 export default async function CourseDetailPage({
@@ -106,6 +107,12 @@ export default async function CourseDetailPage({
   const canEdit = await can("course.update").catch(() => false);
   const canDelete = await can("course.delete").catch(() => false);
   const canManageModules = await can("module.update").catch(() => false);
+  const canAssign = await can("assignment.create").catch(() => false);
+  const { data: assignments } = await supabase
+    .from("assignments")
+    .select("id, title, type, status, due_at")
+    .eq("course_id", id)
+    .order("due_at");
   const division = Array.isArray(course.divisions)
     ? course.divisions[0]
     : course.divisions;
@@ -338,6 +345,98 @@ export default async function CourseDetailPage({
                 />
               </div>
               <Button type="submit">Tambah modul</Button>
+            </form>
+          ) : null}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Tugas ({(assignments ?? []).length})</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-1 text-sm">
+          {(
+            (assignments ?? []) as {
+              id: string;
+              title: string;
+              type: string;
+              status: string;
+              due_at: string;
+            }[]
+          ).map((a) => (
+            <Link
+              key={a.id}
+              href={`/assignments/${a.id}`}
+              className="flex items-center gap-2 py-1 hover:underline"
+            >
+              <span className="flex-1 font-medium">{a.title}</span>
+              <Badge variant="outline">{a.type}</Badge>
+              <Badge>{a.status}</Badge>
+              <span className="text-muted-foreground">
+                {new Date(a.due_at).toLocaleString("id-ID")}
+              </span>
+            </Link>
+          ))}
+          {(assignments ?? []).length === 0 ? (
+            <span className="text-muted-foreground">Belum ada tugas.</span>
+          ) : null}
+          {canAssign ? (
+            <form
+              action={createAssignment}
+              className="mt-2 flex flex-col gap-3 border-t pt-4"
+            >
+              <input type="hidden" name="course_id" value={course.id} />
+              <div className="flex gap-3">
+                <Input
+                  name="title"
+                  placeholder="Judul tugas"
+                  required
+                  minLength={3}
+                  maxLength={200}
+                />
+                <Input
+                  name="slug"
+                  placeholder="slug-tugas"
+                  required
+                  minLength={2}
+                  maxLength={80}
+                />
+              </div>
+              <div className="flex gap-3">
+                <select
+                  name="type"
+                  defaultValue="INDIVIDUAL"
+                  className="border-input bg-background w-full rounded-md border px-3 py-2 text-sm"
+                >
+                  <option value="INDIVIDUAL">INDIVIDUAL</option>
+                  <option value="GROUP">GROUP</option>
+                </select>
+                <select
+                  name="submission_type"
+                  defaultValue="TEXT"
+                  className="border-input bg-background w-full rounded-md border px-3 py-2 text-sm"
+                >
+                  <option value="TEXT">TEXT</option>
+                  <option value="FILE">FILE</option>
+                  <option value="TEXT_AND_FILE">TEXT_AND_FILE</option>
+                </select>
+              </div>
+              <div className="flex gap-3">
+                <Input name="due_at" type="datetime-local" required />
+                <Input
+                  name="max_score"
+                  type="number"
+                  min={1}
+                  max={100000}
+                  defaultValue={100}
+                  required
+                />
+              </div>
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="revision_allowed" />
+                Revisi diizinkan
+              </label>
+              <Button type="submit">Buat tugas (DRAFT)</Button>
             </form>
           ) : null}
         </CardContent>
