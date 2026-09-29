@@ -16,7 +16,8 @@
     "typecheck": "tsc --noEmit",
     "check:no-spec-leak": "bun scripts/check-no-spec-leak.ts",
     "prebuild": "bun scripts/check-no-spec-leak.ts",
-    "contract:emit": "prisma contract emit"
+    "contract:emit": "prisma contract emit",
+    "db:verify": "prisma db verify"
   },
   "dependencies": {
     "@prisma/orm-postgres": "^8.0.0-rc.13",
