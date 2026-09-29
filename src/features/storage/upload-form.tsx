@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
-import { MATERIALS_BUCKET, completeUpload, requestUpload } from "./actions";
+import { completeUpload, requestUpload } from "./actions";
+import { MATERIALS_BUCKET } from "./schemas";
 
 export function UploadForm({ materialId }: { materialId: string }) {
   const [busy, setBusy] = useState(false);

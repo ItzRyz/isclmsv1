@@ -4,9 +4,11 @@ import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
-import { completeUploadSchema, uploadIntentSchema } from "./schemas";
-
-export const MATERIALS_BUCKET = "materials-private";
+import {
+  MATERIALS_BUCKET,
+  completeUploadSchema,
+  uploadIntentSchema,
+} from "./schemas";
 
 function sanitize(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]+/g, "_").slice(0, 120);
