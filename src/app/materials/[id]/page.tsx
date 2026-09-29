@@ -18,6 +18,7 @@ import {
   updateMaterial,
 } from "@/features/materials/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
+import { UploadForm } from "@/features/storage/upload-form";
 
 function toLocalInput(iso: string | null): string {
   if (!iso) return "";
@@ -142,6 +143,17 @@ export default async function MaterialDetailPage({
 
       {staff ? (
         <>
+          <Card>
+            <CardHeader>
+              <CardTitle>File materi (maks 50 MB)</CardTitle>
+              <CardDescription>
+                PDF/PPT/DOC/XLS/gambar/MP4. Privat, unduh via signed URL.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <UploadForm materialId={material.id} />
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader>
               <CardTitle>Ubah materi</CardTitle>
