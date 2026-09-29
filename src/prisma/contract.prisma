@@ -72,6 +72,9 @@ namespace public {
     materialProgresses      MaterialProgress[]
     notificationPreferences NotificationPreferences[]
     notifications           Notifications[]
+    questions               Questions[]
+    quizAttempts            QuizAttempts[]
+    quizzes                 Quizzes[]
     submissionFeedbacks     SubmissionFeedback[]
     userDivisions           UserDivisions[]
     assignments             Assignments[]             @relation(name: "assignments_created_by_fkey")
@@ -106,6 +109,7 @@ namespace public {
     updatedAt        Timestamptz            @default(now()) @map("updated_at")
     assignments      Assignments[]
     modules          Modules[]
+    quizzes          Quizzes[]
     roadmapNodes     RoadmapNodes[]
     profiles         Profiles?              @relation(name: "courses_created_by_fkey", fields: [createdBy], references: [id], map: "courses_created_by_fkey", index: false)
     division         Divisions              @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "courses_division_id_fkey")
@@ -129,6 +133,7 @@ namespace public {
     updatedAt    Timestamptz            @default(now()) @map("updated_at")
     assignments  Assignments[]
     materials    Materials[]
+    quizzes      Quizzes[]
     roadmapNodes RoadmapNodes[]
     course       Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "modules_course_id_fkey")
 
@@ -307,6 +312,7 @@ namespace public {
     materialFiles                              MaterialFiles[]
     materialLinks                              MaterialLinks[]
     materialProgresses                         MaterialProgress[]
+    quizzes                                    Quizzes[]
     roadmapNodes                               RoadmapNodes[]
     materialPrerequisites                      MaterialPrerequisites[] @relation(name: "material_prerequisites_material_id_fkey")
     materialPrerequisitesMaterialPrerequisites MaterialPrerequisites[] @relation(name: "material_prerequisites_prerequisite_material_id_fkey")
@@ -433,6 +439,127 @@ namespace public {
 
     @@rls
     @@map("permissions")
+  }
+
+  model Questions {
+    id              Uuid              @id(map: "questions_pkey") @default(sql`gen_random_uuid()`)
+    questionType    String            @default("SINGLE_CHOICE") @map("question_type")
+    prompt          String
+    explanation     String?
+    difficulty      String?
+    createdBy       Uuid?             @map("created_by")
+    createdAt       Timestamptz       @default(now()) @map("created_at")
+    updatedAt       Timestamptz       @default(now()) @map("updated_at")
+    questionOptions QuestionOptions[]
+    quizAnswers     QuizAnswers[]
+    quizQuestions   QuizQuestions[]
+    profiles        Profiles?         @relation(fields: [createdBy], references: [id], map: "questions_created_by_fkey", index: false)
+
+    @@check(expression: "(question_type = ANY (ARRAY['SINGLE_CHOICE'::text, 'MULTIPLE_CHOICE'::text, 'TRUE_FALSE'::text]))", map: "questions_question_type_check")
+    @@rls
+    @@map("questions")
+  }
+
+  model QuestionOptions {
+    id         Uuid      @id(map: "question_options_pkey") @default(sql`gen_random_uuid()`)
+    questionId Uuid      @map("question_id")
+    optionText String    @map("option_text")
+    isCorrect  Boolean   @default(false) @map("is_correct")
+    position   Int       @default(0)
+    question   Questions @relation(fields: [questionId], references: [id], onDelete: Cascade, map: "question_options_question_id_fkey")
+
+    @@index([questionId], map: "question_options_question_id")
+    @@rls
+    @@map("question_options")
+  }
+
+  model Quizzes {
+    id               Uuid                   @id(map: "quizzes_pkey") @default(sql`gen_random_uuid()`)
+    courseId         Uuid                   @map("course_id")
+    moduleId         Uuid?                  @map("module_id")
+    materialId       Uuid?                  @map("material_id")
+    title            String
+    description      String?
+    _type            String                 @default("PRACTICE") @map("type")
+    timeLimitSeconds Int?                   @map("time_limit_seconds")
+    maxAttempts      Int                    @default(1) @map("max_attempts")
+    shuffleQuestions Boolean                @default(false) @map("shuffle_questions")
+    shuffleOptions   Boolean                @default(false) @map("shuffle_options")
+    passingScore     Numeric?               @map("passing_score")
+    isGraded         Boolean                @default(true) @map("is_graded")
+    availableFrom    Timestamptz?           @map("available_from")
+    dueAt            Timestamptz?           @map("due_at")
+    status           pg.enum(ContentStatus) @default("DRAFT")
+    createdBy        Uuid?                  @map("created_by")
+    createdAt        Timestamptz            @default(now()) @map("created_at")
+    updatedAt        Timestamptz            @default(now()) @map("updated_at")
+    quizAttempts     QuizAttempts[]
+    quizQuestions    QuizQuestions[]
+    course           Courses                @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "quizzes_course_id_fkey")
+    profiles         Profiles?              @relation(fields: [createdBy], references: [id], map: "quizzes_created_by_fkey", index: false)
+    material         Materials?             @relation(fields: [materialId], references: [id], onDelete: SetNull, map: "quizzes_material_id_fkey", index: false)
+    module           Modules?               @relation(fields: [moduleId], references: [id], onDelete: SetNull, map: "quizzes_module_id_fkey", index: false)
+
+    @@index([courseId], map: "quizzes_course_id")
+    @@check(expression: "(max_attempts >= 1)", map: "quizzes_max_attempts_check")
+    @@check(expression: "((passing_score IS NULL) OR (passing_score >= (0)::numeric))", map: "quizzes_passing_score_check")
+    @@check(expression: "((time_limit_seconds IS NULL) OR (time_limit_seconds > 0))", map: "quizzes_time_limit_seconds_check")
+    @@rls
+    @@map("quizzes")
+  }
+
+  model QuizAttempts {
+    id            Uuid          @id(map: "quiz_attempts_pkey") @default(sql`gen_random_uuid()`)
+    quizId        Uuid          @map("quiz_id")
+    userId        Uuid          @map("user_id")
+    attemptNumber Int           @map("attempt_number")
+    startedAt     Timestamptz   @default(now()) @map("started_at")
+    submittedAt   Timestamptz?  @map("submitted_at")
+    score         Numeric?
+    status        String        @default("IN_PROGRESS")
+    createdAt     Timestamptz   @default(now()) @map("created_at")
+    quizAnswers   QuizAnswers[]
+    quiz          Quizzes       @relation(fields: [quizId], references: [id], onDelete: Cascade, map: "quiz_attempts_quiz_id_fkey")
+    user          Profiles      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "quiz_attempts_user_id_fkey")
+
+    @@index([quizId], map: "quiz_attempts_quiz_id")
+    @@index([userId], map: "quiz_attempts_user_id")
+    @@check(expression: "(attempt_number >= 1)", map: "quiz_attempts_attempt_number_check")
+    @@check(expression: "((score IS NULL) OR (score >= (0)::numeric))", map: "quiz_attempts_score_check")
+    @@check(expression: "(status = ANY (ARRAY['IN_PROGRESS'::text, 'SUBMITTED'::text, 'GRADED'::text, 'EXPIRED'::text]))", map: "quiz_attempts_status_check")
+    @@rls
+    @@map("quiz_attempts")
+  }
+
+  model QuizAnswers {
+    id                Uuid         @id(map: "quiz_answers_pkey") @default(sql`gen_random_uuid()`)
+    attemptId         Uuid         @map("attempt_id")
+    questionId        Uuid         @map("question_id")
+    selectedOptionIds Jsonb        @default(json`[]`) @map("selected_option_ids")
+    isCorrect         Boolean?     @map("is_correct")
+    pointsAwarded     Numeric?     @map("points_awarded")
+    answeredAt        Timestamptz  @default(now()) @map("answered_at")
+    attempt           QuizAttempts @relation(fields: [attemptId], references: [id], onDelete: Cascade, map: "quiz_answers_attempt_id_fkey", index: false)
+    question          Questions    @relation(fields: [questionId], references: [id], onDelete: Cascade, map: "quiz_answers_question_id_fkey", index: false)
+
+    @@unique([attemptId, questionId], map: "quiz_answers_attempt_id_question_id_key")
+    @@check(expression: "((points_awarded IS NULL) OR (points_awarded >= (0)::numeric))", map: "quiz_answers_points_awarded_check")
+    @@rls
+    @@map("quiz_answers")
+  }
+
+  model QuizQuestions {
+    quizId     Uuid      @map("quiz_id")
+    questionId Uuid      @map("question_id")
+    position   Int       @default(0)
+    points     Numeric   @default(1)
+    question   Questions @relation(fields: [questionId], references: [id], onDelete: Cascade, map: "quiz_questions_question_id_fkey", index: false)
+    quiz       Quizzes   @relation(fields: [quizId], references: [id], onDelete: Cascade, map: "quiz_questions_quiz_id_fkey", index: false)
+
+    @@id([quizId, questionId], map: "quiz_questions_pkey")
+    @@check(expression: "(points >= (0)::numeric)", map: "quiz_questions_points_check")
+    @@rls
+    @@map("quiz_questions")
   }
 
   model Roadmaps {
@@ -1078,6 +1205,117 @@ namespace public {
     using = "(auth.uid() = id)"
     withCheck = "(auth.uid() = id)"
     @@map("profiles_update_own")
+  }
+
+  policy_select question_options_select {
+    target = QuestionOptions
+    roles = [authenticated]
+    using = "true"
+    @@map("question_options_select")
+  }
+
+  policy_all question_options_write {
+    target = QuestionOptions
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'quiz.create'::text) OR has_permission(auth.uid(), 'quiz.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'quiz.create'::text) OR has_permission(auth.uid(), 'quiz.update'::text))"
+    @@map("question_options_write")
+  }
+
+  policy_select questions_select {
+    target = Questions
+    roles = [authenticated]
+    using = "true"
+    @@map("questions_select")
+  }
+
+  policy_all questions_write {
+    target = Questions
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'quiz.create'::text) OR has_permission(auth.uid(), 'quiz.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'quiz.create'::text) OR has_permission(auth.uid(), 'quiz.update'::text))"
+    @@map("questions_write")
+  }
+
+  policy_select quiz_answers_select {
+    target = QuizAnswers
+    roles = [authenticated]
+    using = "(EXISTS ( SELECT 1\n   FROM quiz_attempts a\n  WHERE ((a.id = quiz_answers.attempt_id) AND ((a.user_id = auth.uid()) OR has_permission(auth.uid(), 'quiz.grade'::text)))))"
+    @@map("quiz_answers_select")
+  }
+
+  policy_all quiz_answers_write {
+    target = QuizAnswers
+    roles = [authenticated]
+    using = "(EXISTS ( SELECT 1\n   FROM quiz_attempts a\n  WHERE ((a.id = quiz_answers.attempt_id) AND ((a.user_id = auth.uid()) OR has_permission(auth.uid(), 'quiz.grade'::text)))))"
+    withCheck = "(EXISTS ( SELECT 1\n   FROM quiz_attempts a\n  WHERE ((a.id = quiz_answers.attempt_id) AND ((a.user_id = auth.uid()) OR has_permission(auth.uid(), 'quiz.grade'::text)))))"
+    @@map("quiz_answers_write")
+  }
+
+  policy_insert quiz_attempts_insert {
+    target = QuizAttempts
+    roles = [authenticated]
+    withCheck = "(user_id = auth.uid())"
+    @@map("quiz_attempts_insert")
+  }
+
+  policy_select quiz_attempts_select {
+    target = QuizAttempts
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'quiz.grade'::text))"
+    @@map("quiz_attempts_select")
+  }
+
+  policy_update quiz_attempts_update {
+    target = QuizAttempts
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'quiz.grade'::text))"
+    withCheck = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'quiz.grade'::text))"
+    @@map("quiz_attempts_update")
+  }
+
+  policy_select quiz_questions_select {
+    target = QuizQuestions
+    roles = [authenticated]
+    using = "true"
+    @@map("quiz_questions_select")
+  }
+
+  policy_all quiz_questions_write {
+    target = QuizQuestions
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'quiz.create'::text) OR has_permission(auth.uid(), 'quiz.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'quiz.create'::text) OR has_permission(auth.uid(), 'quiz.update'::text))"
+    @@map("quiz_questions_write")
+  }
+
+  policy_delete quizzes_delete {
+    target = Quizzes
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'quiz.delete'::text)"
+    @@map("quizzes_delete")
+  }
+
+  policy_insert quizzes_insert {
+    target = Quizzes
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'quiz.create'::text)"
+    @@map("quizzes_insert")
+  }
+
+  policy_select quizzes_select {
+    target = Quizzes
+    roles = [authenticated]
+    using = "(((status = 'PUBLISHED'::content_status) AND ((available_from IS NULL) OR (available_from <= now()))) OR has_permission(auth.uid(), 'quiz.create'::text) OR has_permission(auth.uid(), 'quiz.update'::text) OR has_permission(auth.uid(), 'quiz.delete'::text) OR has_permission(auth.uid(), 'quiz.grade'::text))"
+    @@map("quizzes_select")
+  }
+
+  policy_update quizzes_update {
+    target = Quizzes
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'quiz.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'quiz.update'::text)"
+    @@map("quizzes_update")
   }
 
   policy_select roadmap_edges_select {
