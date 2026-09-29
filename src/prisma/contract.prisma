@@ -13,6 +13,9 @@ namespace public {
     academicPeriods AcademicPeriods[]
     batches         Batches[]
     divisions       Divisions[]
+    gradeComponents GradeComponents[]
+    gradeScales     GradeScales[]
+    rankingPeriods  RankingPeriods[]
 
     @@rls
     @@map("organizations")
@@ -27,6 +30,10 @@ namespace public {
     endDate        Date?                 @map("end_date")
     status         pg.enum(EntityStatus) @default("ACTIVE")
     classes        Classes[]
+    gradeWeights   GradeWeights[]
+    grades         Grades[]
+    rankingPeriods RankingPeriods[]
+    reportCards    ReportCards[]
     organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "academic_periods_organization_id_fkey", index: false)
 
     @@rls
@@ -46,6 +53,7 @@ namespace public {
     attendanceSessions AttendanceSessions[]
     classes            Classes[]
     courses            Courses[]
+    gradeWeights       GradeWeights[]
     roadmaps           Roadmaps[]
     userDivisions      UserDivisions[]
     organization       Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "divisions_organization_id_fkey", index: false)
@@ -56,41 +64,48 @@ namespace public {
 
   // WARNING: Foreign key "id" -> "auth.users" exists in the database, but its target schema is outside the introspected scope, so no relation field was generated. If the target schema is described by an extension pack, add it to extensions and re-run infer.
   model Profiles {
-    id                      Uuid                      @id(map: "profiles_pkey")
-    fullName                String?                   @map("full_name")
-    username                String?                   @unique(map: "profiles_username_key")
-    studentNumber           String?                   @unique(map: "profiles_student_number_key") @map("student_number")
-    avatarPath              String?                   @map("avatar_path")
-    phone                   String?
-    status                  pg.enum(AccountStatus)    @default("ACTIVE")
-    createdAt               Timestamptz               @default(now()) @map("created_at")
-    updatedAt               Timestamptz               @default(now()) @map("updated_at")
-    assignmentGroupMembers  AssignmentGroupMembers[]
-    attendanceCorrections   AttendanceCorrections[]
-    attendanceRecords       AttendanceRecords[]
-    attendanceSessions      AttendanceSessions[]
-    auditLogs               AuditLogs[]
-    classMembers            ClassMembers[]
-    learningActivities      LearningActivities[]
-    materialBookmarks       MaterialBookmarks[]
-    materialProgresses      MaterialProgress[]
-    notificationPreferences NotificationPreferences[]
-    notifications           Notifications[]
-    questions               Questions[]
-    quizAttempts            QuizAttempts[]
-    quizzes                 Quizzes[]
-    submissionFeedbacks     SubmissionFeedback[]
-    userDivisions           UserDivisions[]
-    assignments             Assignments[]             @relation(name: "assignments_created_by_fkey")
-    assignmentsAssignments  Assignments[]             @relation(name: "assignments_updated_by_fkey")
-    courses                 Courses[]                 @relation(name: "courses_created_by_fkey")
-    coursesCourses          Courses[]                 @relation(name: "courses_updated_by_fkey")
-    materials               Materials[]               @relation(name: "materials_created_by_fkey")
-    materialsMaterials      Materials[]               @relation(name: "materials_updated_by_fkey")
-    submissions             Submissions[]             @relation(name: "submissions_graded_by_fkey")
-    submissionsSubmissions  Submissions[]             @relation(name: "submissions_user_id_fkey")
-    userRoles               UserRoles[]               @relation(name: "user_roles_assigned_by_fkey")
-    userRolesUserRoles      UserRoles[]               @relation(name: "user_roles_user_id_fkey")
+    id                                 Uuid                      @id(map: "profiles_pkey")
+    fullName                           String?                   @map("full_name")
+    username                           String?                   @unique(map: "profiles_username_key")
+    studentNumber                      String?                   @unique(map: "profiles_student_number_key") @map("student_number")
+    avatarPath                         String?                   @map("avatar_path")
+    phone                              String?
+    status                             pg.enum(AccountStatus)    @default("ACTIVE")
+    createdAt                          Timestamptz               @default(now()) @map("created_at")
+    updatedAt                          Timestamptz               @default(now()) @map("updated_at")
+    assignmentGroupMembers             AssignmentGroupMembers[]
+    attendanceCorrections              AttendanceCorrections[]
+    attendanceRecords                  AttendanceRecords[]
+    attendanceSessions                 AttendanceSessions[]
+    auditLogs                          AuditLogs[]
+    classMembers                       ClassMembers[]
+    learningActivities                 LearningActivities[]
+    materialBookmarks                  MaterialBookmarks[]
+    materialProgresses                 MaterialProgress[]
+    notificationPreferences            NotificationPreferences[]
+    notifications                      Notifications[]
+    questions                          Questions[]
+    quizAttempts                       QuizAttempts[]
+    quizzes                            Quizzes[]
+    rankingEntries                     RankingEntries[]
+    reportCards                        ReportCards[]
+    submissionFeedbacks                SubmissionFeedback[]
+    userDivisions                      UserDivisions[]
+    assignments                        Assignments[]             @relation(name: "assignments_created_by_fkey")
+    assignmentsAssignments             Assignments[]             @relation(name: "assignments_updated_by_fkey")
+    courses                            Courses[]                 @relation(name: "courses_created_by_fkey")
+    coursesCourses                     Courses[]                 @relation(name: "courses_updated_by_fkey")
+    grades                             Grades[]                  @relation(name: "grades_created_by_fkey")
+    gradesGrades                       Grades[]                  @relation(name: "grades_updated_by_fkey")
+    grades2                            Grades[]                  @relation(name: "grades_user_id_fkey")
+    materials                          Materials[]               @relation(name: "materials_created_by_fkey")
+    materialsMaterials                 Materials[]               @relation(name: "materials_updated_by_fkey")
+    pointTransactions                  PointTransactions[]       @relation(name: "point_transactions_created_by_fkey")
+    pointTransactionsPointTransactions PointTransactions[]       @relation(name: "point_transactions_user_id_fkey")
+    submissions                        Submissions[]             @relation(name: "submissions_graded_by_fkey")
+    submissionsSubmissions             Submissions[]             @relation(name: "submissions_user_id_fkey")
+    userRoles                          UserRoles[]               @relation(name: "user_roles_assigned_by_fkey")
+    userRolesUserRoles                 UserRoles[]               @relation(name: "user_roles_user_id_fkey")
 
     @@rls
     @@map("profiles")
@@ -112,6 +127,8 @@ namespace public {
     createdAt        Timestamptz            @default(now()) @map("created_at")
     updatedAt        Timestamptz            @default(now()) @map("updated_at")
     assignments      Assignments[]
+    gradeWeights     GradeWeights[]
+    grades           Grades[]
     modules          Modules[]
     quizzes          Quizzes[]
     roadmapNodes     RoadmapNodes[]
@@ -347,6 +364,90 @@ namespace public {
     @@map("class_members")
   }
 
+  model GradeComponents {
+    id              Uuid              @id(map: "grade_components_pkey") @default(sql`gen_random_uuid()`)
+    organizationId  Uuid              @map("organization_id")
+    code            String
+    name            String
+    maxScore        Numeric           @default(100) @map("max_score")
+    defaultWeight   Numeric           @default(0) @map("default_weight")
+    gradeWeights    GradeWeights[]
+    grades          Grades[]
+    reportCardItems ReportCardItems[]
+    organization    Organizations     @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "grade_components_organization_id_fkey", index: false)
+
+    @@unique([organizationId, code], map: "grade_components_organization_id_code_key")
+    @@check(expression: "(default_weight >= (0)::numeric)", map: "grade_components_default_weight_check")
+    @@check(expression: "(max_score > (0)::numeric)", map: "grade_components_max_score_check")
+    @@rls
+    @@map("grade_components")
+  }
+
+  model GradeScales {
+    id             Uuid          @id(map: "grade_scales_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid          @map("organization_id")
+    code           String
+    letter         String
+    minScore       Numeric       @map("min_score")
+    maxScore       Numeric       @map("max_score")
+    isPassing      Boolean       @default(true) @map("is_passing")
+    remark         String?
+    organization   Organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "grade_scales_organization_id_fkey", index: false)
+
+    @@check(expression: "(min_score <= max_score)", map: "grade_scales_check")
+    @@rls
+    @@map("grade_scales")
+  }
+
+  model GradeWeights {
+    id               Uuid            @id(map: "grade_weights_pkey") @default(sql`gen_random_uuid()`)
+    academicPeriodId Uuid            @map("academic_period_id")
+    courseId         Uuid?           @map("course_id")
+    divisionId       Uuid?           @map("division_id")
+    gradeComponentId Uuid            @map("grade_component_id")
+    weight           Numeric
+    createdAt        Timestamptz     @default(now()) @map("created_at")
+    academicPeriod   AcademicPeriods @relation(fields: [academicPeriodId], references: [id], onDelete: Cascade, map: "grade_weights_academic_period_id_fkey", index: false)
+    course           Courses?        @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "grade_weights_course_id_fkey", index: false)
+    division         Divisions?      @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "grade_weights_division_id_fkey", index: false)
+    gradeComponent   GradeComponents @relation(fields: [gradeComponentId], references: [id], onDelete: Cascade, map: "grade_weights_grade_component_id_fkey", index: false)
+
+    @@unique([academicPeriodId, courseId, divisionId, gradeComponentId], map: "grade_weights_academic_period_id_course_id_division_id_grad_key")
+    @@check(expression: "(weight >= (0)::numeric)", map: "grade_weights_weight_check")
+    @@rls
+    @@map("grade_weights")
+  }
+
+  model Grades {
+    id               Uuid            @id(map: "grades_pkey") @default(sql`gen_random_uuid()`)
+    userId           Uuid            @map("user_id")
+    academicPeriodId Uuid            @map("academic_period_id")
+    courseId         Uuid?           @map("course_id")
+    gradeComponentId Uuid            @map("grade_component_id")
+    sourceType       String          @map("source_type")
+    sourceId         Uuid?           @map("source_id")
+    rawScore         Numeric         @map("raw_score")
+    normalizedScore  Numeric         @map("normalized_score")
+    weightApplied    Numeric         @default(0) @map("weight_applied")
+    weightedScore    Numeric         @default(0) @map("weighted_score")
+    createdBy        Uuid?           @map("created_by")
+    updatedBy        Uuid?           @map("updated_by")
+    createdAt        Timestamptz     @default(now()) @map("created_at")
+    updatedAt        Timestamptz     @default(now()) @map("updated_at")
+    academicPeriod   AcademicPeriods @relation(fields: [academicPeriodId], references: [id], onDelete: Cascade, map: "grades_academic_period_id_fkey")
+    course           Courses?        @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "grades_course_id_fkey", index: false)
+    profiles         Profiles?       @relation(name: "grades_created_by_fkey", fields: [createdBy], references: [id], map: "grades_created_by_fkey", index: false)
+    gradeComponent   GradeComponents @relation(fields: [gradeComponentId], references: [id], onDelete: Cascade, map: "grades_grade_component_id_fkey", index: false)
+    profilesProfiles Profiles?       @relation(name: "grades_updated_by_fkey", fields: [updatedBy], references: [id], map: "grades_updated_by_fkey", index: false)
+    user             Profiles        @relation(name: "grades_user_id_fkey", fields: [userId], references: [id], onDelete: Cascade, map: "grades_user_id_fkey")
+
+    @@index([academicPeriodId], map: "grades_academic_period_id")
+    @@index([userId], map: "grades_user_id")
+    @@check(expression: "(raw_score >= (0)::numeric)", map: "grades_raw_score_check")
+    @@rls
+    @@map("grades")
+  }
+
   model LearningActivities {
     id           Uuid        @id(map: "learning_activities_pkey") @default(sql`gen_random_uuid()`)
     userId       Uuid        @map("user_id")
@@ -512,6 +613,25 @@ namespace public {
     @@map("permissions")
   }
 
+  model PointTransactions {
+    id          Uuid        @id(map: "point_transactions_pkey") @default(sql`gen_random_uuid()`)
+    userId      Uuid        @map("user_id")
+    amount      Int
+    pointType   String      @map("point_type")
+    sourceType  String      @map("source_type")
+    sourceId    Uuid?       @map("source_id")
+    description String
+    createdBy   Uuid?       @map("created_by")
+    createdAt   Timestamptz @default(now()) @map("created_at")
+    profiles    Profiles?   @relation(name: "point_transactions_created_by_fkey", fields: [createdBy], references: [id], map: "point_transactions_created_by_fkey", index: false)
+    user        Profiles    @relation(name: "point_transactions_user_id_fkey", fields: [userId], references: [id], onDelete: Cascade, map: "point_transactions_user_id_fkey")
+
+    @@index([userId], map: "point_transactions_user_id")
+    @@check(expression: "(amount <> 0)", map: "point_transactions_amount_check")
+    @@rls
+    @@map("point_transactions")
+  }
+
   model Questions {
     id              Uuid              @id(map: "questions_pkey") @default(sql`gen_random_uuid()`)
     questionType    String            @default("SINGLE_CHOICE") @map("question_type")
@@ -631,6 +751,74 @@ namespace public {
     @@check(expression: "(points >= (0)::numeric)", map: "quiz_questions_points_check")
     @@rls
     @@map("quiz_questions")
+  }
+
+  model RankingPeriods {
+    id               Uuid                   @id(map: "ranking_periods_pkey") @default(sql`gen_random_uuid()`)
+    organizationId   Uuid                   @map("organization_id")
+    academicPeriodId Uuid?                  @map("academic_period_id")
+    _type            String                 @default("SEMESTER") @map("type")
+    name             String
+    startDate        Date?                  @map("start_date")
+    endDate          Date?                  @map("end_date")
+    metric           String                 @default("POINTS")
+    status           pg.enum(ContentStatus) @default("DRAFT")
+    createdAt        Timestamptz            @default(now()) @map("created_at")
+    rankingEntries   RankingEntries[]
+    academicPeriod   AcademicPeriods?       @relation(fields: [academicPeriodId], references: [id], onDelete: SetNull, map: "ranking_periods_academic_period_id_fkey", index: false)
+    organization     Organizations          @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "ranking_periods_organization_id_fkey", index: false)
+
+    @@rls
+    @@map("ranking_periods")
+  }
+
+  model RankingEntries {
+    id              Uuid           @id(map: "ranking_entries_pkey") @default(sql`gen_random_uuid()`)
+    rankingPeriodId Uuid           @map("ranking_period_id")
+    userId          Uuid           @map("user_id")
+    rank            Int
+    score           Numeric
+    points          Int            @default(0)
+    createdAt       Timestamptz    @default(now()) @map("created_at")
+    rankingPeriod   RankingPeriods @relation(fields: [rankingPeriodId], references: [id], onDelete: Cascade, map: "ranking_entries_ranking_period_id_fkey", index: false)
+    user            Profiles       @relation(fields: [userId], references: [id], onDelete: Cascade, map: "ranking_entries_user_id_fkey", index: false)
+
+    @@unique([rankingPeriodId, userId], map: "ranking_entries_ranking_period_id_user_id_key")
+    @@check(expression: "(rank >= 1)", map: "ranking_entries_rank_check")
+    @@rls
+    @@map("ranking_entries")
+  }
+
+  model ReportCards {
+    id               Uuid              @id(map: "report_cards_pkey") @default(sql`gen_random_uuid()`)
+    userId           Uuid              @map("user_id")
+    academicPeriodId Uuid              @map("academic_period_id")
+    totalScore       Numeric           @map("total_score")
+    gradeLetter      String            @map("grade_letter")
+    remark           String?
+    publishedAt      Timestamptz?      @map("published_at")
+    generatedAt      Timestamptz       @default(now()) @map("generated_at")
+    reportCardItems  ReportCardItems[]
+    academicPeriod   AcademicPeriods   @relation(fields: [academicPeriodId], references: [id], onDelete: Cascade, map: "report_cards_academic_period_id_fkey", index: false)
+    user             Profiles          @relation(fields: [userId], references: [id], onDelete: Cascade, map: "report_cards_user_id_fkey", index: false)
+
+    @@unique([userId, academicPeriodId], map: "report_cards_user_id_academic_period_id_key")
+    @@rls
+    @@map("report_cards")
+  }
+
+  model ReportCardItems {
+    id               Uuid            @id(map: "report_card_items_pkey") @default(sql`gen_random_uuid()`)
+    reportCardId     Uuid            @map("report_card_id")
+    gradeComponentId Uuid            @map("grade_component_id")
+    score            Numeric
+    weight           Numeric         @default(0)
+    weightedScore    Numeric         @default(0) @map("weighted_score")
+    gradeComponent   GradeComponents @relation(fields: [gradeComponentId], references: [id], onDelete: Cascade, map: "report_card_items_grade_component_id_fkey", index: false)
+    reportCard       ReportCards     @relation(fields: [reportCardId], references: [id], onDelete: Cascade, map: "report_card_items_report_card_id_fkey", index: false)
+
+    @@rls
+    @@map("report_card_items")
   }
 
   model Roadmaps {
@@ -1128,6 +1316,73 @@ namespace public {
     @@map("divisions_update")
   }
 
+  policy_select grade_components_select {
+    target = GradeComponents
+    roles = [authenticated]
+    using = "true"
+    @@map("grade_components_select")
+  }
+
+  policy_all grade_components_write {
+    target = GradeComponents
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+    @@map("grade_components_write")
+  }
+
+  policy_select grade_scales_select {
+    target = GradeScales
+    roles = [authenticated]
+    using = "true"
+    @@map("grade_scales_select")
+  }
+
+  policy_all grade_scales_write {
+    target = GradeScales
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+    @@map("grade_scales_write")
+  }
+
+  policy_select grade_weights_select {
+    target = GradeWeights
+    roles = [authenticated]
+    using = "true"
+    @@map("grade_weights_select")
+  }
+
+  policy_all grade_weights_write {
+    target = GradeWeights
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+    @@map("grade_weights_write")
+  }
+
+  policy_insert grades_insert {
+    target = Grades
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'grade.create'::text)"
+    @@map("grades_insert")
+  }
+
+  policy_select grades_select {
+    target = Grades
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'grade.view'::text) OR has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+    @@map("grades_select")
+  }
+
+  policy_update grades_update {
+    target = Grades
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'grade.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'grade.update'::text)"
+    @@map("grades_update")
+  }
+
   policy_insert learning_activities_insert {
     target = LearningActivities
     roles = [authenticated]
@@ -1307,6 +1562,20 @@ namespace public {
     @@map("permissions_select_all")
   }
 
+  policy_insert point_transactions_insert {
+    target = PointTransactions
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'point.manage'::text)"
+    @@map("point_transactions_insert")
+  }
+
+  policy_select point_transactions_select {
+    target = PointTransactions
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'point.view'::text) OR has_permission(auth.uid(), 'point.manage'::text))"
+    @@map("point_transactions_select")
+  }
+
   policy_select profiles_select_own {
     target = Profiles
     roles = [authenticated]
@@ -1438,6 +1707,66 @@ namespace public {
     using = "has_permission(auth.uid(), 'quiz.update'::text)"
     withCheck = "has_permission(auth.uid(), 'quiz.update'::text)"
     @@map("quizzes_update")
+  }
+
+  policy_select ranking_entries_select {
+    target = RankingEntries
+    roles = [authenticated]
+    using = "true"
+    @@map("ranking_entries_select")
+  }
+
+  policy_all ranking_entries_write {
+    target = RankingEntries
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'ranking.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'ranking.manage'::text)"
+    @@map("ranking_entries_write")
+  }
+
+  policy_select ranking_periods_select {
+    target = RankingPeriods
+    roles = [authenticated]
+    using = "true"
+    @@map("ranking_periods_select")
+  }
+
+  policy_all ranking_periods_write {
+    target = RankingPeriods
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'ranking.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'ranking.manage'::text)"
+    @@map("ranking_periods_write")
+  }
+
+  policy_select report_card_items_select {
+    target = ReportCardItems
+    roles = [authenticated]
+    using = "true"
+    @@map("report_card_items_select")
+  }
+
+  policy_all report_card_items_write {
+    target = ReportCardItems
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'grade.publish'::text)"
+    withCheck = "has_permission(auth.uid(), 'grade.publish'::text)"
+    @@map("report_card_items_write")
+  }
+
+  policy_select report_cards_select {
+    target = ReportCards
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'grade.view'::text))"
+    @@map("report_cards_select")
+  }
+
+  policy_all report_cards_write {
+    target = ReportCards
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'grade.publish'::text)"
+    withCheck = "has_permission(auth.uid(), 'grade.publish'::text)"
+    @@map("report_cards_write")
   }
 
   policy_select roadmap_edges_select {

@@ -56,6 +56,22 @@
       "model": "Divisions",
       "namespace": "public"
     },
+    "grade_components": {
+      "model": "GradeComponents",
+      "namespace": "public"
+    },
+    "grade_scales": {
+      "model": "GradeScales",
+      "namespace": "public"
+    },
+    "grade_weights": {
+      "model": "GradeWeights",
+      "namespace": "public"
+    },
+    "grades": {
+      "model": "Grades",
+      "namespace": "public"
+    },
     "learning_activities": {
       "model": "LearningActivities",
       "namespace": "public"
@@ -104,6 +120,10 @@
       "model": "Permissions",
       "namespace": "public"
     },
+    "point_transactions": {
+      "model": "PointTransactions",
+      "namespace": "public"
+    },
     "profiles": {
       "model": "Profiles",
       "namespace": "public"
@@ -130,6 +150,22 @@
     },
     "quizzes": {
       "model": "Quizzes",
+      "namespace": "public"
+    },
+    "ranking_entries": {
+      "model": "RankingEntries",
+      "namespace": "public"
+    },
+    "ranking_periods": {
+      "model": "RankingPeriods",
+      "namespace": "public"
+    },
+    "report_card_items": {
+      "model": "ReportCardItems",
+      "namespace": "public"
+    },
+    "report_cards": {
+      "model": "ReportCards",
       "namespace": "public"
     },
     "roadmap_edges": {
@@ -260,6 +296,36 @@
                   "namespace": "public"
                 }
               },
+              "gradeWeights": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "academicPeriodId"
+                  ]
+                },
+                "to": {
+                  "model": "GradeWeights",
+                  "namespace": "public"
+                }
+              },
+              "grades": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "academicPeriodId"
+                  ]
+                },
+                "to": {
+                  "model": "Grades",
+                  "namespace": "public"
+                }
+              },
               "organization": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -273,6 +339,36 @@
                 },
                 "to": {
                   "model": "Organizations",
+                  "namespace": "public"
+                }
+              },
+              "rankingPeriods": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "academicPeriodId"
+                  ]
+                },
+                "to": {
+                  "model": "RankingPeriods",
+                  "namespace": "public"
+                }
+              },
+              "reportCards": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "academicPeriodId"
+                  ]
+                },
+                "to": {
+                  "model": "ReportCards",
                   "namespace": "public"
                 }
               }
@@ -1949,6 +2045,36 @@
                   "namespace": "public"
                 }
               },
+              "gradeWeights": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "courseId"
+                  ]
+                },
+                "to": {
+                  "model": "GradeWeights",
+                  "namespace": "public"
+                }
+              },
+              "grades": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "courseId"
+                  ]
+                },
+                "to": {
+                  "model": "Grades",
+                  "namespace": "public"
+                }
+              },
               "modules": {
                 "cardinality": "1:N",
                 "on": {
@@ -2191,6 +2317,21 @@
                   "namespace": "public"
                 }
               },
+              "gradeWeights": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "GradeWeights",
+                  "namespace": "public"
+                }
+              },
               "organization": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -2270,6 +2411,651 @@
               },
               "namespaceId": "public",
               "table": "divisions"
+            }
+          },
+          "GradeComponents": {
+            "fields": {
+              "code": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "defaultWeight": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "maxScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "gradeWeights": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "gradeComponentId"
+                  ]
+                },
+                "to": {
+                  "model": "GradeWeights",
+                  "namespace": "public"
+                }
+              },
+              "grades": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "gradeComponentId"
+                  ]
+                },
+                "to": {
+                  "model": "Grades",
+                  "namespace": "public"
+                }
+              },
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              },
+              "reportCardItems": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "gradeComponentId"
+                  ]
+                },
+                "to": {
+                  "model": "ReportCardItems",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "code": {
+                  "column": "code"
+                },
+                "defaultWeight": {
+                  "column": "default_weight"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "maxScore": {
+                  "column": "max_score"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "grade_components"
+            }
+          },
+          "GradeScales": {
+            "fields": {
+              "code": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "isPassing": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "letter": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "maxScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "minScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "remark": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "code": {
+                  "column": "code"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "isPassing": {
+                  "column": "is_passing"
+                },
+                "letter": {
+                  "column": "letter"
+                },
+                "maxScore": {
+                  "column": "max_score"
+                },
+                "minScore": {
+                  "column": "min_score"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                },
+                "remark": {
+                  "column": "remark"
+                }
+              },
+              "namespaceId": "public",
+              "table": "grade_scales"
+            }
+          },
+          "GradeWeights": {
+            "fields": {
+              "academicPeriodId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "courseId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "gradeComponentId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "weight": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "academicPeriod": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "academicPeriodId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AcademicPeriods",
+                  "namespace": "public"
+                }
+              },
+              "course": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "courseId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "division": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "gradeComponent": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "gradeComponentId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "GradeComponents",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "academicPeriodId": {
+                  "column": "academic_period_id"
+                },
+                "courseId": {
+                  "column": "course_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "gradeComponentId": {
+                  "column": "grade_component_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "weight": {
+                  "column": "weight"
+                }
+              },
+              "namespaceId": "public",
+              "table": "grade_weights"
+            }
+          },
+          "Grades": {
+            "fields": {
+              "academicPeriodId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "courseId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "gradeComponentId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "normalizedScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "rawScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "sourceId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "sourceType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "weightApplied": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "weightedScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "academicPeriod": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "academicPeriodId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AcademicPeriods",
+                  "namespace": "public"
+                }
+              },
+              "course": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "courseId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "gradeComponent": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "gradeComponentId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "GradeComponents",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "profilesProfiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "updatedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "academicPeriodId": {
+                  "column": "academic_period_id"
+                },
+                "courseId": {
+                  "column": "course_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "gradeComponentId": {
+                  "column": "grade_component_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "normalizedScore": {
+                  "column": "normalized_score"
+                },
+                "rawScore": {
+                  "column": "raw_score"
+                },
+                "sourceId": {
+                  "column": "source_id"
+                },
+                "sourceType": {
+                  "column": "source_type"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "updatedBy": {
+                  "column": "updated_by"
+                },
+                "userId": {
+                  "column": "user_id"
+                },
+                "weightApplied": {
+                  "column": "weight_applied"
+                },
+                "weightedScore": {
+                  "column": "weighted_score"
+                }
+              },
+              "namespaceId": "public",
+              "table": "grades"
             }
           },
           "LearningActivities": {
@@ -3635,6 +4421,51 @@
                   "model": "Divisions",
                   "namespace": "public"
                 }
+              },
+              "gradeComponents": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "GradeComponents",
+                  "namespace": "public"
+                }
+              },
+              "gradeScales": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "GradeScales",
+                  "namespace": "public"
+                }
+              },
+              "rankingPeriods": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "RankingPeriods",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -3750,6 +4581,140 @@
               },
               "namespaceId": "public",
               "table": "permissions"
+            }
+          },
+          "PointTransactions": {
+            "fields": {
+              "amount": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "pointType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "sourceId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "sourceType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "amount": {
+                  "column": "amount"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "pointType": {
+                  "column": "point_type"
+                },
+                "sourceId": {
+                  "column": "source_id"
+                },
+                "sourceType": {
+                  "column": "source_type"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "point_transactions"
             }
           },
           "Profiles": {
@@ -3972,6 +4937,51 @@
                   "namespace": "public"
                 }
               },
+              "grades": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "Grades",
+                  "namespace": "public"
+                }
+              },
+              "grades2": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "Grades",
+                  "namespace": "public"
+                }
+              },
+              "gradesGrades": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "updatedBy"
+                  ]
+                },
+                "to": {
+                  "model": "Grades",
+                  "namespace": "public"
+                }
+              },
               "learningActivities": {
                 "cardinality": "1:N",
                 "on": {
@@ -4077,6 +5087,36 @@
                   "namespace": "public"
                 }
               },
+              "pointTransactions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "PointTransactions",
+                  "namespace": "public"
+                }
+              },
+              "pointTransactionsPointTransactions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "PointTransactions",
+                  "namespace": "public"
+                }
+              },
               "questions": {
                 "cardinality": "1:N",
                 "on": {
@@ -4119,6 +5159,36 @@
                 },
                 "to": {
                   "model": "Quizzes",
+                  "namespace": "public"
+                }
+              },
+              "rankingEntries": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "RankingEntries",
+                  "namespace": "public"
+                }
+              },
+              "reportCards": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "ReportCards",
                   "namespace": "public"
                 }
               },
@@ -5122,6 +6192,525 @@
               },
               "namespaceId": "public",
               "table": "quizzes"
+            }
+          },
+          "RankingEntries": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "points": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "rank": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "rankingPeriodId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "score": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "rankingPeriod": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "rankingPeriodId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "RankingPeriods",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "points": {
+                  "column": "points"
+                },
+                "rank": {
+                  "column": "rank"
+                },
+                "rankingPeriodId": {
+                  "column": "ranking_period_id"
+                },
+                "score": {
+                  "column": "score"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "ranking_entries"
+            }
+          },
+          "RankingPeriods": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "academicPeriodId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "endDate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/date-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "metric": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "startDate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/date-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              }
+            },
+            "relations": {
+              "academicPeriod": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "academicPeriodId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AcademicPeriods",
+                  "namespace": "public"
+                }
+              },
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              },
+              "rankingEntries": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "rankingPeriodId"
+                  ]
+                },
+                "to": {
+                  "model": "RankingEntries",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "academicPeriodId": {
+                  "column": "academic_period_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "endDate": {
+                  "column": "end_date"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "metric": {
+                  "column": "metric"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                },
+                "startDate": {
+                  "column": "start_date"
+                },
+                "status": {
+                  "column": "status"
+                }
+              },
+              "namespaceId": "public",
+              "table": "ranking_periods"
+            }
+          },
+          "ReportCardItems": {
+            "fields": {
+              "gradeComponentId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "reportCardId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "score": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "weight": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "weightedScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "gradeComponent": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "gradeComponentId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "GradeComponents",
+                  "namespace": "public"
+                }
+              },
+              "reportCard": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "reportCardId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "ReportCards",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "gradeComponentId": {
+                  "column": "grade_component_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "reportCardId": {
+                  "column": "report_card_id"
+                },
+                "score": {
+                  "column": "score"
+                },
+                "weight": {
+                  "column": "weight"
+                },
+                "weightedScore": {
+                  "column": "weighted_score"
+                }
+              },
+              "namespaceId": "public",
+              "table": "report_card_items"
+            }
+          },
+          "ReportCards": {
+            "fields": {
+              "academicPeriodId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "generatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "gradeLetter": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "publishedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "remark": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "totalScore": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "academicPeriod": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "academicPeriodId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AcademicPeriods",
+                  "namespace": "public"
+                }
+              },
+              "reportCardItems": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "reportCardId"
+                  ]
+                },
+                "to": {
+                  "model": "ReportCardItems",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "academicPeriodId": {
+                  "column": "academic_period_id"
+                },
+                "generatedAt": {
+                  "column": "generated_at"
+                },
+                "gradeLetter": {
+                  "column": "grade_letter"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "publishedAt": {
+                  "column": "published_at"
+                },
+                "remark": {
+                  "column": "remark"
+                },
+                "totalScore": {
+                  "column": "total_score"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "report_cards"
             }
           },
           "RoadmapEdges": {
@@ -7161,6 +8750,118 @@
               "using": "has_permission(auth.uid(), 'division.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'division.update'::text)"
             },
+            "grade_components_select": {
+              "kind": "policy",
+              "name": "grade_components_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grade_components",
+              "using": "true"
+            },
+            "grade_components_write": {
+              "kind": "policy",
+              "name": "grade_components_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grade_components",
+              "using": "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+            },
+            "grade_scales_select": {
+              "kind": "policy",
+              "name": "grade_scales_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grade_scales",
+              "using": "true"
+            },
+            "grade_scales_write": {
+              "kind": "policy",
+              "name": "grade_scales_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grade_scales",
+              "using": "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+            },
+            "grade_weights_select": {
+              "kind": "policy",
+              "name": "grade_weights_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grade_weights",
+              "using": "true"
+            },
+            "grade_weights_write": {
+              "kind": "policy",
+              "name": "grade_weights_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grade_weights",
+              "using": "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+            },
+            "grades_insert": {
+              "kind": "policy",
+              "name": "grades_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grades",
+              "withCheck": "has_permission(auth.uid(), 'grade.create'::text)"
+            },
+            "grades_select": {
+              "kind": "policy",
+              "name": "grades_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grades",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'grade.view'::text) OR has_permission(auth.uid(), 'grade.create'::text) OR has_permission(auth.uid(), 'grade.update'::text))"
+            },
+            "grades_update": {
+              "kind": "policy",
+              "name": "grades_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "grades",
+              "using": "has_permission(auth.uid(), 'grade.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'grade.update'::text)"
+            },
             "learning_activities_insert": {
               "kind": "policy",
               "name": "learning_activities_insert",
@@ -7460,6 +9161,30 @@
               "tableName": "permissions",
               "using": "true"
             },
+            "point_transactions_insert": {
+              "kind": "policy",
+              "name": "point_transactions_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "point_transactions",
+              "withCheck": "has_permission(auth.uid(), 'point.manage'::text)"
+            },
+            "point_transactions_select": {
+              "kind": "policy",
+              "name": "point_transactions_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "point_transactions",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'point.view'::text) OR has_permission(auth.uid(), 'point.manage'::text))"
+            },
             "profiles_select_own": {
               "kind": "policy",
               "name": "profiles_select_own",
@@ -7682,6 +9407,106 @@
               "tableName": "quizzes",
               "using": "has_permission(auth.uid(), 'quiz.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'quiz.update'::text)"
+            },
+            "ranking_entries_select": {
+              "kind": "policy",
+              "name": "ranking_entries_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "ranking_entries",
+              "using": "true"
+            },
+            "ranking_entries_write": {
+              "kind": "policy",
+              "name": "ranking_entries_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "ranking_entries",
+              "using": "has_permission(auth.uid(), 'ranking.manage'::text)",
+              "withCheck": "has_permission(auth.uid(), 'ranking.manage'::text)"
+            },
+            "ranking_periods_select": {
+              "kind": "policy",
+              "name": "ranking_periods_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "ranking_periods",
+              "using": "true"
+            },
+            "ranking_periods_write": {
+              "kind": "policy",
+              "name": "ranking_periods_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "ranking_periods",
+              "using": "has_permission(auth.uid(), 'ranking.manage'::text)",
+              "withCheck": "has_permission(auth.uid(), 'ranking.manage'::text)"
+            },
+            "report_card_items_select": {
+              "kind": "policy",
+              "name": "report_card_items_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "report_card_items",
+              "using": "true"
+            },
+            "report_card_items_write": {
+              "kind": "policy",
+              "name": "report_card_items_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "report_card_items",
+              "using": "has_permission(auth.uid(), 'grade.publish'::text)",
+              "withCheck": "has_permission(auth.uid(), 'grade.publish'::text)"
+            },
+            "report_cards_select": {
+              "kind": "policy",
+              "name": "report_cards_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "report_cards",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'grade.view'::text))"
+            },
+            "report_cards_write": {
+              "kind": "policy",
+              "name": "report_cards_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "report_cards",
+              "using": "has_permission(auth.uid(), 'grade.publish'::text)",
+              "withCheck": "has_permission(auth.uid(), 'grade.publish'::text)"
             },
             "roadmap_edges_select": {
               "kind": "policy",
@@ -8083,6 +9908,26 @@
               "namespaceId": "public",
               "tableName": "divisions"
             },
+            "grade_components": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "grade_components"
+            },
+            "grade_scales": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "grade_scales"
+            },
+            "grade_weights": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "grade_weights"
+            },
+            "grades": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "grades"
+            },
             "learning_activities": {
               "kind": "rls",
               "namespaceId": "public",
@@ -8143,6 +9988,11 @@
               "namespaceId": "public",
               "tableName": "permissions"
             },
+            "point_transactions": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "point_transactions"
+            },
             "profiles": {
               "kind": "rls",
               "namespaceId": "public",
@@ -8177,6 +10027,26 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "quizzes"
+            },
+            "ranking_entries": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "ranking_entries"
+            },
+            "ranking_periods": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "ranking_periods"
+            },
+            "report_card_items": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "report_card_items"
+            },
+            "report_cards": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "report_cards"
             },
             "roadmap_edges": {
               "kind": "rls",
@@ -9883,6 +11753,565 @@
                 }
               ]
             },
+            "grade_components": {
+              "checks": [
+                {
+                  "expression": "(default_weight >= (0)::numeric)",
+                  "name": "grade_components_default_weight_check"
+                },
+                {
+                  "expression": "(max_score > (0)::numeric)",
+                  "name": "grade_components_max_score_check"
+                }
+              ],
+              "columns": {
+                "code": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "default_weight": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "0"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "max_score": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "100"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "grade_components_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_components"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "grade_components_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "organization_id",
+                    "code"
+                  ],
+                  "name": "grade_components_organization_id_code_key"
+                }
+              ]
+            },
+            "grade_scales": {
+              "checks": [
+                {
+                  "expression": "(min_score <= max_score)",
+                  "name": "grade_scales_check"
+                }
+              ],
+              "columns": {
+                "code": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "is_passing": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "letter": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "max_score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "min_score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "remark": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "grade_scales_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_scales"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "grade_scales_pkey"
+              },
+              "uniques": []
+            },
+            "grade_weights": {
+              "checks": [
+                {
+                  "expression": "(weight >= (0)::numeric)",
+                  "name": "grade_weights_weight_check"
+                }
+              ],
+              "columns": {
+                "academic_period_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "course_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "grade_component_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "weight": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "grade_weights_academic_period_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "academic_period_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_weights"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "academic_periods"
+                  }
+                },
+                {
+                  "name": "grade_weights_course_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "course_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_weights"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  }
+                },
+                {
+                  "name": "grade_weights_division_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_weights"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                },
+                {
+                  "name": "grade_weights_grade_component_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "grade_component_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_weights"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_components"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "grade_weights_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "academic_period_id",
+                    "course_id",
+                    "division_id",
+                    "grade_component_id"
+                  ],
+                  "name": "grade_weights_academic_period_id_course_id_division_id_grad_key"
+                }
+              ]
+            },
+            "grades": {
+              "checks": [
+                {
+                  "expression": "(raw_score >= (0)::numeric)",
+                  "name": "grades_raw_score_check"
+                }
+              ],
+              "columns": {
+                "academic_period_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "course_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "grade_component_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "normalized_score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "raw_score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "source_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "source_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "updated_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "weight_applied": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "0"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "weighted_score": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "0"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "grades_academic_period_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "academic_period_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grades"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "academic_periods"
+                  }
+                },
+                {
+                  "name": "grades_course_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "course_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grades"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  }
+                },
+                {
+                  "name": "grades_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grades"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "grades_grade_component_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "grade_component_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grades"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_components"
+                  }
+                },
+                {
+                  "name": "grades_updated_by_fkey",
+                  "source": {
+                    "columns": [
+                      "updated_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grades"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "grades_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grades"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "academic_period_id"
+                  ],
+                  "name": "grades_academic_period_id",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "grades_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "grades_pkey"
+              },
+              "uniques": []
+            },
             "learning_activities": {
               "columns": {
                 "activity_type": {
@@ -10988,6 +13417,122 @@
                 }
               ]
             },
+            "point_transactions": {
+              "checks": [
+                {
+                  "expression": "(amount <> 0)",
+                  "name": "point_transactions_amount_check"
+                }
+              ],
+              "columns": {
+                "amount": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "point_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "source_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "source_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "point_transactions_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "point_transactions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "point_transactions_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "point_transactions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "point_transactions_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "point_transactions_pkey"
+              },
+              "uniques": []
+            },
             "profiles": {
               "columns": {
                 "avatar_path": {
@@ -11832,6 +14377,444 @@
                 "name": "quizzes_pkey"
               },
               "uniques": []
+            },
+            "ranking_entries": {
+              "checks": [
+                {
+                  "expression": "(rank >= 1)",
+                  "name": "ranking_entries_rank_check"
+                }
+              ],
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "points": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "rank": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "ranking_period_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "ranking_entries_ranking_period_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "ranking_period_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "ranking_entries"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "ranking_periods"
+                  }
+                },
+                {
+                  "name": "ranking_entries_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "ranking_entries"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "ranking_entries_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "ranking_period_id",
+                    "user_id"
+                  ],
+                  "name": "ranking_entries_ranking_period_id_user_id_key"
+                }
+              ]
+            },
+            "ranking_periods": {
+              "columns": {
+                "academic_period_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "end_date": {
+                  "codecId": "pg/date-temporal@1",
+                  "nativeType": "date",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "metric": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "POINTS"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "start_date": {
+                  "codecId": "pg/date-temporal@1",
+                  "nativeType": "date",
+                  "nullable": true
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "SEMESTER"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "ranking_periods_academic_period_id_fkey",
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "academic_period_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "ranking_periods"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "academic_periods"
+                  }
+                },
+                {
+                  "name": "ranking_periods_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "ranking_periods"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "ranking_periods_pkey"
+              },
+              "uniques": []
+            },
+            "report_card_items": {
+              "columns": {
+                "grade_component_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "report_card_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "weight": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "0"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "weighted_score": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "0"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "report_card_items_grade_component_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "grade_component_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "report_card_items"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "grade_components"
+                  }
+                },
+                {
+                  "name": "report_card_items_report_card_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "report_card_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "report_card_items"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "report_cards"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "report_card_items_pkey"
+              },
+              "uniques": []
+            },
+            "report_cards": {
+              "columns": {
+                "academic_period_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "generated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "grade_letter": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "published_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "remark": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "total_score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "report_cards_academic_period_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "academic_period_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "report_cards"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "academic_periods"
+                  }
+                },
+                {
+                  "name": "report_cards_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "report_cards"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "report_cards_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "user_id",
+                    "academic_period_id"
+                  ],
+                  "name": "report_cards_user_id_academic_period_id_key"
+                }
+              ]
             },
             "roadmap_edges": {
               "checks": [
@@ -13223,7 +16206,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "a8bbd596eeb5c79c8601433776f5959f4ef9ff28c41422040362236398e2dee1"
+    "storageHash": "74671a1b9573656131c4e696d55a01dfd78abcc4f4594f3e806611b26f31de60"
   },
   "capabilities": {
     "postgres": {

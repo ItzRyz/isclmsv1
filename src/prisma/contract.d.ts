@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'a8bbd596eeb5c79c8601433776f5959f4ef9ff28c41422040362236398e2dee1'>;
+  StorageHashBase<'74671a1b9573656131c4e696d55a01dfd78abcc4f4594f3e806611b26f31de60'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -394,6 +394,50 @@ export type FieldOutputTypes = {
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
+    readonly GradeComponents: {
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly defaultWeight: CodecTypes['pg/numeric@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly maxScore: CodecTypes['pg/numeric@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly Grades: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['output'];
+      readonly courseId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly gradeComponentId: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly normalizedScore: CodecTypes['pg/numeric@1']['output'];
+      readonly rawScore: CodecTypes['pg/numeric@1']['output'];
+      readonly sourceId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly sourceType: CodecTypes['pg/text@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+      readonly weightApplied: CodecTypes['pg/numeric@1']['output'];
+      readonly weightedScore: CodecTypes['pg/numeric@1']['output'];
+    };
+    readonly GradeScales: {
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly isPassing: CodecTypes['pg/bool@1']['output'];
+      readonly letter: CodecTypes['pg/text@1']['output'];
+      readonly maxScore: CodecTypes['pg/numeric@1']['output'];
+      readonly minScore: CodecTypes['pg/numeric@1']['output'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['output'];
+      readonly remark: CodecTypes['pg/text@1']['output'] | null;
+    };
+    readonly GradeWeights: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['output'];
+      readonly courseId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly gradeComponentId: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly weight: CodecTypes['pg/numeric@1']['output'];
+    };
     readonly LearningActivities: {
       readonly activityType: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -503,6 +547,17 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly resource: CodecTypes['pg/text@1']['output'];
     };
+    readonly PointTransactions: {
+      readonly amount: CodecTypes['pg/int4@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly pointType: CodecTypes['pg/text@1']['output'];
+      readonly sourceId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly sourceType: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
     readonly Profiles: {
       readonly avatarPath: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -577,6 +632,45 @@ export type FieldOutputTypes = {
       readonly timeLimitSeconds: CodecTypes['pg/int4@1']['output'] | null;
       readonly title: CodecTypes['pg/text@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly RankingEntries: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly points: CodecTypes['pg/int4@1']['output'];
+      readonly rank: CodecTypes['pg/int4@1']['output'];
+      readonly rankingPeriodId: CodecTypes['pg/uuid@1']['output'];
+      readonly score: CodecTypes['pg/numeric@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly RankingPeriods: {
+      readonly _type: CodecTypes['pg/text@1']['output'];
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly endDate: CodecTypes['pg/date-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly metric: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['output'];
+      readonly startDate: CodecTypes['pg/date-temporal@1']['output'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+    };
+    readonly ReportCardItems: {
+      readonly gradeComponentId: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly reportCardId: CodecTypes['pg/uuid@1']['output'];
+      readonly score: CodecTypes['pg/numeric@1']['output'];
+      readonly weight: CodecTypes['pg/numeric@1']['output'];
+      readonly weightedScore: CodecTypes['pg/numeric@1']['output'];
+    };
+    readonly ReportCards: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['output'];
+      readonly generatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly gradeLetter: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly remark: CodecTypes['pg/text@1']['output'] | null;
+      readonly totalScore: CodecTypes['pg/numeric@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
     };
     readonly RoadmapEdges: {
       readonly edgeType: CodecTypes['pg/text@1']['output'];
@@ -843,6 +937,50 @@ export type FieldInputTypes = {
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
+    readonly GradeComponents: {
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly defaultWeight: CodecTypes['pg/numeric@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly maxScore: CodecTypes['pg/numeric@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly Grades: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['input'];
+      readonly courseId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly gradeComponentId: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly normalizedScore: CodecTypes['pg/numeric@1']['input'];
+      readonly rawScore: CodecTypes['pg/numeric@1']['input'];
+      readonly sourceId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly sourceType: CodecTypes['pg/text@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly updatedBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+      readonly weightApplied: CodecTypes['pg/numeric@1']['input'];
+      readonly weightedScore: CodecTypes['pg/numeric@1']['input'];
+    };
+    readonly GradeScales: {
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly isPassing: CodecTypes['pg/bool@1']['input'];
+      readonly letter: CodecTypes['pg/text@1']['input'];
+      readonly maxScore: CodecTypes['pg/numeric@1']['input'];
+      readonly minScore: CodecTypes['pg/numeric@1']['input'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['input'];
+      readonly remark: CodecTypes['pg/text@1']['input'] | null;
+    };
+    readonly GradeWeights: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['input'];
+      readonly courseId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly divisionId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly gradeComponentId: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly weight: CodecTypes['pg/numeric@1']['input'];
+    };
     readonly LearningActivities: {
       readonly activityType: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -952,6 +1090,17 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly resource: CodecTypes['pg/text@1']['input'];
     };
+    readonly PointTransactions: {
+      readonly amount: CodecTypes['pg/int4@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly pointType: CodecTypes['pg/text@1']['input'];
+      readonly sourceId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly sourceType: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
     readonly Profiles: {
       readonly avatarPath: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -1026,6 +1175,45 @@ export type FieldInputTypes = {
       readonly timeLimitSeconds: CodecTypes['pg/int4@1']['input'] | null;
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly RankingEntries: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly points: CodecTypes['pg/int4@1']['input'];
+      readonly rank: CodecTypes['pg/int4@1']['input'];
+      readonly rankingPeriodId: CodecTypes['pg/uuid@1']['input'];
+      readonly score: CodecTypes['pg/numeric@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly RankingPeriods: {
+      readonly _type: CodecTypes['pg/text@1']['input'];
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly endDate: CodecTypes['pg/date-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly metric: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['input'];
+      readonly startDate: CodecTypes['pg/date-temporal@1']['input'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+    };
+    readonly ReportCardItems: {
+      readonly gradeComponentId: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly reportCardId: CodecTypes['pg/uuid@1']['input'];
+      readonly score: CodecTypes['pg/numeric@1']['input'];
+      readonly weight: CodecTypes['pg/numeric@1']['input'];
+      readonly weightedScore: CodecTypes['pg/numeric@1']['input'];
+    };
+    readonly ReportCards: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['input'];
+      readonly generatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly gradeLetter: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly remark: CodecTypes['pg/text@1']['input'] | null;
+      readonly totalScore: CodecTypes['pg/numeric@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
     };
     readonly RoadmapEdges: {
       readonly edgeType: CodecTypes['pg/text@1']['input'];
@@ -1292,6 +1480,50 @@ export type StorageColumnTypes = {
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
+    readonly grade_components: {
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly default_weight: CodecTypes['pg/numeric@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly max_score: CodecTypes['pg/numeric@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly grade_scales: {
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly is_passing: CodecTypes['pg/bool@1']['output'];
+      readonly letter: CodecTypes['pg/text@1']['output'];
+      readonly max_score: CodecTypes['pg/numeric@1']['output'];
+      readonly min_score: CodecTypes['pg/numeric@1']['output'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['output'];
+      readonly remark: CodecTypes['pg/text@1']['output'] | null;
+    };
+    readonly grade_weights: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['output'];
+      readonly course_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly division_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly grade_component_id: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly weight: CodecTypes['pg/numeric@1']['output'];
+    };
+    readonly grades: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['output'];
+      readonly course_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly grade_component_id: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly normalized_score: CodecTypes['pg/numeric@1']['output'];
+      readonly raw_score: CodecTypes['pg/numeric@1']['output'];
+      readonly source_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly source_type: CodecTypes['pg/text@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly updated_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+      readonly weight_applied: CodecTypes['pg/numeric@1']['output'];
+      readonly weighted_score: CodecTypes['pg/numeric@1']['output'];
+    };
     readonly learning_activities: {
       readonly activity_type: CodecTypes['pg/text@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1401,6 +1633,17 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly resource: CodecTypes['pg/text@1']['output'];
     };
+    readonly point_transactions: {
+      readonly amount: CodecTypes['pg/int4@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly point_type: CodecTypes['pg/text@1']['output'];
+      readonly source_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly source_type: CodecTypes['pg/text@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
     readonly profiles: {
       readonly avatar_path: CodecTypes['pg/text@1']['output'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1475,6 +1718,45 @@ export type StorageColumnTypes = {
       readonly title: CodecTypes['pg/text@1']['output'];
       readonly type: CodecTypes['pg/text@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly ranking_entries: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly points: CodecTypes['pg/int4@1']['output'];
+      readonly rank: CodecTypes['pg/int4@1']['output'];
+      readonly ranking_period_id: CodecTypes['pg/uuid@1']['output'];
+      readonly score: CodecTypes['pg/numeric@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly ranking_periods: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly end_date: CodecTypes['pg/date-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly metric: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['output'];
+      readonly start_date: CodecTypes['pg/date-temporal@1']['output'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly type: CodecTypes['pg/text@1']['output'];
+    };
+    readonly report_card_items: {
+      readonly grade_component_id: CodecTypes['pg/uuid@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly report_card_id: CodecTypes['pg/uuid@1']['output'];
+      readonly score: CodecTypes['pg/numeric@1']['output'];
+      readonly weight: CodecTypes['pg/numeric@1']['output'];
+      readonly weighted_score: CodecTypes['pg/numeric@1']['output'];
+    };
+    readonly report_cards: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['output'];
+      readonly generated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly grade_letter: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly published_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly remark: CodecTypes['pg/text@1']['output'] | null;
+      readonly total_score: CodecTypes['pg/numeric@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
     };
     readonly roadmap_edges: {
       readonly edge_type: CodecTypes['pg/text@1']['output'];
@@ -1741,6 +2023,50 @@ export type StorageColumnInputTypes = {
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
+    readonly grade_components: {
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly default_weight: CodecTypes['pg/numeric@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly max_score: CodecTypes['pg/numeric@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly grade_scales: {
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly is_passing: CodecTypes['pg/bool@1']['input'];
+      readonly letter: CodecTypes['pg/text@1']['input'];
+      readonly max_score: CodecTypes['pg/numeric@1']['input'];
+      readonly min_score: CodecTypes['pg/numeric@1']['input'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['input'];
+      readonly remark: CodecTypes['pg/text@1']['input'] | null;
+    };
+    readonly grade_weights: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['input'];
+      readonly course_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly division_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly grade_component_id: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly weight: CodecTypes['pg/numeric@1']['input'];
+    };
+    readonly grades: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['input'];
+      readonly course_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly grade_component_id: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly normalized_score: CodecTypes['pg/numeric@1']['input'];
+      readonly raw_score: CodecTypes['pg/numeric@1']['input'];
+      readonly source_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly source_type: CodecTypes['pg/text@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly updated_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+      readonly weight_applied: CodecTypes['pg/numeric@1']['input'];
+      readonly weighted_score: CodecTypes['pg/numeric@1']['input'];
+    };
     readonly learning_activities: {
       readonly activity_type: CodecTypes['pg/text@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -1850,6 +2176,17 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly resource: CodecTypes['pg/text@1']['input'];
     };
+    readonly point_transactions: {
+      readonly amount: CodecTypes['pg/int4@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly point_type: CodecTypes['pg/text@1']['input'];
+      readonly source_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly source_type: CodecTypes['pg/text@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
     readonly profiles: {
       readonly avatar_path: CodecTypes['pg/text@1']['input'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -1924,6 +2261,45 @@ export type StorageColumnInputTypes = {
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly type: CodecTypes['pg/text@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly ranking_entries: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly points: CodecTypes['pg/int4@1']['input'];
+      readonly rank: CodecTypes['pg/int4@1']['input'];
+      readonly ranking_period_id: CodecTypes['pg/uuid@1']['input'];
+      readonly score: CodecTypes['pg/numeric@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly ranking_periods: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly end_date: CodecTypes['pg/date-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly metric: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['input'];
+      readonly start_date: CodecTypes['pg/date-temporal@1']['input'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly type: CodecTypes['pg/text@1']['input'];
+    };
+    readonly report_card_items: {
+      readonly grade_component_id: CodecTypes['pg/uuid@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly report_card_id: CodecTypes['pg/uuid@1']['input'];
+      readonly score: CodecTypes['pg/numeric@1']['input'];
+      readonly weight: CodecTypes['pg/numeric@1']['input'];
+      readonly weighted_score: CodecTypes['pg/numeric@1']['input'];
+    };
+    readonly report_cards: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['input'];
+      readonly generated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly grade_letter: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly published_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly remark: CodecTypes['pg/text@1']['input'] | null;
+      readonly total_score: CodecTypes['pg/numeric@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
     };
     readonly roadmap_edges: {
       readonly edge_type: CodecTypes['pg/text@1']['input'];
@@ -2054,8 +2430,13 @@ export namespace Models {
     startDate: CodecTypes['pg/date-temporal@1']['output'] | null;
     status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     classes: public_Classes[];
+    gradeWeights: public_GradeWeights[];
+    grades: public_Grades[];
     organization: public_Organizations;
-    readonly [RelationKeys]?: 'classes' | 'organization';
+    rankingPeriods: public_RankingPeriods[];
+    reportCards: public_ReportCards[];
+    readonly [RelationKeys]?:
+      'classes' | 'gradeWeights' | 'grades' | 'organization' | 'rankingPeriods' | 'reportCards';
   };
   export type public_AssignmentGroupMembers = {
     assignmentGroupId: CodecTypes['pg/uuid@1']['output'];
@@ -2232,6 +2613,8 @@ export namespace Models {
     updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
     assignments: public_Assignments[];
     division: public_Divisions;
+    gradeWeights: public_GradeWeights[];
+    grades: public_Grades[];
     modules: public_Modules[];
     profiles: public_Profiles | null;
     profilesProfiles: public_Profiles | null;
@@ -2240,6 +2623,8 @@ export namespace Models {
     readonly [RelationKeys]?:
       | 'assignments'
       | 'division'
+      | 'gradeWeights'
+      | 'grades'
       | 'modules'
       | 'profiles'
       | 'profilesProfiles'
@@ -2259,11 +2644,82 @@ export namespace Models {
     attendanceSessions: public_AttendanceSessions[];
     classes: public_Classes[];
     courses: public_Courses[];
+    gradeWeights: public_GradeWeights[];
     organization: public_Organizations;
     roadmaps: public_Roadmaps[];
     userDivisions: public_UserDivisions[];
     readonly [RelationKeys]?:
-      'attendanceSessions' | 'classes' | 'courses' | 'organization' | 'roadmaps' | 'userDivisions';
+      | 'attendanceSessions'
+      | 'classes'
+      | 'courses'
+      | 'gradeWeights'
+      | 'organization'
+      | 'roadmaps'
+      | 'userDivisions';
+  };
+  export type public_GradeComponents = {
+    code: CodecTypes['pg/text@1']['output'];
+    defaultWeight: CodecTypes['pg/numeric@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    maxScore: CodecTypes['pg/numeric@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
+    organizationId: CodecTypes['pg/uuid@1']['output'];
+    gradeWeights: public_GradeWeights[];
+    grades: public_Grades[];
+    organization: public_Organizations;
+    reportCardItems: public_ReportCardItems[];
+    readonly [RelationKeys]?: 'gradeWeights' | 'grades' | 'organization' | 'reportCardItems';
+  };
+  export type public_GradeScales = {
+    code: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    isPassing: CodecTypes['pg/bool@1']['output'];
+    letter: CodecTypes['pg/text@1']['output'];
+    maxScore: CodecTypes['pg/numeric@1']['output'];
+    minScore: CodecTypes['pg/numeric@1']['output'];
+    organizationId: CodecTypes['pg/uuid@1']['output'];
+    remark: CodecTypes['pg/text@1']['output'] | null;
+    organization: public_Organizations;
+    readonly [RelationKeys]?: 'organization';
+  };
+  export type public_GradeWeights = {
+    academicPeriodId: CodecTypes['pg/uuid@1']['output'];
+    courseId: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+    gradeComponentId: CodecTypes['pg/uuid@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    weight: CodecTypes['pg/numeric@1']['output'];
+    academicPeriod: public_AcademicPeriods;
+    course: public_Courses | null;
+    division: public_Divisions | null;
+    gradeComponent: public_GradeComponents;
+    readonly [RelationKeys]?: 'academicPeriod' | 'course' | 'division' | 'gradeComponent';
+  };
+  export type public_Grades = {
+    academicPeriodId: CodecTypes['pg/uuid@1']['output'];
+    courseId: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+    gradeComponentId: CodecTypes['pg/uuid@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    normalizedScore: CodecTypes['pg/numeric@1']['output'];
+    rawScore: CodecTypes['pg/numeric@1']['output'];
+    sourceId: CodecTypes['pg/uuid@1']['output'] | null;
+    sourceType: CodecTypes['pg/text@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
+    userId: CodecTypes['pg/uuid@1']['output'];
+    weightApplied: CodecTypes['pg/numeric@1']['output'];
+    weightedScore: CodecTypes['pg/numeric@1']['output'];
+    academicPeriod: public_AcademicPeriods;
+    course: public_Courses | null;
+    gradeComponent: public_GradeComponents;
+    profiles: public_Profiles | null;
+    profilesProfiles: public_Profiles | null;
+    user: public_Profiles;
+    readonly [RelationKeys]?:
+      'academicPeriod' | 'course' | 'gradeComponent' | 'profiles' | 'profilesProfiles' | 'user';
   };
   export type public_LearningActivities = {
     activityType: CodecTypes['pg/text@1']['output'];
@@ -2416,7 +2872,16 @@ export namespace Models {
     academicPeriods: public_AcademicPeriods[];
     batches: public_Batches[];
     divisions: public_Divisions[];
-    readonly [RelationKeys]?: 'academicPeriods' | 'batches' | 'divisions';
+    gradeComponents: public_GradeComponents[];
+    gradeScales: public_GradeScales[];
+    rankingPeriods: public_RankingPeriods[];
+    readonly [RelationKeys]?:
+      | 'academicPeriods'
+      | 'batches'
+      | 'divisions'
+      | 'gradeComponents'
+      | 'gradeScales'
+      | 'rankingPeriods';
   };
   export type public_Permissions = {
     action: CodecTypes['pg/text@1']['output'];
@@ -2427,6 +2892,20 @@ export namespace Models {
     resource: CodecTypes['pg/text@1']['output'];
     rolePermissions: public_RolePermissions[];
     readonly [RelationKeys]?: 'rolePermissions';
+  };
+  export type public_PointTransactions = {
+    amount: CodecTypes['pg/int4@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+    description: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    pointType: CodecTypes['pg/text@1']['output'];
+    sourceId: CodecTypes['pg/uuid@1']['output'] | null;
+    sourceType: CodecTypes['pg/text@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    profiles: public_Profiles | null;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'profiles' | 'user';
   };
   export type public_Profiles = {
     avatarPath: CodecTypes['pg/text@1']['output'] | null;
@@ -2448,6 +2927,9 @@ export namespace Models {
     classMembers: public_ClassMembers[];
     courses: public_Courses[];
     coursesCourses: public_Courses[];
+    grades: public_Grades[];
+    grades2: public_Grades[];
+    gradesGrades: public_Grades[];
     learningActivities: public_LearningActivities[];
     materialBookmarks: public_MaterialBookmarks[];
     materialProgresses: public_MaterialProgress[];
@@ -2455,9 +2937,13 @@ export namespace Models {
     materialsMaterials: public_Materials[];
     notificationPreferences: public_NotificationPreferences[];
     notifications: public_Notifications[];
+    pointTransactions: public_PointTransactions[];
+    pointTransactionsPointTransactions: public_PointTransactions[];
     questions: public_Questions[];
     quizAttempts: public_QuizAttempts[];
     quizzes: public_Quizzes[];
+    rankingEntries: public_RankingEntries[];
+    reportCards: public_ReportCards[];
     submissionFeedbacks: public_SubmissionFeedback[];
     submissions: public_Submissions[];
     submissionsSubmissions: public_Submissions[];
@@ -2475,6 +2961,9 @@ export namespace Models {
       | 'classMembers'
       | 'courses'
       | 'coursesCourses'
+      | 'grades'
+      | 'grades2'
+      | 'gradesGrades'
       | 'learningActivities'
       | 'materialBookmarks'
       | 'materialProgresses'
@@ -2482,9 +2971,13 @@ export namespace Models {
       | 'materialsMaterials'
       | 'notificationPreferences'
       | 'notifications'
+      | 'pointTransactions'
+      | 'pointTransactionsPointTransactions'
       | 'questions'
       | 'quizAttempts'
       | 'quizzes'
+      | 'rankingEntries'
+      | 'reportCards'
       | 'submissionFeedbacks'
       | 'submissions'
       | 'submissionsSubmissions'
@@ -2580,6 +3073,59 @@ export namespace Models {
     quizQuestions: public_QuizQuestions[];
     readonly [RelationKeys]?:
       'course' | 'material' | 'module' | 'profiles' | 'quizAttempts' | 'quizQuestions';
+  };
+  export type public_RankingEntries = {
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    points: CodecTypes['pg/int4@1']['output'];
+    rank: CodecTypes['pg/int4@1']['output'];
+    rankingPeriodId: CodecTypes['pg/uuid@1']['output'];
+    score: CodecTypes['pg/numeric@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    rankingPeriod: public_RankingPeriods;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'rankingPeriod' | 'user';
+  };
+  export type public_RankingPeriods = {
+    _type: CodecTypes['pg/text@1']['output'];
+    academicPeriodId: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    endDate: CodecTypes['pg/date-temporal@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    metric: CodecTypes['pg/text@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
+    organizationId: CodecTypes['pg/uuid@1']['output'];
+    startDate: CodecTypes['pg/date-temporal@1']['output'] | null;
+    status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+    academicPeriod: public_AcademicPeriods | null;
+    organization: public_Organizations;
+    rankingEntries: public_RankingEntries[];
+    readonly [RelationKeys]?: 'academicPeriod' | 'organization' | 'rankingEntries';
+  };
+  export type public_ReportCardItems = {
+    gradeComponentId: CodecTypes['pg/uuid@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    reportCardId: CodecTypes['pg/uuid@1']['output'];
+    score: CodecTypes['pg/numeric@1']['output'];
+    weight: CodecTypes['pg/numeric@1']['output'];
+    weightedScore: CodecTypes['pg/numeric@1']['output'];
+    gradeComponent: public_GradeComponents;
+    reportCard: public_ReportCards;
+    readonly [RelationKeys]?: 'gradeComponent' | 'reportCard';
+  };
+  export type public_ReportCards = {
+    academicPeriodId: CodecTypes['pg/uuid@1']['output'];
+    generatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    gradeLetter: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    remark: CodecTypes['pg/text@1']['output'] | null;
+    totalScore: CodecTypes['pg/numeric@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    academicPeriod: public_AcademicPeriods;
+    reportCardItems: public_ReportCardItems[];
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'academicPeriod' | 'reportCardItems' | 'user';
   };
   export type public_RoadmapEdges = {
     edgeType: CodecTypes['pg/text@1']['output'];
@@ -2768,6 +3314,10 @@ export declare const models: {
     Classes: Models.public_Classes;
     Courses: Models.public_Courses;
     Divisions: Models.public_Divisions;
+    GradeComponents: Models.public_GradeComponents;
+    GradeScales: Models.public_GradeScales;
+    GradeWeights: Models.public_GradeWeights;
+    Grades: Models.public_Grades;
     LearningActivities: Models.public_LearningActivities;
     MaterialBookmarks: Models.public_MaterialBookmarks;
     MaterialFiles: Models.public_MaterialFiles;
@@ -2780,6 +3330,7 @@ export declare const models: {
     Notifications: Models.public_Notifications;
     Organizations: Models.public_Organizations;
     Permissions: Models.public_Permissions;
+    PointTransactions: Models.public_PointTransactions;
     Profiles: Models.public_Profiles;
     QuestionOptions: Models.public_QuestionOptions;
     Questions: Models.public_Questions;
@@ -2787,6 +3338,10 @@ export declare const models: {
     QuizAttempts: Models.public_QuizAttempts;
     QuizQuestions: Models.public_QuizQuestions;
     Quizzes: Models.public_Quizzes;
+    RankingEntries: Models.public_RankingEntries;
+    RankingPeriods: Models.public_RankingPeriods;
+    ReportCardItems: Models.public_ReportCardItems;
+    ReportCards: Models.public_ReportCards;
     RoadmapEdges: Models.public_RoadmapEdges;
     RoadmapNodes: Models.public_RoadmapNodes;
     Roadmaps: Models.public_Roadmaps;
@@ -4105,6 +4660,449 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly grade_components: {
+              columns: {
+                readonly code: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly default_weight: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly max_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '100'>;
+                  };
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly organization_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'grade_components_pkey';
+              };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['organization_id', 'code'];
+                  readonly name: 'grade_components_organization_id_code_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_components';
+                    readonly columns: readonly ['organization_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'organizations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grade_components_organization_id_fkey';
+                },
+              ];
+            };
+            readonly grade_scales: {
+              columns: {
+                readonly code: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly is_passing: {
+                  readonly nativeType: 'bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', true>;
+                  };
+                };
+                readonly letter: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly max_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+                readonly min_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+                readonly organization_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly remark: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'grade_scales_pkey' };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_scales';
+                    readonly columns: readonly ['organization_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'organizations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grade_scales_organization_id_fkey';
+                },
+              ];
+            };
+            readonly grade_weights: {
+              columns: {
+                readonly academic_period_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly course_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly division_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly grade_component_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly weight: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'grade_weights_pkey';
+              };
+              uniques: readonly [
+                {
+                  readonly columns: readonly [
+                    'academic_period_id',
+                    'course_id',
+                    'division_id',
+                    'grade_component_id',
+                  ];
+                  readonly name: 'grade_weights_academic_period_id_course_id_division_id_grad_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_weights';
+                    readonly columns: readonly ['academic_period_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'academic_periods';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grade_weights_academic_period_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_weights';
+                    readonly columns: readonly ['course_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'courses';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grade_weights_course_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_weights';
+                    readonly columns: readonly ['division_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'divisions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grade_weights_division_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_weights';
+                    readonly columns: readonly ['grade_component_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_components';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grade_weights_grade_component_id_fkey';
+                },
+              ];
+            };
+            readonly grades: {
+              columns: {
+                readonly academic_period_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly course_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly created_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly grade_component_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly normalized_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+                readonly raw_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+                readonly source_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly source_type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly updated_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly weight_applied: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
+                };
+                readonly weighted_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'grades_pkey' };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'grades_academic_period_id';
+                  readonly columns: readonly ['academic_period_id'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'grades_user_id';
+                  readonly columns: readonly ['user_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grades';
+                    readonly columns: readonly ['academic_period_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'academic_periods';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grades_academic_period_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grades';
+                    readonly columns: readonly ['course_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'courses';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grades_course_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grades';
+                    readonly columns: readonly ['created_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grades_created_by_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grades';
+                    readonly columns: readonly ['grade_component_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_components';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grades_grade_component_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grades';
+                    readonly columns: readonly ['updated_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grades_updated_by_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grades';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'grades_user_id_fkey';
+                },
+              ];
+            };
             readonly learning_activities: {
               columns: {
                 readonly activity_type: {
@@ -4996,6 +5994,100 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
+            readonly point_transactions: {
+              columns: {
+                readonly amount: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly created_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly point_type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly source_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly source_type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'point_transactions_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'point_transactions_user_id';
+                  readonly columns: readonly ['user_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'point_transactions';
+                    readonly columns: readonly ['created_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'point_transactions_created_by_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'point_transactions';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'point_transactions_user_id_fkey';
+                },
+              ];
+            };
             readonly profiles: {
               columns: {
                 readonly avatar_path: {
@@ -5646,6 +6738,364 @@ type ContractBase = Omit<
                     readonly columns: readonly ['id'];
                   };
                   readonly name: 'quizzes_module_id_fkey';
+                },
+              ];
+            };
+            readonly ranking_entries: {
+              columns: {
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly points: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                };
+                readonly rank: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly ranking_period_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'ranking_entries_pkey';
+              };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['ranking_period_id', 'user_id'];
+                  readonly name: 'ranking_entries_ranking_period_id_user_id_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'ranking_entries';
+                    readonly columns: readonly ['ranking_period_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'ranking_periods';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'ranking_entries_ranking_period_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'ranking_entries';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'ranking_entries_user_id_fkey';
+                },
+              ];
+            };
+            readonly ranking_periods: {
+              columns: {
+                readonly academic_period_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly end_date: {
+                  readonly nativeType: 'date';
+                  readonly codecId: 'pg/date-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly metric: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'POINTS'>;
+                  };
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly organization_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly start_date: {
+                  readonly nativeType: 'date';
+                  readonly codecId: 'pg/date-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly status: {
+                  readonly nativeType: 'content_status';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'DRAFT'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+                readonly type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'SEMESTER'>;
+                  };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'ranking_periods_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'ranking_periods';
+                    readonly columns: readonly ['academic_period_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'academic_periods';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'ranking_periods_academic_period_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'ranking_periods';
+                    readonly columns: readonly ['organization_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'organizations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'ranking_periods_organization_id_fkey';
+                },
+              ];
+            };
+            readonly report_card_items: {
+              columns: {
+                readonly grade_component_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly report_card_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+                readonly weight: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
+                };
+                readonly weighted_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'report_card_items_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'report_card_items';
+                    readonly columns: readonly ['grade_component_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'grade_components';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'report_card_items_grade_component_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'report_card_items';
+                    readonly columns: readonly ['report_card_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'report_cards';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'report_card_items_report_card_id_fkey';
+                },
+              ];
+            };
+            readonly report_cards: {
+              columns: {
+                readonly academic_period_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly generated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly grade_letter: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly published_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly remark: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly total_score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'report_cards_pkey' };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['user_id', 'academic_period_id'];
+                  readonly name: 'report_cards_user_id_academic_period_id_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'report_cards';
+                    readonly columns: readonly ['academic_period_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'academic_periods';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'report_cards_academic_period_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'report_cards';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'report_cards_user_id_fkey';
                 },
               ];
             };
@@ -6775,6 +8225,19 @@ type ContractBase = Omit<
     readonly classes: { readonly namespace: 'public' & NamespaceId; readonly model: 'Classes' };
     readonly courses: { readonly namespace: 'public' & NamespaceId; readonly model: 'Courses' };
     readonly divisions: { readonly namespace: 'public' & NamespaceId; readonly model: 'Divisions' };
+    readonly grade_components: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'GradeComponents';
+    };
+    readonly grade_scales: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'GradeScales';
+    };
+    readonly grade_weights: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'GradeWeights';
+    };
+    readonly grades: { readonly namespace: 'public' & NamespaceId; readonly model: 'Grades' };
     readonly learning_activities: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'LearningActivities';
@@ -6817,6 +8280,10 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Permissions';
     };
+    readonly point_transactions: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'PointTransactions';
+    };
     readonly profiles: { readonly namespace: 'public' & NamespaceId; readonly model: 'Profiles' };
     readonly question_options: {
       readonly namespace: 'public' & NamespaceId;
@@ -6836,6 +8303,22 @@ type ContractBase = Omit<
       readonly model: 'QuizQuestions';
     };
     readonly quizzes: { readonly namespace: 'public' & NamespaceId; readonly model: 'Quizzes' };
+    readonly ranking_entries: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'RankingEntries';
+    };
+    readonly ranking_periods: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'RankingPeriods';
+    };
+    readonly report_card_items: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ReportCardItems';
+    };
+    readonly report_cards: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ReportCards';
+    };
     readonly roadmap_edges: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'RoadmapEdges';
@@ -6931,6 +8414,28 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['academicPeriodId'];
                 };
               };
+              readonly gradeWeights: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeWeights';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['academicPeriodId'];
+                };
+              };
+              readonly grades: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Grades';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['academicPeriodId'];
+                };
+              };
               readonly organization: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -6941,6 +8446,28 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['organizationId'];
                   readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly rankingPeriods: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RankingPeriods';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['academicPeriodId'];
+                };
+              };
+              readonly reportCards: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ReportCards';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['academicPeriodId'];
                 };
               };
             };
@@ -8045,6 +9572,28 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
+              readonly gradeWeights: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeWeights';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['courseId'];
+                };
+              };
+              readonly grades: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Grades';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['courseId'];
+                };
+              };
               readonly modules: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -8207,6 +9756,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['divisionId'];
                 };
               };
+              readonly gradeWeights: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeWeights';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['divisionId'];
+                };
+              };
               readonly organization: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -8255,6 +9815,420 @@ type ContractBase = Omit<
                 readonly slug: { readonly column: 'slug' };
                 readonly status: { readonly column: 'status' };
                 readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly GradeComponents: {
+            readonly fields: {
+              readonly code: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly defaultWeight: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly maxScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly organizationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly gradeWeights: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeWeights';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['gradeComponentId'];
+                };
+              };
+              readonly grades: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Grades';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['gradeComponentId'];
+                };
+              };
+              readonly organization: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Organizations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['organizationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly reportCardItems: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ReportCardItems';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['gradeComponentId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'grade_components';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly code: { readonly column: 'code' };
+                readonly defaultWeight: { readonly column: 'default_weight' };
+                readonly id: { readonly column: 'id' };
+                readonly maxScore: { readonly column: 'max_score' };
+                readonly name: { readonly column: 'name' };
+                readonly organizationId: { readonly column: 'organization_id' };
+              };
+            };
+          };
+          readonly Grades: {
+            readonly fields: {
+              readonly academicPeriodId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly courseId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly createdBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly gradeComponentId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly normalizedScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly rawScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly sourceId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly sourceType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly updatedBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly weightApplied: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly weightedScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+            };
+            readonly relations: {
+              readonly academicPeriod: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AcademicPeriods';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['academicPeriodId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly course: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Courses';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['courseId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly gradeComponent: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeComponents';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['gradeComponentId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly profilesProfiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['updatedBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'grades';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly academicPeriodId: { readonly column: 'academic_period_id' };
+                readonly courseId: { readonly column: 'course_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly createdBy: { readonly column: 'created_by' };
+                readonly gradeComponentId: { readonly column: 'grade_component_id' };
+                readonly id: { readonly column: 'id' };
+                readonly normalizedScore: { readonly column: 'normalized_score' };
+                readonly rawScore: { readonly column: 'raw_score' };
+                readonly sourceId: { readonly column: 'source_id' };
+                readonly sourceType: { readonly column: 'source_type' };
+                readonly updatedAt: { readonly column: 'updated_at' };
+                readonly updatedBy: { readonly column: 'updated_by' };
+                readonly userId: { readonly column: 'user_id' };
+                readonly weightApplied: { readonly column: 'weight_applied' };
+                readonly weightedScore: { readonly column: 'weighted_score' };
+              };
+            };
+          };
+          readonly GradeScales: {
+            readonly fields: {
+              readonly code: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly isPassing: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly letter: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly maxScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly minScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly organizationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly remark: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly organization: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Organizations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['organizationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'grade_scales';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly code: { readonly column: 'code' };
+                readonly id: { readonly column: 'id' };
+                readonly isPassing: { readonly column: 'is_passing' };
+                readonly letter: { readonly column: 'letter' };
+                readonly maxScore: { readonly column: 'max_score' };
+                readonly minScore: { readonly column: 'min_score' };
+                readonly organizationId: { readonly column: 'organization_id' };
+                readonly remark: { readonly column: 'remark' };
+              };
+            };
+          };
+          readonly GradeWeights: {
+            readonly fields: {
+              readonly academicPeriodId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly courseId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly divisionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly gradeComponentId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly weight: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+            };
+            readonly relations: {
+              readonly academicPeriod: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AcademicPeriods';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['academicPeriodId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly course: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Courses';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['courseId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly division: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Divisions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['divisionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly gradeComponent: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeComponents';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['gradeComponentId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'grade_weights';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly academicPeriodId: { readonly column: 'academic_period_id' };
+                readonly courseId: { readonly column: 'course_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly divisionId: { readonly column: 'division_id' };
+                readonly gradeComponentId: { readonly column: 'grade_component_id' };
+                readonly id: { readonly column: 'id' };
+                readonly weight: { readonly column: 'weight' };
               };
             };
           };
@@ -9177,6 +11151,39 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['organizationId'];
                 };
               };
+              readonly gradeComponents: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeComponents';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['organizationId'];
+                };
+              };
+              readonly gradeScales: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeScales';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['organizationId'];
+                };
+              };
+              readonly rankingPeriods: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RankingPeriods';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['organizationId'];
+                };
+              };
             };
             readonly storage: {
               readonly table: 'organizations';
@@ -9245,6 +11252,90 @@ type ContractBase = Omit<
                 readonly description: { readonly column: 'description' };
                 readonly id: { readonly column: 'id' };
                 readonly resource: { readonly column: 'resource' };
+              };
+            };
+          };
+          readonly PointTransactions: {
+            readonly fields: {
+              readonly amount: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly createdBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly description: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly pointType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sourceId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly sourceType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'point_transactions';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly amount: { readonly column: 'amount' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly createdBy: { readonly column: 'created_by' };
+                readonly description: { readonly column: 'description' };
+                readonly id: { readonly column: 'id' };
+                readonly pointType: { readonly column: 'point_type' };
+                readonly sourceId: { readonly column: 'source_id' };
+                readonly sourceType: { readonly column: 'source_type' };
+                readonly userId: { readonly column: 'user_id' };
               };
             };
           };
@@ -9408,6 +11499,39 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['updatedBy'];
                 };
               };
+              readonly grades: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Grades';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdBy'];
+                };
+              };
+              readonly grades2: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Grades';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly gradesGrades: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Grades';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['updatedBy'];
+                };
+              };
               readonly learningActivities: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -9485,6 +11609,28 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['recipientId'];
                 };
               };
+              readonly pointTransactions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'PointTransactions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdBy'];
+                };
+              };
+              readonly pointTransactionsPointTransactions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'PointTransactions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly questions: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -9516,6 +11662,28 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['createdBy'];
+                };
+              };
+              readonly rankingEntries: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RankingEntries';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly reportCards: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ReportCards';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
                 };
               };
               readonly submissionFeedbacks: {
@@ -10174,6 +12342,343 @@ type ContractBase = Omit<
                 readonly timeLimitSeconds: { readonly column: 'time_limit_seconds' };
                 readonly title: { readonly column: 'title' };
                 readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly RankingEntries: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly points: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly rank: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly rankingPeriodId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly score: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly rankingPeriod: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RankingPeriods';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['rankingPeriodId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'ranking_entries';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly id: { readonly column: 'id' };
+                readonly points: { readonly column: 'points' };
+                readonly rank: { readonly column: 'rank' };
+                readonly rankingPeriodId: { readonly column: 'ranking_period_id' };
+                readonly score: { readonly column: 'score' };
+                readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly RankingPeriods: {
+            readonly fields: {
+              readonly _type: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly academicPeriodId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly endDate: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/date-temporal@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly metric: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly organizationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly startDate: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/date-temporal@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+              };
+            };
+            readonly relations: {
+              readonly academicPeriod: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AcademicPeriods';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['academicPeriodId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly organization: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Organizations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['organizationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly rankingEntries: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'RankingEntries';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['rankingPeriodId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'ranking_periods';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly _type: { readonly column: 'type' };
+                readonly academicPeriodId: { readonly column: 'academic_period_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly endDate: { readonly column: 'end_date' };
+                readonly id: { readonly column: 'id' };
+                readonly metric: { readonly column: 'metric' };
+                readonly name: { readonly column: 'name' };
+                readonly organizationId: { readonly column: 'organization_id' };
+                readonly startDate: { readonly column: 'start_date' };
+                readonly status: { readonly column: 'status' };
+              };
+            };
+          };
+          readonly ReportCardItems: {
+            readonly fields: {
+              readonly gradeComponentId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly reportCardId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly score: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly weight: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly weightedScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+            };
+            readonly relations: {
+              readonly gradeComponent: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'GradeComponents';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['gradeComponentId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly reportCard: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ReportCards';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['reportCardId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'report_card_items';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly gradeComponentId: { readonly column: 'grade_component_id' };
+                readonly id: { readonly column: 'id' };
+                readonly reportCardId: { readonly column: 'report_card_id' };
+                readonly score: { readonly column: 'score' };
+                readonly weight: { readonly column: 'weight' };
+                readonly weightedScore: { readonly column: 'weighted_score' };
+              };
+            };
+          };
+          readonly ReportCards: {
+            readonly fields: {
+              readonly academicPeriodId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly generatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly gradeLetter: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly publishedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly remark: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly totalScore: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly academicPeriod: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AcademicPeriods';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['academicPeriodId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly reportCardItems: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ReportCardItems';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['reportCardId'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'report_cards';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly academicPeriodId: { readonly column: 'academic_period_id' };
+                readonly generatedAt: { readonly column: 'generated_at' };
+                readonly gradeLetter: { readonly column: 'grade_letter' };
+                readonly id: { readonly column: 'id' };
+                readonly publishedAt: { readonly column: 'published_at' };
+                readonly remark: { readonly column: 'remark' };
+                readonly totalScore: { readonly column: 'total_score' };
+                readonly userId: { readonly column: 'user_id' };
               };
             };
           };
