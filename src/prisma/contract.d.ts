@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'201bc9229bc535771022bbe8b72abf2d9cf1990ecf14184c8c9285cee55f5541'>;
+  StorageHashBase<'c4bee5aac67d8bbd779a9a88a294fc247cb27a390daf4833e4fd9d465276989c'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -632,6 +632,7 @@ export type FieldOutputTypes = {
     readonly Profiles: {
       readonly avatarPath: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly email: CodecTypes['pg/text@1']['output'] | null;
       readonly fullName: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly phone: CodecTypes['pg/text@1']['output'] | null;
@@ -1246,6 +1247,7 @@ export type FieldInputTypes = {
     readonly Profiles: {
       readonly avatarPath: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly email: CodecTypes['pg/text@1']['input'] | null;
       readonly fullName: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly phone: CodecTypes['pg/text@1']['input'] | null;
@@ -1860,6 +1862,7 @@ export type StorageColumnTypes = {
     readonly profiles: {
       readonly avatar_path: CodecTypes['pg/text@1']['output'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly email: CodecTypes['pg/text@1']['output'] | null;
       readonly full_name: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly phone: CodecTypes['pg/text@1']['output'] | null;
@@ -2474,6 +2477,7 @@ export type StorageColumnInputTypes = {
     readonly profiles: {
       readonly avatar_path: CodecTypes['pg/text@1']['input'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly email: CodecTypes['pg/text@1']['input'] | null;
       readonly full_name: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly phone: CodecTypes['pg/text@1']['input'] | null;
@@ -3312,6 +3316,7 @@ export namespace Models {
   export type public_Profiles = {
     avatarPath: CodecTypes['pg/text@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    email: CodecTypes['pg/text@1']['output'] | null;
     fullName: CodecTypes['pg/text@1']['output'] | null;
     id: CodecTypes['pg/uuid@1']['output'];
     phone: CodecTypes['pg/text@1']['output'] | null;
@@ -7193,6 +7198,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/timestamptz-temporal@1';
                   readonly nullable: false;
                   readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly email: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
                 };
                 readonly full_name: {
                   readonly nativeType: 'text';
@@ -13230,6 +13240,10 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/timestamptz-temporal@1';
                 };
               };
+              readonly email: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly fullName: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -13703,6 +13717,7 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly avatarPath: { readonly column: 'avatar_path' };
                 readonly createdAt: { readonly column: 'created_at' };
+                readonly email: { readonly column: 'email' };
                 readonly fullName: { readonly column: 'full_name' };
                 readonly id: { readonly column: 'id' };
                 readonly phone: { readonly column: 'phone' };

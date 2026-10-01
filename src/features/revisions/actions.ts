@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import { emailOwners } from "@/features/email/notify";
+import { revisionRequestedTemplate } from "@/features/email/templates";
 import { notifyMany } from "@/features/notifications/notify";
 import { assertTransition } from "@/features/submissions/status";
 
@@ -82,6 +84,12 @@ export async function requestRevision(formData: FormData): Promise<void> {
     entity_type: "submissions",
     entity_id: parsed.data.submission_id,
   }).catch(() => undefined);
+  await emailOwners(supabase, owners, "submission.revision_request", (name) =>
+    revisionRequestedTemplate({
+      name,
+      assignment: "tugas yang kamu kumpulkan",
+    }),
+  ).catch(() => undefined);
   revalidatePath("/assignments");
 }
 

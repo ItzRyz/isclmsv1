@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import { emailOwners } from "@/features/email/notify";
+import { gradePublishedTemplate } from "@/features/email/templates";
 import { notifyMany } from "@/features/notifications/notify";
 import { assertTransition } from "@/features/submissions/status";
 import { gradeSchema } from "./schemas";
@@ -197,5 +199,13 @@ export async function gradeSubmission(formData: FormData): Promise<void> {
     entity_type: "submissions",
     entity_id: parsed.data.submission_id,
   }).catch(() => undefined);
+  await emailOwners(supabase, owners, "submission.graded", (name) =>
+    gradePublishedTemplate({
+      name,
+      assignment: "tugas yang kamu kumpulkan",
+      score: parsed.data.score,
+      maxScore,
+    }),
+  ).catch(() => undefined);
   revalidatePath("/assignments");
 }

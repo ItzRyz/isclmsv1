@@ -5848,6 +5848,13 @@
                   "kind": "scalar"
                 }
               },
+              "email": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "fullName": {
                 "nullable": true,
                 "type": {
@@ -6495,6 +6502,9 @@
                 },
                 "createdAt": {
                   "column": "created_at"
+                },
+                "email": {
+                  "column": "email"
                 },
                 "fullName": {
                   "column": "full_name"
@@ -15916,6 +15926,11 @@
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
+                "email": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "full_name": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -18573,7 +18588,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "201bc9229bc535771022bbe8b72abf2d9cf1990ecf14184c8c9285cee55f5541"
+    "storageHash": "c4bee5aac67d8bbd779a9a88a294fc247cb27a390daf4833e4fd9d465276989c"
   },
   "capabilities": {
     "postgres": {

@@ -113,6 +113,7 @@ namespace public {
     status                             pg.enum(AccountStatus)    @default("ACTIVE")
     createdAt                          Timestamptz               @default(now()) @map("created_at")
     updatedAt                          Timestamptz               @default(now()) @map("updated_at")
+    email                              String?
     announcements                      Announcements[]
     assignmentGroupMembers             AssignmentGroupMembers[]
     attendanceCorrections              AttendanceCorrections[]
