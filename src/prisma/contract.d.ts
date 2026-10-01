@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'97fc87a6655bd6f9c0d5bc538529bd60b7cbdcbf21ab6bb01a107178a6b51a49'>;
+  StorageHashBase<'f7f91c61d6fd22441862d2f54b008d4c744b5376cfe50a01218eed9790a2bc37'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -971,6 +971,12 @@ export type FieldOutputTypes = {
       readonly userId: CodecTypes['pg/uuid@1']['output'] | null;
       readonly version: CodecTypes['pg/int4@1']['output'];
     };
+    readonly SystemSettings: {
+      readonly key: CodecTypes['pg/text@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly value: CodecTypes['pg/jsonb@1']['output'];
+    };
     readonly UserAchievements: {
       readonly achievementId: CodecTypes['pg/uuid@1']['output'];
       readonly awardedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1717,6 +1723,12 @@ export type FieldInputTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly userId: CodecTypes['pg/uuid@1']['input'] | null;
       readonly version: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly SystemSettings: {
+      readonly key: CodecTypes['pg/text@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly updatedBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly value: CodecTypes['pg/jsonb@1']['input'];
     };
     readonly UserAchievements: {
       readonly achievementId: CodecTypes['pg/uuid@1']['input'];
@@ -2465,6 +2477,12 @@ export type StorageColumnTypes = {
       readonly user_id: CodecTypes['pg/uuid@1']['output'] | null;
       readonly version: CodecTypes['pg/int4@1']['output'];
     };
+    readonly system_settings: {
+      readonly key: CodecTypes['pg/text@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly updated_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly value: CodecTypes['pg/jsonb@1']['output'];
+    };
     readonly user_achievements: {
       readonly achievement_id: CodecTypes['pg/uuid@1']['output'];
       readonly awarded_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -3211,6 +3229,12 @@ export type StorageColumnInputTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly user_id: CodecTypes['pg/uuid@1']['input'] | null;
       readonly version: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly system_settings: {
+      readonly key: CodecTypes['pg/text@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly updated_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly value: CodecTypes['pg/jsonb@1']['input'];
     };
     readonly user_achievements: {
       readonly achievement_id: CodecTypes['pg/uuid@1']['input'];
@@ -4088,6 +4112,7 @@ export namespace Models {
     submissionFeedbacks: public_SubmissionFeedback[];
     submissions: public_Submissions[];
     submissionsSubmissions: public_Submissions[];
+    systemSettings: public_SystemSettings[];
     userAchievements: public_UserAchievements[];
     userDivisions: public_UserDivisions[];
     userRoles: public_UserRoles[];
@@ -4138,6 +4163,7 @@ export namespace Models {
       | 'submissionFeedbacks'
       | 'submissions'
       | 'submissionsSubmissions'
+      | 'systemSettings'
       | 'userAchievements'
       | 'userDivisions'
       | 'userRoles'
@@ -4434,6 +4460,14 @@ export namespace Models {
       | 'submissionRevisions'
       | 'user';
   };
+  export type public_SystemSettings = {
+    key: CodecTypes['pg/text@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
+    value: CodecTypes['pg/jsonb@1']['output'];
+    profiles: public_Profiles | null;
+    readonly [RelationKeys]?: 'profiles';
+  };
   export type public_UserAchievements = {
     achievementId: CodecTypes['pg/uuid@1']['output'];
     awardedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -4541,6 +4575,7 @@ export declare const models: {
     SubmissionFiles: Models.public_SubmissionFiles;
     SubmissionRevisions: Models.public_SubmissionRevisions;
     Submissions: Models.public_Submissions;
+    SystemSettings: Models.public_SystemSettings;
     UserAchievements: Models.public_UserAchievements;
     UserDivisions: Models.public_UserDivisions;
     UserRoles: Models.public_UserRoles;
@@ -10958,6 +10993,56 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly system_settings: {
+              columns: {
+                readonly key: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly updated_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly value: {
+                  readonly nativeType: 'jsonb';
+                  readonly codecId: 'pg/jsonb@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/jsonb@1', {}>;
+                  };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['key'];
+                readonly name: 'system_settings_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'system_settings';
+                    readonly columns: readonly ['updated_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'system_settings_updated_by_fkey';
+                },
+              ];
+            };
             readonly user_achievements: {
               columns: {
                 readonly achievement_id: {
@@ -11465,6 +11550,10 @@ type ContractBase = Omit<
     readonly submissions: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Submissions';
+    };
+    readonly system_settings: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'SystemSettings';
     };
     readonly user_achievements: {
       readonly namespace: 'public' & NamespaceId;
@@ -16948,6 +17037,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['userId'];
                 };
               };
+              readonly systemSettings: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'SystemSettings';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['updatedBy'];
+                };
+              };
               readonly userAchievements: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -18832,6 +18932,53 @@ type ContractBase = Omit<
                 readonly updatedAt: { readonly column: 'updated_at' };
                 readonly userId: { readonly column: 'user_id' };
                 readonly version: { readonly column: 'version' };
+              };
+            };
+          };
+          readonly SystemSettings: {
+            readonly fields: {
+              readonly key: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly updatedBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly value: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/jsonb@1' };
+              };
+            };
+            readonly relations: {
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['updatedBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'system_settings';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly key: { readonly column: 'key' };
+                readonly updatedAt: { readonly column: 'updated_at' };
+                readonly updatedBy: { readonly column: 'updated_by' };
+                readonly value: { readonly column: 'value' };
               };
             };
           };

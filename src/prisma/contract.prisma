@@ -181,6 +181,7 @@ namespace public {
     rankingEntries                     RankingEntries[]
     reportCards                        ReportCards[]
     submissionFeedbacks                SubmissionFeedback[]
+    systemSettings                     SystemSettings[]
     userAchievements                   UserAchievements[]
     userDivisions                      UserDivisions[]
     assignments                        Assignments[]             @relation(name: "assignments_created_by_fkey")
@@ -1400,6 +1401,17 @@ namespace public {
     @@check(expression: "(score >= (0)::numeric)", map: "submission_revisions_score_check")
     @@rls
     @@map("submission_revisions")
+  }
+
+  model SystemSettings {
+    key       String      @id(map: "system_settings_pkey")
+    value     Jsonb       @default(json`{}`)
+    updatedBy Uuid?       @map("updated_by")
+    updatedAt Timestamptz @default(now()) @map("updated_at")
+    profiles  Profiles?   @relation(fields: [updatedBy], references: [id], map: "system_settings_updated_by_fkey", index: false)
+
+    @@rls
+    @@map("system_settings")
   }
 
   model UserAchievements {
@@ -2671,6 +2683,21 @@ namespace public {
     using = "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
     withCheck = "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
     @@map("submissions_update")
+  }
+
+  policy_select system_settings_select {
+    target = SystemSettings
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'settings.view'::text) OR has_permission(auth.uid(), 'settings.manage'::text))"
+    @@map("system_settings_select")
+  }
+
+  policy_all system_settings_write {
+    target = SystemSettings
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'settings.manage'::text)"
+    withCheck = "has_permission(auth.uid(), 'settings.manage'::text)"
+    @@map("system_settings_write")
   }
 
   policy_insert user_achievements_insert {

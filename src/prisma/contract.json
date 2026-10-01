@@ -292,6 +292,10 @@
       "model": "Submissions",
       "namespace": "public"
     },
+    "system_settings": {
+      "model": "SystemSettings",
+      "namespace": "public"
+    },
     "user_achievements": {
       "model": "UserAchievements",
       "namespace": "public"
@@ -8423,6 +8427,21 @@
                   "namespace": "public"
                 }
               },
+              "systemSettings": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "updatedBy"
+                  ]
+                },
+                "to": {
+                  "model": "SystemSettings",
+                  "namespace": "public"
+                }
+              },
               "userAchievements": {
                 "cardinality": "1:N",
                 "on": {
@@ -11294,6 +11313,74 @@
               "table": "submissions"
             }
           },
+          "SystemSettings": {
+            "fields": {
+              "key": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "value": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/jsonb@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "updatedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "key": {
+                  "column": "key"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "updatedBy": {
+                  "column": "updated_by"
+                },
+                "value": {
+                  "column": "value"
+                }
+              },
+              "namespaceId": "public",
+              "table": "system_settings"
+            }
+          },
           "UserAchievements": {
             "fields": {
               "achievementId": {
@@ -13645,6 +13732,31 @@
               "using": "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))",
               "withCheck": "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
             },
+            "system_settings_select": {
+              "kind": "policy",
+              "name": "system_settings_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "system_settings",
+              "using": "(has_permission(auth.uid(), 'settings.view'::text) OR has_permission(auth.uid(), 'settings.manage'::text))"
+            },
+            "system_settings_write": {
+              "kind": "policy",
+              "name": "system_settings_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "system_settings",
+              "using": "has_permission(auth.uid(), 'settings.manage'::text)",
+              "withCheck": "has_permission(auth.uid(), 'settings.manage'::text)"
+            },
             "user_achievements_insert": {
               "kind": "policy",
               "name": "user_achievements_insert",
@@ -14091,6 +14203,11 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "submissions"
+            },
+            "system_settings": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "system_settings"
             },
             "user_achievements": {
               "kind": "rls",
@@ -22197,6 +22314,65 @@
               },
               "uniques": []
             },
+            "system_settings": {
+              "columns": {
+                "key": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "updated_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "value": {
+                  "codecId": "pg/jsonb@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": {}
+                  },
+                  "nativeType": "jsonb",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "system_settings_updated_by_fkey",
+                  "source": {
+                    "columns": [
+                      "updated_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "system_settings"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "key"
+                ],
+                "name": "system_settings_pkey"
+              },
+              "uniques": []
+            },
             "user_achievements": {
               "columns": {
                 "achievement_id": {
@@ -22535,7 +22711,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "97fc87a6655bd6f9c0d5bc538529bd60b7cbdcbf21ab6bb01a107178a6b51a49"
+    "storageHash": "f7f91c61d6fd22441862d2f54b008d4c744b5376cfe50a01218eed9790a2bc37"
   },
   "capabilities": {
     "postgres": {
