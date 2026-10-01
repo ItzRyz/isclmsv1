@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isProfileActive } from "@/lib/auth/status";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -26,7 +27,28 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Deaktifasi global: profil nonaktif -> sesi dibuang, keluar dari app.
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("status")
+      .eq("id", user.id)
+      .single();
+    if (
+      !isProfileActive((profile as { status?: string } | null)?.status ?? null)
+    ) {
+      await supabase.auth.signOut();
+      const redirect = request.nextUrl.clone();
+      redirect.pathname = "/";
+      redirect.search = "";
+      redirect.searchParams.set("account_disabled", "1");
+      return NextResponse.redirect(redirect);
+    }
+  }
 
   return supabaseResponse;
 }

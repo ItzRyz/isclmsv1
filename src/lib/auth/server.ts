@@ -6,6 +6,7 @@ import {
   type PermissionAssignment,
   type ResourceContext,
 } from "./authorization";
+import { isProfileActive } from "./status";
 
 type RoleRow = {
   roles: {
@@ -74,22 +75,41 @@ export async function loadAccess(userId: string): Promise<{
   };
 }
 
-async function getSessionUserId(): Promise<string | null> {
+/**
+ * Sesi aktif = ada user auth DAN profil ACTIVE.
+ * Profil nonaktif (INACTIVE/SUSPENDED/absen) tetap punya sesi valid
+ * sampai diblokir di sini — deaktifasi wajib menutup akses app-side.
+ */
+async function getSessionUser(): Promise<{
+  id: string;
+  active: boolean;
+} | null> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  return user?.id ?? null;
+  if (!user) return null;
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("status")
+    .eq("id", user.id)
+    .single();
+  return {
+    id: user.id,
+    active: isProfileActive(
+      (profile as { status?: string } | null)?.status ?? null,
+    ),
+  };
 }
 
-/** Boolean check; false bila tanpa sesi atau tidak memenuhi scope. */
+/** Boolean check; false bila tanpa sesi, akun nonaktif, atau tak memenuhi scope. */
 export async function can(
   permission: string,
   context: ResourceContext = {},
 ): Promise<boolean> {
-  const userId = await getSessionUserId();
-  if (!userId) return false;
-  const { assignments, memberships } = await loadAccess(userId);
+  const session = await getSessionUser();
+  if (!session?.active) return false;
+  const { assignments, memberships } = await loadAccess(session.id);
   return evaluateAccess(assignments, memberships, permission, context);
 }
 
@@ -101,11 +121,18 @@ export async function requirePermission(
   permission: string,
   context: ResourceContext = {},
 ): Promise<{ userId: string }> {
-  const userId = await getSessionUserId();
-  if (!userId) {
+  const session = await getSessionUser();
+  if (!session) {
     throw new AuthorizationError("UNAUTHENTICATED", "Masuk dulu.", permission);
   }
-  const { assignments, memberships } = await loadAccess(userId);
+  if (!session.active) {
+    throw new AuthorizationError(
+      "FORBIDDEN",
+      "Akun dinonaktifkan — hubungi pengelola.",
+      permission,
+    );
+  }
+  const { assignments, memberships } = await loadAccess(session.id);
   if (!evaluateAccess(assignments, memberships, permission, context)) {
     throw new AuthorizationError(
       "FORBIDDEN",
@@ -113,5 +140,5 @@ export async function requirePermission(
       permission,
     );
   }
-  return { userId };
+  return { userId: session.id };
 }

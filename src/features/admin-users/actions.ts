@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { profileEditSchema, roleChangeSchema, statusSchema } from "./schemas";
 
 type Supa = Awaited<ReturnType<typeof createClient>>;
@@ -74,6 +75,21 @@ export async function setUserStatus(formData: FormData): Promise<void> {
     .update({ status: parsed.data.status })
     .eq("id", parsed.data.user_id);
   if (error) throw new Error(`Gagal mengubah status: ${error.message}`);
+
+  // Deaktifasi berlapis: blokir sign-in di Supabase Auth (ban) — sesi lama
+  // sudah ditutup app-side oleh gerbang status profil (proxy + can()).
+  const banned = parsed.data.status !== "ACTIVE";
+  const { error: banError } =
+    await createAdminClient().auth.admin.updateUserById(
+      parsed.data.user_id,
+      banned ? { ban_duration: "8760h" } : { ban_duration: "none" },
+    );
+  if (banError) {
+    throw new Error(
+      `Status profil berubah tapi blokir auth gagal: ${banError.message}`,
+    );
+  }
+
   await audit(
     supabase,
     userId,
