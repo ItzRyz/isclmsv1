@@ -11,6 +11,7 @@ namespace public {
     createdAt       Timestamptz       @default(now()) @map("created_at")
     updatedAt       Timestamptz       @default(now()) @map("updated_at")
     academicPeriods AcademicPeriods[]
+    announcements   Announcements[]
     batches         Batches[]
     divisions       Divisions[]
     gradeComponents GradeComponents[]
@@ -40,6 +41,21 @@ namespace public {
     @@map("academic_periods")
   }
 
+  model Batches {
+    id             Uuid                  @id(map: "batches_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid                  @map("organization_id")
+    name           String
+    code           String                @unique(map: "batches_code_key")
+    startDate      Date?                 @map("start_date")
+    endDate        Date?                 @map("end_date")
+    status         pg.enum(EntityStatus) @default("ACTIVE")
+    classes        Classes[]
+    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "batches_organization_id_fkey", index: false)
+
+    @@rls
+    @@map("batches")
+  }
+
   model Divisions {
     id                 Uuid                  @id(map: "divisions_pkey") @default(sql`gen_random_uuid()`)
     organizationId     Uuid                  @map("organization_id")
@@ -50,6 +66,7 @@ namespace public {
     status             pg.enum(EntityStatus) @default("ACTIVE")
     createdAt          Timestamptz           @default(now()) @map("created_at")
     updatedAt          Timestamptz           @default(now()) @map("updated_at")
+    announcements      Announcements[]
     attendanceSessions AttendanceSessions[]
     classes            Classes[]
     courses            Courses[]
@@ -60,6 +77,29 @@ namespace public {
 
     @@rls
     @@map("divisions")
+  }
+
+  model Classes {
+    id                 Uuid                  @id(map: "classes_pkey") @default(sql`gen_random_uuid()`)
+    divisionId         Uuid                  @map("division_id")
+    batchId            Uuid?                 @map("batch_id")
+    academicPeriodId   Uuid?                 @map("academic_period_id")
+    name               String
+    code               String                @unique(map: "classes_code_key")
+    capacity           Int?
+    status             pg.enum(EntityStatus) @default("ACTIVE")
+    createdAt          Timestamptz           @default(now()) @map("created_at")
+    announcements      Announcements[]
+    attendanceSessions AttendanceSessions[]
+    classMembers       ClassMembers[]
+    forumThreads       ForumThreads[]
+    academicPeriod     AcademicPeriods?      @relation(fields: [academicPeriodId], references: [id], map: "classes_academic_period_id_fkey", index: false)
+    batch              Batches?              @relation(fields: [batchId], references: [id], map: "classes_batch_id_fkey", index: false)
+    division           Divisions             @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "classes_division_id_fkey")
+
+    @@index([divisionId], map: "classes_division_id")
+    @@rls
+    @@map("classes")
   }
 
   // WARNING: Foreign key "id" -> "auth.users" exists in the database, but its target schema is outside the introspected scope, so no relation field was generated. If the target schema is described by an extension pack, add it to extensions and re-run infer.
@@ -73,15 +113,21 @@ namespace public {
     status                             pg.enum(AccountStatus)    @default("ACTIVE")
     createdAt                          Timestamptz               @default(now()) @map("created_at")
     updatedAt                          Timestamptz               @default(now()) @map("updated_at")
+    announcements                      Announcements[]
     assignmentGroupMembers             AssignmentGroupMembers[]
     attendanceCorrections              AttendanceCorrections[]
     attendanceRecords                  AttendanceRecords[]
     attendanceSessions                 AttendanceSessions[]
     auditLogs                          AuditLogs[]
     classMembers                       ClassMembers[]
+    conversationMembers                ConversationMembers[]
+    forumPosts                         ForumPosts[]
+    forumThreads                       ForumThreads[]
     learningActivities                 LearningActivities[]
     materialBookmarks                  MaterialBookmarks[]
+    materialComments                   MaterialComments[]
     materialProgresses                 MaterialProgress[]
+    messages                           Messages[]
     notificationPreferences            NotificationPreferences[]
     notifications                      Notifications[]
     questions                          Questions[]
@@ -111,6 +157,30 @@ namespace public {
     @@map("profiles")
   }
 
+  model Announcements {
+    id             Uuid           @id(map: "announcements_pkey") @default(sql`gen_random_uuid()`)
+    organizationId Uuid?          @map("organization_id")
+    divisionId     Uuid?          @map("division_id")
+    classId        Uuid?          @map("class_id")
+    title          String
+    body           String
+    priority       String         @default("NORMAL")
+    publishedAt    Timestamptz    @default(now()) @map("published_at")
+    expiresAt      Timestamptz?   @map("expires_at")
+    createdBy      Uuid?          @map("created_by")
+    createdAt      Timestamptz    @default(now()) @map("created_at")
+    updatedAt      Timestamptz    @default(now()) @map("updated_at")
+    class          Classes?       @relation(fields: [classId], references: [id], onDelete: Cascade, map: "announcements_class_id_fkey")
+    profiles       Profiles?      @relation(fields: [createdBy], references: [id], map: "announcements_created_by_fkey", index: false)
+    division       Divisions?     @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "announcements_division_id_fkey")
+    organization   Organizations? @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "announcements_organization_id_fkey", index: false)
+
+    @@index([classId], map: "announcements_class_id")
+    @@index([divisionId], map: "announcements_division_id")
+    @@rls
+    @@map("announcements")
+  }
+
   model Courses {
     id               Uuid                   @id(map: "courses_pkey") @default(sql`gen_random_uuid()`)
     divisionId       Uuid                   @map("division_id")
@@ -127,6 +197,7 @@ namespace public {
     createdAt        Timestamptz            @default(now()) @map("created_at")
     updatedAt        Timestamptz            @default(now()) @map("updated_at")
     assignments      Assignments[]
+    forumThreads     ForumThreads[]
     gradeWeights     GradeWeights[]
     grades           Grades[]
     modules          Modules[]
@@ -224,42 +295,6 @@ namespace public {
     @@id([assignmentGroupId, userId], map: "assignment_group_members_pkey")
     @@rls
     @@map("assignment_group_members")
-  }
-
-  model Batches {
-    id             Uuid                  @id(map: "batches_pkey") @default(sql`gen_random_uuid()`)
-    organizationId Uuid                  @map("organization_id")
-    name           String
-    code           String                @unique(map: "batches_code_key")
-    startDate      Date?                 @map("start_date")
-    endDate        Date?                 @map("end_date")
-    status         pg.enum(EntityStatus) @default("ACTIVE")
-    classes        Classes[]
-    organization   Organizations         @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "batches_organization_id_fkey", index: false)
-
-    @@rls
-    @@map("batches")
-  }
-
-  model Classes {
-    id                 Uuid                  @id(map: "classes_pkey") @default(sql`gen_random_uuid()`)
-    divisionId         Uuid                  @map("division_id")
-    batchId            Uuid?                 @map("batch_id")
-    academicPeriodId   Uuid?                 @map("academic_period_id")
-    name               String
-    code               String                @unique(map: "classes_code_key")
-    capacity           Int?
-    status             pg.enum(EntityStatus) @default("ACTIVE")
-    createdAt          Timestamptz           @default(now()) @map("created_at")
-    attendanceSessions AttendanceSessions[]
-    classMembers       ClassMembers[]
-    academicPeriod     AcademicPeriods?      @relation(fields: [academicPeriodId], references: [id], map: "classes_academic_period_id_fkey", index: false)
-    batch              Batches?              @relation(fields: [batchId], references: [id], map: "classes_batch_id_fkey", index: false)
-    division           Divisions             @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "classes_division_id_fkey")
-
-    @@index([divisionId], map: "classes_division_id")
-    @@rls
-    @@map("classes")
   }
 
   model AttendanceSessions {
@@ -364,6 +399,81 @@ namespace public {
     @@map("class_members")
   }
 
+  model Conversations {
+    id                  Uuid                  @id(map: "conversations_pkey") @default(sql`gen_random_uuid()`)
+    _type               String                @default("DIRECT") @map("type")
+    createdAt           Timestamptz           @default(now()) @map("created_at")
+    updatedAt           Timestamptz           @default(now()) @map("updated_at")
+    conversationMembers ConversationMembers[]
+    messages            Messages[]
+
+    @@rls
+    @@map("conversations")
+  }
+
+  model ConversationMembers {
+    conversationId Uuid          @map("conversation_id")
+    userId         Uuid          @map("user_id")
+    joinedAt       Timestamptz   @default(now()) @map("joined_at")
+    lastReadAt     Timestamptz?  @map("last_read_at")
+    conversation   Conversations @relation(fields: [conversationId], references: [id], onDelete: Cascade, map: "conversation_members_conversation_id_fkey", index: false)
+    user           Profiles      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "conversation_members_user_id_fkey", index: false)
+
+    @@id([conversationId, userId], map: "conversation_members_pkey")
+    @@rls
+    @@map("conversation_members")
+  }
+
+  model ForumCategories {
+    id           Uuid           @id(map: "forum_categories_pkey") @default(sql`gen_random_uuid()`)
+    name         String
+    description  String?
+    position     Int            @default(0)
+    forumThreads ForumThreads[]
+
+    @@rls
+    @@map("forum_categories")
+  }
+
+  model ForumThreads {
+    id             Uuid            @id(map: "forum_threads_pkey") @default(sql`gen_random_uuid()`)
+    categoryId     Uuid            @map("category_id")
+    courseId       Uuid?           @map("course_id")
+    classId        Uuid?           @map("class_id")
+    title          String
+    acceptedPostId Uuid?           @map("accepted_post_id")
+    createdBy      Uuid?           @map("created_by")
+    createdAt      Timestamptz     @default(now()) @map("created_at")
+    updatedAt      Timestamptz     @default(now()) @map("updated_at")
+    lockedAt       Timestamptz?    @map("locked_at")
+    forumPosts     ForumPosts[]
+    acceptedPost   ForumPosts?     @relation(fields: [acceptedPostId], references: [id], onDelete: SetNull, map: "forum_threads_accepted_post_fkey", index: false)
+    category       ForumCategories @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "forum_threads_category_id_fkey", index: false)
+    class          Classes?        @relation(fields: [classId], references: [id], onDelete: Cascade, map: "forum_threads_class_id_fkey", index: false)
+    course         Courses?        @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "forum_threads_course_id_fkey", index: false)
+    profiles       Profiles?       @relation(fields: [createdBy], references: [id], map: "forum_threads_created_by_fkey", index: false)
+
+    @@rls
+    @@map("forum_threads")
+  }
+
+  model ForumPosts {
+    id           Uuid           @id(map: "forum_posts_pkey") @default(sql`gen_random_uuid()`)
+    threadId     Uuid           @map("thread_id")
+    authorId     Uuid           @map("author_id")
+    body         String
+    createdAt    Timestamptz    @default(now()) @map("created_at")
+    updatedAt    Timestamptz    @default(now()) @map("updated_at")
+    deletedAt    Timestamptz?   @map("deleted_at")
+    forumThreads ForumThreads[]
+    author       Profiles       @relation(fields: [authorId], references: [id], onDelete: Cascade, map: "forum_posts_author_id_fkey", index: false)
+    thread       ForumThreads   @relation(fields: [threadId], references: [id], onDelete: Cascade, map: "forum_posts_thread_id_fkey")
+
+    @@index([threadId], map: "forum_posts_thread_id")
+    @@rls
+    @@map("forum_posts")
+  }
+
   model GradeComponents {
     id              Uuid              @id(map: "grade_components_pkey") @default(sql`gen_random_uuid()`)
     organizationId  Uuid              @map("organization_id")
@@ -394,6 +504,7 @@ namespace public {
     remark         String?
     organization   Organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "grade_scales_organization_id_fkey", index: false)
 
+    @@unique([organizationId, code], map: "grade_scales_org_code_unique")
     @@check(expression: "(min_score <= max_score)", map: "grade_scales_check")
     @@rls
     @@map("grade_scales")
@@ -481,6 +592,7 @@ namespace public {
     createdAt                                  Timestamptz             @default(now()) @map("created_at")
     updatedAt                                  Timestamptz             @default(now()) @map("updated_at")
     materialBookmarks                          MaterialBookmarks[]
+    materialComments                           MaterialComments[]
     materialFiles                              MaterialFiles[]
     materialLinks                              MaterialLinks[]
     materialProgresses                         MaterialProgress[]
@@ -509,6 +621,22 @@ namespace public {
     @@id([userId, materialId], map: "material_bookmarks_pkey")
     @@rls
     @@map("material_bookmarks")
+  }
+
+  model MaterialComments {
+    id         Uuid         @id(map: "material_comments_pkey") @default(sql`gen_random_uuid()`)
+    materialId Uuid         @map("material_id")
+    authorId   Uuid         @map("author_id")
+    body       String
+    createdAt  Timestamptz  @default(now()) @map("created_at")
+    updatedAt  Timestamptz  @default(now()) @map("updated_at")
+    deletedAt  Timestamptz? @map("deleted_at")
+    author     Profiles     @relation(fields: [authorId], references: [id], onDelete: Cascade, map: "material_comments_author_id_fkey", index: false)
+    material   Materials    @relation(fields: [materialId], references: [id], onDelete: Cascade, map: "material_comments_material_id_fkey")
+
+    @@index([materialId], map: "material_comments_material_id")
+    @@rls
+    @@map("material_comments")
   }
 
   model MaterialFiles {
@@ -567,6 +695,22 @@ namespace public {
     @@check(expression: "((progress_percent >= 0) AND (progress_percent <= 100))", map: "material_progress_progress_percent_check")
     @@rls
     @@map("material_progress")
+  }
+
+  model Messages {
+    id             Uuid          @id(map: "messages_pkey") @default(sql`gen_random_uuid()`)
+    conversationId Uuid          @map("conversation_id")
+    senderId       Uuid          @map("sender_id")
+    body           String
+    createdAt      Timestamptz   @default(now()) @map("created_at")
+    editedAt       Timestamptz?  @map("edited_at")
+    deletedAt      Timestamptz?  @map("deleted_at")
+    conversation   Conversations @relation(fields: [conversationId], references: [id], onDelete: Cascade, map: "messages_conversation_id_fkey")
+    sender         Profiles      @relation(fields: [senderId], references: [id], onDelete: Cascade, map: "messages_sender_id_fkey", index: false)
+
+    @@index([conversationId], map: "messages_conversation_id")
+    @@rls
+    @@map("messages")
   }
 
   model NotificationPreferences {
@@ -1075,6 +1219,35 @@ namespace public {
     @@map("scope_type")
   }
 
+  policy_delete announcements_delete {
+    target = Announcements
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'announcement.delete'::text)"
+    @@map("announcements_delete")
+  }
+
+  policy_insert announcements_insert {
+    target = Announcements
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'announcement.create'::text)"
+    @@map("announcements_insert")
+  }
+
+  policy_select announcements_select {
+    target = Announcements
+    roles = [authenticated]
+    using = "(((division_id IS NULL) AND (class_id IS NULL)) OR ((division_id IS NOT NULL) AND is_division_member(auth.uid(), division_id)) OR ((class_id IS NOT NULL) AND is_class_member(auth.uid(), class_id)) OR has_permission(auth.uid(), 'announcement.create'::text) OR has_permission(auth.uid(), 'announcement.update'::text))"
+    @@map("announcements_select")
+  }
+
+  policy_update announcements_update {
+    target = Announcements
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'announcement.update'::text)"
+    withCheck = "has_permission(auth.uid(), 'announcement.update'::text)"
+    @@map("announcements_update")
+  }
+
   policy_select assignment_group_members_select {
     target = AssignmentGroupMembers
     roles = [authenticated]
@@ -1258,6 +1431,34 @@ namespace public {
     @@map("classes_update")
   }
 
+  policy_insert conversation_members_insert {
+    target = ConversationMembers
+    roles = [authenticated]
+    withCheck = "true"
+    @@map("conversation_members_insert")
+  }
+
+  policy_select conversation_members_select {
+    target = ConversationMembers
+    roles = [authenticated]
+    using = "(user_id = auth.uid())"
+    @@map("conversation_members_select")
+  }
+
+  policy_insert conversations_insert {
+    target = Conversations
+    roles = [authenticated]
+    withCheck = "true"
+    @@map("conversations_insert")
+  }
+
+  policy_select conversations_select {
+    target = Conversations
+    roles = [authenticated]
+    using = "(EXISTS ( SELECT 1\n   FROM conversation_members cm\n  WHERE ((cm.conversation_id = conversations.id) AND (cm.user_id = auth.uid()))))"
+    @@map("conversations_select")
+  }
+
   policy_delete courses_delete {
     target = Courses
     roles = [authenticated]
@@ -1314,6 +1515,79 @@ namespace public {
     using = "has_permission(auth.uid(), 'division.update'::text)"
     withCheck = "has_permission(auth.uid(), 'division.update'::text)"
     @@map("divisions_update")
+  }
+
+  policy_select forum_categories_select {
+    target = ForumCategories
+    roles = [authenticated]
+    using = "true"
+    @@map("forum_categories_select")
+  }
+
+  policy_all forum_categories_write {
+    target = ForumCategories
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'forum.moderate'::text)"
+    withCheck = "has_permission(auth.uid(), 'forum.moderate'::text)"
+    @@map("forum_categories_write")
+  }
+
+  policy_delete forum_posts_delete {
+    target = ForumPosts
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'forum.moderate'::text)"
+    @@map("forum_posts_delete")
+  }
+
+  policy_insert forum_posts_insert {
+    target = ForumPosts
+    roles = [authenticated]
+    withCheck = "(has_permission(auth.uid(), 'forum.create'::text) AND (author_id = auth.uid()))"
+    @@map("forum_posts_insert")
+  }
+
+  policy_select forum_posts_select {
+    target = ForumPosts
+    roles = [authenticated]
+    using = "((deleted_at IS NULL) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+    @@map("forum_posts_select")
+  }
+
+  policy_update forum_posts_update {
+    target = ForumPosts
+    roles = [authenticated]
+    using = "(((author_id = auth.uid()) AND (deleted_at IS NULL)) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+    withCheck = "((author_id = auth.uid()) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+    @@map("forum_posts_update")
+  }
+
+  policy_delete forum_threads_delete {
+    target = ForumThreads
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'forum.moderate'::text)"
+    @@map("forum_threads_delete")
+  }
+
+  policy_insert forum_threads_insert {
+    target = ForumThreads
+    roles = [authenticated]
+    withCheck = "(has_permission(auth.uid(), 'forum.create'::text) AND (created_by = auth.uid()))"
+    @@map("forum_threads_insert")
+  }
+
+  policy_select forum_threads_select {
+    target = ForumThreads
+    roles = [authenticated]
+    using = "true"
+    @@map("forum_threads_select")
+  }
+
+  policy_update forum_threads_update {
+    target = ForumThreads
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'forum.moderate'::text)"
+    withCheck = "has_permission(auth.uid(), 'forum.moderate'::text)"
+    @@map("forum_threads_update")
   }
 
   policy_select grade_components_select {
@@ -1405,6 +1679,35 @@ namespace public {
     @@map("material_bookmarks_all")
   }
 
+  policy_delete material_comments_delete {
+    target = MaterialComments
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'forum.moderate'::text)"
+    @@map("material_comments_delete")
+  }
+
+  policy_insert material_comments_insert {
+    target = MaterialComments
+    roles = [authenticated]
+    withCheck = "(author_id = auth.uid())"
+    @@map("material_comments_insert")
+  }
+
+  policy_select material_comments_select {
+    target = MaterialComments
+    roles = [authenticated]
+    using = "((deleted_at IS NULL) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+    @@map("material_comments_select")
+  }
+
+  policy_update material_comments_update {
+    target = MaterialComments
+    roles = [authenticated]
+    using = "(((author_id = auth.uid()) AND (deleted_at IS NULL)) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+    withCheck = "((author_id = auth.uid()) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+    @@map("material_comments_update")
+  }
+
   policy_select material_files_select {
     target = MaterialFiles
     roles = [authenticated]
@@ -1478,6 +1781,20 @@ namespace public {
     using = "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
     withCheck = "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
     @@map("materials_write")
+  }
+
+  policy_insert messages_insert {
+    target = Messages
+    roles = [authenticated]
+    withCheck = "((sender_id = auth.uid()) AND (EXISTS ( SELECT 1\n   FROM conversation_members cm\n  WHERE ((cm.conversation_id = cm.conversation_id) AND (cm.user_id = auth.uid())))))"
+    @@map("messages_insert")
+  }
+
+  policy_select messages_select {
+    target = Messages
+    roles = [authenticated]
+    using = "(EXISTS ( SELECT 1\n   FROM conversation_members cm\n  WHERE ((cm.conversation_id = cm.conversation_id) AND (cm.user_id = auth.uid()))))"
+    @@map("messages_select")
   }
 
   policy_select modules_select {

@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'74671a1b9573656131c4e696d55a01dfd78abcc4f4594f3e806611b26f31de60'>;
+  StorageHashBase<'201bc9229bc535771022bbe8b72abf2d9cf1990ecf14184c8c9285cee55f5541'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -258,6 +258,20 @@ export type FieldOutputTypes = {
       readonly startDate: CodecTypes['pg/date-temporal@1']['output'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly Announcements: {
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly classId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly expiresAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly priority: CodecTypes['pg/text@1']['output'];
+      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly AssignmentGroupMembers: {
       readonly assignmentGroupId: CodecTypes['pg/uuid@1']['output'];
       readonly joinedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -367,6 +381,18 @@ export type FieldOutputTypes = {
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly userId: CodecTypes['pg/uuid@1']['output'];
     };
+    readonly ConversationMembers: {
+      readonly conversationId: CodecTypes['pg/uuid@1']['output'];
+      readonly joinedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly lastReadAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly Conversations: {
+      readonly _type: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly Courses: {
       readonly code: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -392,6 +418,33 @@ export type FieldOutputTypes = {
       readonly organizationId: CodecTypes['pg/uuid@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly ForumCategories: {
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly position: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly ForumPosts: {
+      readonly authorId: CodecTypes['pg/uuid@1']['output'];
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly threadId: CodecTypes['pg/uuid@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly ForumThreads: {
+      readonly acceptedPostId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly categoryId: CodecTypes['pg/uuid@1']['output'];
+      readonly classId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly courseId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly lockedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly title: CodecTypes['pg/text@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly GradeComponents: {
@@ -452,6 +505,15 @@ export type FieldOutputTypes = {
       readonly materialId: CodecTypes['pg/uuid@1']['output'];
       readonly userId: CodecTypes['pg/uuid@1']['output'];
     };
+    readonly MaterialComments: {
+      readonly authorId: CodecTypes['pg/uuid@1']['output'];
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly materialId: CodecTypes['pg/uuid@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly MaterialFiles: {
       readonly checksum: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -500,6 +562,15 @@ export type FieldOutputTypes = {
       readonly title: CodecTypes['pg/text@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
+    };
+    readonly Messages: {
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly conversationId: CodecTypes['pg/uuid@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly editedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly senderId: CodecTypes['pg/uuid@1']['output'];
     };
     readonly Modules: {
       readonly courseId: CodecTypes['pg/uuid@1']['output'];
@@ -801,6 +872,20 @@ export type FieldInputTypes = {
       readonly startDate: CodecTypes['pg/date-temporal@1']['input'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly Announcements: {
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly classId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly expiresAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly priority: CodecTypes['pg/text@1']['input'];
+      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
     readonly AssignmentGroupMembers: {
       readonly assignmentGroupId: CodecTypes['pg/uuid@1']['input'];
       readonly joinedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -910,6 +995,18 @@ export type FieldInputTypes = {
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly userId: CodecTypes['pg/uuid@1']['input'];
     };
+    readonly ConversationMembers: {
+      readonly conversationId: CodecTypes['pg/uuid@1']['input'];
+      readonly joinedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly lastReadAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly Conversations: {
+      readonly _type: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
     readonly Courses: {
       readonly code: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -935,6 +1032,33 @@ export type FieldInputTypes = {
       readonly organizationId: CodecTypes['pg/uuid@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly ForumCategories: {
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly position: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly ForumPosts: {
+      readonly authorId: CodecTypes['pg/uuid@1']['input'];
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly threadId: CodecTypes['pg/uuid@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly ForumThreads: {
+      readonly acceptedPostId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly categoryId: CodecTypes['pg/uuid@1']['input'];
+      readonly classId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly courseId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly lockedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly title: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly GradeComponents: {
@@ -995,6 +1119,15 @@ export type FieldInputTypes = {
       readonly materialId: CodecTypes['pg/uuid@1']['input'];
       readonly userId: CodecTypes['pg/uuid@1']['input'];
     };
+    readonly MaterialComments: {
+      readonly authorId: CodecTypes['pg/uuid@1']['input'];
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly materialId: CodecTypes['pg/uuid@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
     readonly MaterialFiles: {
       readonly checksum: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -1043,6 +1176,15 @@ export type FieldInputTypes = {
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updatedBy: CodecTypes['pg/uuid@1']['input'] | null;
+    };
+    readonly Messages: {
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly conversationId: CodecTypes['pg/uuid@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly editedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly senderId: CodecTypes['pg/uuid@1']['input'];
     };
     readonly Modules: {
       readonly courseId: CodecTypes['pg/uuid@1']['input'];
@@ -1344,6 +1486,20 @@ export type StorageColumnTypes = {
       readonly start_date: CodecTypes['pg/date-temporal@1']['output'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly announcements: {
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly class_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly expires_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly priority: CodecTypes['pg/text@1']['output'];
+      readonly published_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly assignment_group_members: {
       readonly assignment_group_id: CodecTypes['pg/uuid@1']['output'];
       readonly joined_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1453,6 +1609,18 @@ export type StorageColumnTypes = {
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly conversation_members: {
+      readonly conversation_id: CodecTypes['pg/uuid@1']['output'];
+      readonly joined_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly last_read_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly conversations: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly type: CodecTypes['pg/text@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly courses: {
       readonly code: CodecTypes['pg/text@1']['output'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1478,6 +1646,33 @@ export type StorageColumnTypes = {
       readonly organization_id: CodecTypes['pg/uuid@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly forum_categories: {
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly position: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly forum_posts: {
+      readonly author_id: CodecTypes['pg/uuid@1']['output'];
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly thread_id: CodecTypes['pg/uuid@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly forum_threads: {
+      readonly accepted_post_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly category_id: CodecTypes['pg/uuid@1']['output'];
+      readonly class_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly course_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly locked_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly title: CodecTypes['pg/text@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly grade_components: {
@@ -1538,6 +1733,15 @@ export type StorageColumnTypes = {
       readonly material_id: CodecTypes['pg/uuid@1']['output'];
       readonly user_id: CodecTypes['pg/uuid@1']['output'];
     };
+    readonly material_comments: {
+      readonly author_id: CodecTypes['pg/uuid@1']['output'];
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly material_id: CodecTypes['pg/uuid@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly material_files: {
       readonly checksum: CodecTypes['pg/text@1']['output'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1586,6 +1790,15 @@ export type StorageColumnTypes = {
       readonly type: CodecTypes['pg/text@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updated_by: CodecTypes['pg/uuid@1']['output'] | null;
+    };
+    readonly messages: {
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly conversation_id: CodecTypes['pg/uuid@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly edited_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly sender_id: CodecTypes['pg/uuid@1']['output'];
     };
     readonly modules: {
       readonly course_id: CodecTypes['pg/uuid@1']['output'];
@@ -1887,6 +2100,20 @@ export type StorageColumnInputTypes = {
       readonly start_date: CodecTypes['pg/date-temporal@1']['input'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly announcements: {
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly class_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly expires_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly priority: CodecTypes['pg/text@1']['input'];
+      readonly published_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
     readonly assignment_group_members: {
       readonly assignment_group_id: CodecTypes['pg/uuid@1']['input'];
       readonly joined_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -1996,6 +2223,18 @@ export type StorageColumnInputTypes = {
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly conversation_members: {
+      readonly conversation_id: CodecTypes['pg/uuid@1']['input'];
+      readonly joined_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly last_read_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly conversations: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly type: CodecTypes['pg/text@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
     readonly courses: {
       readonly code: CodecTypes['pg/text@1']['input'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -2021,6 +2260,33 @@ export type StorageColumnInputTypes = {
       readonly organization_id: CodecTypes['pg/uuid@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly forum_categories: {
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly position: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly forum_posts: {
+      readonly author_id: CodecTypes['pg/uuid@1']['input'];
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly thread_id: CodecTypes['pg/uuid@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly forum_threads: {
+      readonly accepted_post_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly category_id: CodecTypes['pg/uuid@1']['input'];
+      readonly class_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly course_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly locked_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly title: CodecTypes['pg/text@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly grade_components: {
@@ -2081,6 +2347,15 @@ export type StorageColumnInputTypes = {
       readonly material_id: CodecTypes['pg/uuid@1']['input'];
       readonly user_id: CodecTypes['pg/uuid@1']['input'];
     };
+    readonly material_comments: {
+      readonly author_id: CodecTypes['pg/uuid@1']['input'];
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly material_id: CodecTypes['pg/uuid@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
     readonly material_files: {
       readonly checksum: CodecTypes['pg/text@1']['input'] | null;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -2129,6 +2404,15 @@ export type StorageColumnInputTypes = {
       readonly type: CodecTypes['pg/text@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updated_by: CodecTypes['pg/uuid@1']['input'] | null;
+    };
+    readonly messages: {
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly conversation_id: CodecTypes['pg/uuid@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly edited_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly sender_id: CodecTypes['pg/uuid@1']['input'];
     };
     readonly modules: {
       readonly course_id: CodecTypes['pg/uuid@1']['input'];
@@ -2438,6 +2722,25 @@ export namespace Models {
     readonly [RelationKeys]?:
       'classes' | 'gradeWeights' | 'grades' | 'organization' | 'rankingPeriods' | 'reportCards';
   };
+  export type public_Announcements = {
+    body: CodecTypes['pg/text@1']['output'];
+    classId: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+    divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+    expiresAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    organizationId: CodecTypes['pg/uuid@1']['output'] | null;
+    priority: CodecTypes['pg/text@1']['output'];
+    publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    title: CodecTypes['pg/text@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    class: public_Classes | null;
+    division: public_Divisions | null;
+    organization: public_Organizations | null;
+    profiles: public_Profiles | null;
+    readonly [RelationKeys]?: 'class' | 'division' | 'organization' | 'profiles';
+  };
   export type public_AssignmentGroupMembers = {
     assignmentGroupId: CodecTypes['pg/uuid@1']['output'];
     joinedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -2589,12 +2892,38 @@ export namespace Models {
     name: CodecTypes['pg/text@1']['output'];
     status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     academicPeriod: public_AcademicPeriods | null;
+    announcements: public_Announcements[];
     attendanceSessions: public_AttendanceSessions[];
     batch: public_Batches | null;
     classMembers: public_ClassMembers[];
     division: public_Divisions;
+    forumThreads: public_ForumThreads[];
     readonly [RelationKeys]?:
-      'academicPeriod' | 'attendanceSessions' | 'batch' | 'classMembers' | 'division';
+      | 'academicPeriod'
+      | 'announcements'
+      | 'attendanceSessions'
+      | 'batch'
+      | 'classMembers'
+      | 'division'
+      | 'forumThreads';
+  };
+  export type public_ConversationMembers = {
+    conversationId: CodecTypes['pg/uuid@1']['output'];
+    joinedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    lastReadAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    userId: CodecTypes['pg/uuid@1']['output'];
+    conversation: public_Conversations;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'conversation' | 'user';
+  };
+  export type public_Conversations = {
+    _type: CodecTypes['pg/text@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    conversationMembers: public_ConversationMembers[];
+    messages: public_Messages[];
+    readonly [RelationKeys]?: 'conversationMembers' | 'messages';
   };
   export type public_Courses = {
     code: CodecTypes['pg/text@1']['output'] | null;
@@ -2613,6 +2942,7 @@ export namespace Models {
     updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
     assignments: public_Assignments[];
     division: public_Divisions;
+    forumThreads: public_ForumThreads[];
     gradeWeights: public_GradeWeights[];
     grades: public_Grades[];
     modules: public_Modules[];
@@ -2623,6 +2953,7 @@ export namespace Models {
     readonly [RelationKeys]?:
       | 'assignments'
       | 'division'
+      | 'forumThreads'
       | 'gradeWeights'
       | 'grades'
       | 'modules'
@@ -2641,6 +2972,7 @@ export namespace Models {
     slug: CodecTypes['pg/text@1']['output'];
     status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    announcements: public_Announcements[];
     attendanceSessions: public_AttendanceSessions[];
     classes: public_Classes[];
     courses: public_Courses[];
@@ -2649,6 +2981,7 @@ export namespace Models {
     roadmaps: public_Roadmaps[];
     userDivisions: public_UserDivisions[];
     readonly [RelationKeys]?:
+      | 'announcements'
       | 'attendanceSessions'
       | 'classes'
       | 'courses'
@@ -2656,6 +2989,47 @@ export namespace Models {
       | 'organization'
       | 'roadmaps'
       | 'userDivisions';
+  };
+  export type public_ForumCategories = {
+    description: CodecTypes['pg/text@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
+    position: CodecTypes['pg/int4@1']['output'];
+    forumThreads: public_ForumThreads[];
+    readonly [RelationKeys]?: 'forumThreads';
+  };
+  export type public_ForumPosts = {
+    authorId: CodecTypes['pg/uuid@1']['output'];
+    body: CodecTypes['pg/text@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    deletedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    threadId: CodecTypes['pg/uuid@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    author: public_Profiles;
+    forumThreads: public_ForumThreads[];
+    thread: public_ForumThreads;
+    readonly [RelationKeys]?: 'author' | 'forumThreads' | 'thread';
+  };
+  export type public_ForumThreads = {
+    acceptedPostId: CodecTypes['pg/uuid@1']['output'] | null;
+    categoryId: CodecTypes['pg/uuid@1']['output'];
+    classId: CodecTypes['pg/uuid@1']['output'] | null;
+    courseId: CodecTypes['pg/uuid@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    lockedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    title: CodecTypes['pg/text@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    acceptedPost: public_ForumPosts | null;
+    category: public_ForumCategories;
+    class: public_Classes | null;
+    course: public_Courses | null;
+    forumPosts: public_ForumPosts[];
+    profiles: public_Profiles | null;
+    readonly [RelationKeys]?:
+      'acceptedPost' | 'category' | 'class' | 'course' | 'forumPosts' | 'profiles';
   };
   export type public_GradeComponents = {
     code: CodecTypes['pg/text@1']['output'];
@@ -2740,6 +3114,18 @@ export namespace Models {
     user: public_Profiles;
     readonly [RelationKeys]?: 'material' | 'user';
   };
+  export type public_MaterialComments = {
+    authorId: CodecTypes['pg/uuid@1']['output'];
+    body: CodecTypes['pg/text@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    deletedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    materialId: CodecTypes['pg/uuid@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    author: public_Profiles;
+    material: public_Materials;
+    readonly [RelationKeys]?: 'author' | 'material';
+  };
   export type public_MaterialFiles = {
     checksum: CodecTypes['pg/text@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -2799,6 +3185,7 @@ export namespace Models {
     updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     updatedBy: CodecTypes['pg/uuid@1']['output'] | null;
     materialBookmarks: public_MaterialBookmarks[];
+    materialComments: public_MaterialComments[];
     materialFiles: public_MaterialFiles[];
     materialLinks: public_MaterialLinks[];
     materialPrerequisites: public_MaterialPrerequisites[];
@@ -2811,6 +3198,7 @@ export namespace Models {
     roadmapNodes: public_RoadmapNodes[];
     readonly [RelationKeys]?:
       | 'materialBookmarks'
+      | 'materialComments'
       | 'materialFiles'
       | 'materialLinks'
       | 'materialPrerequisites'
@@ -2821,6 +3209,18 @@ export namespace Models {
       | 'profilesProfiles'
       | 'quizzes'
       | 'roadmapNodes';
+  };
+  export type public_Messages = {
+    body: CodecTypes['pg/text@1']['output'];
+    conversationId: CodecTypes['pg/uuid@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    deletedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    editedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    senderId: CodecTypes['pg/uuid@1']['output'];
+    conversation: public_Conversations;
+    sender: public_Profiles;
+    readonly [RelationKeys]?: 'conversation' | 'sender';
   };
   export type public_Modules = {
     courseId: CodecTypes['pg/uuid@1']['output'];
@@ -2870,6 +3270,7 @@ export namespace Models {
     slug: CodecTypes['pg/text@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     academicPeriods: public_AcademicPeriods[];
+    announcements: public_Announcements[];
     batches: public_Batches[];
     divisions: public_Divisions[];
     gradeComponents: public_GradeComponents[];
@@ -2877,6 +3278,7 @@ export namespace Models {
     rankingPeriods: public_RankingPeriods[];
     readonly [RelationKeys]?:
       | 'academicPeriods'
+      | 'announcements'
       | 'batches'
       | 'divisions'
       | 'gradeComponents'
@@ -2917,6 +3319,7 @@ export namespace Models {
     studentNumber: CodecTypes['pg/text@1']['output'] | null;
     updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     username: CodecTypes['pg/text@1']['output'] | null;
+    announcements: public_Announcements[];
     assignmentGroupMembers: public_AssignmentGroupMembers[];
     assignments: public_Assignments[];
     assignmentsAssignments: public_Assignments[];
@@ -2925,16 +3328,21 @@ export namespace Models {
     attendanceSessions: public_AttendanceSessions[];
     auditLogs: public_AuditLogs[];
     classMembers: public_ClassMembers[];
+    conversationMembers: public_ConversationMembers[];
     courses: public_Courses[];
     coursesCourses: public_Courses[];
+    forumPosts: public_ForumPosts[];
+    forumThreads: public_ForumThreads[];
     grades: public_Grades[];
     grades2: public_Grades[];
     gradesGrades: public_Grades[];
     learningActivities: public_LearningActivities[];
     materialBookmarks: public_MaterialBookmarks[];
+    materialComments: public_MaterialComments[];
     materialProgresses: public_MaterialProgress[];
     materials: public_Materials[];
     materialsMaterials: public_Materials[];
+    messages: public_Messages[];
     notificationPreferences: public_NotificationPreferences[];
     notifications: public_Notifications[];
     pointTransactions: public_PointTransactions[];
@@ -2951,6 +3359,7 @@ export namespace Models {
     userRoles: public_UserRoles[];
     userRolesUserRoles: public_UserRoles[];
     readonly [RelationKeys]?:
+      | 'announcements'
       | 'assignmentGroupMembers'
       | 'assignments'
       | 'assignmentsAssignments'
@@ -2959,16 +3368,21 @@ export namespace Models {
       | 'attendanceSessions'
       | 'auditLogs'
       | 'classMembers'
+      | 'conversationMembers'
       | 'courses'
       | 'coursesCourses'
+      | 'forumPosts'
+      | 'forumThreads'
       | 'grades'
       | 'grades2'
       | 'gradesGrades'
       | 'learningActivities'
       | 'materialBookmarks'
+      | 'materialComments'
       | 'materialProgresses'
       | 'materials'
       | 'materialsMaterials'
+      | 'messages'
       | 'notificationPreferences'
       | 'notifications'
       | 'pointTransactions'
@@ -3302,6 +3716,7 @@ export namespace Models {
 export declare const models: {
   public: {
     AcademicPeriods: Models.public_AcademicPeriods;
+    Announcements: Models.public_Announcements;
     AssignmentGroupMembers: Models.public_AssignmentGroupMembers;
     AssignmentGroups: Models.public_AssignmentGroups;
     Assignments: Models.public_Assignments;
@@ -3312,19 +3727,26 @@ export declare const models: {
     Batches: Models.public_Batches;
     ClassMembers: Models.public_ClassMembers;
     Classes: Models.public_Classes;
+    ConversationMembers: Models.public_ConversationMembers;
+    Conversations: Models.public_Conversations;
     Courses: Models.public_Courses;
     Divisions: Models.public_Divisions;
+    ForumCategories: Models.public_ForumCategories;
+    ForumPosts: Models.public_ForumPosts;
+    ForumThreads: Models.public_ForumThreads;
     GradeComponents: Models.public_GradeComponents;
     GradeScales: Models.public_GradeScales;
     GradeWeights: Models.public_GradeWeights;
     Grades: Models.public_Grades;
     LearningActivities: Models.public_LearningActivities;
     MaterialBookmarks: Models.public_MaterialBookmarks;
+    MaterialComments: Models.public_MaterialComments;
     MaterialFiles: Models.public_MaterialFiles;
     MaterialLinks: Models.public_MaterialLinks;
     MaterialPrerequisites: Models.public_MaterialPrerequisites;
     MaterialProgress: Models.public_MaterialProgress;
     Materials: Models.public_Materials;
+    Messages: Models.public_Messages;
     Modules: Models.public_Modules;
     NotificationPreferences: Models.public_NotificationPreferences;
     Notifications: Models.public_Notifications;
@@ -3444,6 +3866,152 @@ type ContractBase = Omit<
                     readonly columns: readonly ['id'];
                   };
                   readonly name: 'academic_periods_organization_id_fkey';
+                },
+              ];
+            };
+            readonly announcements: {
+              columns: {
+                readonly body: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly class_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly created_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly division_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly expires_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly organization_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly priority: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'NORMAL'>;
+                  };
+                };
+                readonly published_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly title: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'announcements_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'announcements_class_id';
+                  readonly columns: readonly ['class_id'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'announcements_division_id';
+                  readonly columns: readonly ['division_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'announcements';
+                    readonly columns: readonly ['class_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'classes';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'announcements_class_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'announcements';
+                    readonly columns: readonly ['created_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'announcements_created_by_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'announcements';
+                    readonly columns: readonly ['division_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'divisions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'announcements_division_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'announcements';
+                    readonly columns: readonly ['organization_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'organizations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'announcements_organization_id_fkey';
                 },
               ];
             };
@@ -4439,6 +5007,106 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly conversation_members: {
+              columns: {
+                readonly conversation_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly joined_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly last_read_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['conversation_id', 'user_id'];
+                readonly name: 'conversation_members_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'conversation_members';
+                    readonly columns: readonly ['conversation_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'conversations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'conversation_members_conversation_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'conversation_members';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'conversation_members_user_id_fkey';
+                },
+              ];
+            };
+            readonly conversations: {
+              columns: {
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'DIRECT'>;
+                  };
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'conversations_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
             readonly courses: {
               columns: {
                 readonly code: {
@@ -4660,6 +5328,260 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly forum_categories: {
+              columns: {
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly position: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'forum_categories_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
+            readonly forum_posts: {
+              columns: {
+                readonly author_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly body: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly deleted_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly thread_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'forum_posts_pkey' };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'forum_posts_thread_id';
+                  readonly columns: readonly ['thread_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_posts';
+                    readonly columns: readonly ['author_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'forum_posts_author_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_posts';
+                    readonly columns: readonly ['thread_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_threads';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'forum_posts_thread_id_fkey';
+                },
+              ];
+            };
+            readonly forum_threads: {
+              columns: {
+                readonly accepted_post_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly category_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly class_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly course_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly created_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly locked_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly title: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'forum_threads_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_threads';
+                    readonly columns: readonly ['accepted_post_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_posts';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'forum_threads_accepted_post_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_threads';
+                    readonly columns: readonly ['category_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_categories';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'forum_threads_category_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_threads';
+                    readonly columns: readonly ['class_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'classes';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'forum_threads_class_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_threads';
+                    readonly columns: readonly ['course_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'courses';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'forum_threads_course_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'forum_threads';
+                    readonly columns: readonly ['created_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'forum_threads_created_by_fkey';
+                },
+              ];
+            };
             readonly grade_components: {
               columns: {
                 readonly code: {
@@ -4784,7 +5706,12 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id']; readonly name: 'grade_scales_pkey' };
-              uniques: readonly [];
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['organization_id', 'code'];
+                  readonly name: 'grade_scales_org_code_unique';
+                },
+              ];
               indexes: readonly [];
               foreignKeys: readonly [
                 {
@@ -5232,6 +6159,91 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly material_comments: {
+              columns: {
+                readonly author_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly body: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly deleted_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly material_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'material_comments_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'material_comments_material_id';
+                  readonly columns: readonly ['material_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'material_comments';
+                    readonly columns: readonly ['author_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'material_comments_author_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'material_comments';
+                    readonly columns: readonly ['material_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'materials';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'material_comments_material_id_fkey';
+                },
+              ];
+            };
             readonly material_files: {
               columns: {
                 readonly checksum: {
@@ -5654,6 +6666,87 @@ type ContractBase = Omit<
                     readonly columns: readonly ['id'];
                   };
                   readonly name: 'materials_updated_by_fkey';
+                },
+              ];
+            };
+            readonly messages: {
+              columns: {
+                readonly body: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly conversation_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly deleted_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly edited_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly sender_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'messages_pkey' };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'messages_conversation_id';
+                  readonly columns: readonly ['conversation_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'messages';
+                    readonly columns: readonly ['conversation_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'conversations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'messages_conversation_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'messages';
+                    readonly columns: readonly ['sender_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'messages_sender_id_fkey';
                 },
               ];
             };
@@ -8189,6 +9282,10 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'AcademicPeriods';
     };
+    readonly announcements: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Announcements';
+    };
     readonly assignment_group_members: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'AssignmentGroupMembers';
@@ -8223,8 +9320,28 @@ type ContractBase = Omit<
       readonly model: 'ClassMembers';
     };
     readonly classes: { readonly namespace: 'public' & NamespaceId; readonly model: 'Classes' };
+    readonly conversation_members: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ConversationMembers';
+    };
+    readonly conversations: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Conversations';
+    };
     readonly courses: { readonly namespace: 'public' & NamespaceId; readonly model: 'Courses' };
     readonly divisions: { readonly namespace: 'public' & NamespaceId; readonly model: 'Divisions' };
+    readonly forum_categories: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ForumCategories';
+    };
+    readonly forum_posts: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ForumPosts';
+    };
+    readonly forum_threads: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ForumThreads';
+    };
     readonly grade_components: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'GradeComponents';
@@ -8246,6 +9363,10 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'MaterialBookmarks';
     };
+    readonly material_comments: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'MaterialComments';
+    };
     readonly material_files: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'MaterialFiles';
@@ -8263,6 +9384,7 @@ type ContractBase = Omit<
       readonly model: 'MaterialProgress';
     };
     readonly materials: { readonly namespace: 'public' & NamespaceId; readonly model: 'Materials' };
+    readonly messages: { readonly namespace: 'public' & NamespaceId; readonly model: 'Messages' };
     readonly modules: { readonly namespace: 'public' & NamespaceId; readonly model: 'Modules' };
     readonly notification_preferences: {
       readonly namespace: 'public' & NamespaceId;
@@ -8482,6 +9604,138 @@ type ContractBase = Omit<
                 readonly organizationId: { readonly column: 'organization_id' };
                 readonly startDate: { readonly column: 'start_date' };
                 readonly status: { readonly column: 'status' };
+              };
+            };
+          };
+          readonly Announcements: {
+            readonly fields: {
+              readonly body: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly classId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly createdBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly divisionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly expiresAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly organizationId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly priority: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly publishedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly title: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly class: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Classes';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['classId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly division: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Divisions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['divisionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly organization: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Organizations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['organizationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'announcements';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly body: { readonly column: 'body' };
+                readonly classId: { readonly column: 'class_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly createdBy: { readonly column: 'created_by' };
+                readonly divisionId: { readonly column: 'division_id' };
+                readonly expiresAt: { readonly column: 'expires_at' };
+                readonly id: { readonly column: 'id' };
+                readonly organizationId: { readonly column: 'organization_id' };
+                readonly priority: { readonly column: 'priority' };
+                readonly publishedAt: { readonly column: 'published_at' };
+                readonly title: { readonly column: 'title' };
+                readonly updatedAt: { readonly column: 'updated_at' };
               };
             };
           };
@@ -9342,6 +10596,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
+              readonly announcements: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Announcements';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['classId'];
+                };
+              };
               readonly attendanceSessions: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -9386,6 +10651,17 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['divisionId'];
                   readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly forumThreads: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumThreads';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['classId'];
                 };
               };
             };
@@ -9473,6 +10749,128 @@ type ContractBase = Omit<
                 readonly leftAt: { readonly column: 'left_at' };
                 readonly status: { readonly column: 'status' };
                 readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly ConversationMembers: {
+            readonly fields: {
+              readonly conversationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly joinedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly lastReadAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly conversation: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Conversations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['conversationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'conversation_members';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly conversationId: { readonly column: 'conversation_id' };
+                readonly joinedAt: { readonly column: 'joined_at' };
+                readonly lastReadAt: { readonly column: 'last_read_at' };
+                readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly Conversations: {
+            readonly fields: {
+              readonly _type: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly conversationMembers: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ConversationMembers';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['conversationId'];
+                };
+              };
+              readonly messages: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Messages';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['conversationId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'conversations';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly _type: { readonly column: 'type' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly id: { readonly column: 'id' };
+                readonly updatedAt: { readonly column: 'updated_at' };
               };
             };
           };
@@ -9570,6 +10968,17 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['divisionId'];
                   readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly forumThreads: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumThreads';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['courseId'];
                 };
               };
               readonly gradeWeights: {
@@ -9723,6 +11132,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly announcements: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Announcements';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['divisionId'];
+                };
+              };
               readonly attendanceSessions: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -9814,6 +11234,282 @@ type ContractBase = Omit<
                 readonly organizationId: { readonly column: 'organization_id' };
                 readonly slug: { readonly column: 'slug' };
                 readonly status: { readonly column: 'status' };
+                readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly ForumCategories: {
+            readonly fields: {
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly position: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: {
+              readonly forumThreads: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumThreads';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['categoryId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'forum_categories';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly description: { readonly column: 'description' };
+                readonly id: { readonly column: 'id' };
+                readonly name: { readonly column: 'name' };
+                readonly position: { readonly column: 'position' };
+              };
+            };
+          };
+          readonly ForumPosts: {
+            readonly fields: {
+              readonly authorId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly body: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly deletedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly threadId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly author: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['authorId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly forumThreads: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumThreads';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['acceptedPostId'];
+                };
+              };
+              readonly thread: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumThreads';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['threadId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'forum_posts';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly authorId: { readonly column: 'author_id' };
+                readonly body: { readonly column: 'body' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly deletedAt: { readonly column: 'deleted_at' };
+                readonly id: { readonly column: 'id' };
+                readonly threadId: { readonly column: 'thread_id' };
+                readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly ForumThreads: {
+            readonly fields: {
+              readonly acceptedPostId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly categoryId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly classId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly courseId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly createdBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly lockedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly title: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly acceptedPost: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumPosts';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['acceptedPostId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly category: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumCategories';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['categoryId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly class: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Classes';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['classId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly course: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Courses';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['courseId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly forumPosts: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumPosts';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['threadId'];
+                };
+              };
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'forum_threads';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly acceptedPostId: { readonly column: 'accepted_post_id' };
+                readonly categoryId: { readonly column: 'category_id' };
+                readonly classId: { readonly column: 'class_id' };
+                readonly courseId: { readonly column: 'course_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly createdBy: { readonly column: 'created_by' };
+                readonly id: { readonly column: 'id' };
+                readonly lockedAt: { readonly column: 'locked_at' };
+                readonly title: { readonly column: 'title' };
                 readonly updatedAt: { readonly column: 'updated_at' };
               };
             };
@@ -10348,6 +12044,86 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly MaterialComments: {
+            readonly fields: {
+              readonly authorId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly body: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly deletedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly materialId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly author: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['authorId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly material: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Materials';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['materialId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'material_comments';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly authorId: { readonly column: 'author_id' };
+                readonly body: { readonly column: 'body' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly deletedAt: { readonly column: 'deleted_at' };
+                readonly id: { readonly column: 'id' };
+                readonly materialId: { readonly column: 'material_id' };
+                readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
           readonly MaterialFiles: {
             readonly fields: {
               readonly checksum: {
@@ -10693,6 +12469,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['materialId'];
                 };
               };
+              readonly materialComments: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'MaterialComments';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['materialId'];
+                };
+              };
               readonly materialFiles: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -10827,6 +12614,86 @@ type ContractBase = Omit<
                 readonly title: { readonly column: 'title' };
                 readonly updatedAt: { readonly column: 'updated_at' };
                 readonly updatedBy: { readonly column: 'updated_by' };
+              };
+            };
+          };
+          readonly Messages: {
+            readonly fields: {
+              readonly body: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly conversationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly deletedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly editedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly senderId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly conversation: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Conversations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['conversationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly sender: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['senderId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'messages';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly body: { readonly column: 'body' };
+                readonly conversationId: { readonly column: 'conversation_id' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly deletedAt: { readonly column: 'deleted_at' };
+                readonly editedAt: { readonly column: 'edited_at' };
+                readonly id: { readonly column: 'id' };
+                readonly senderId: { readonly column: 'sender_id' };
               };
             };
           };
@@ -11129,6 +12996,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['organizationId'];
                 };
               };
+              readonly announcements: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Announcements';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['organizationId'];
+                };
+              };
               readonly batches: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -11389,6 +13267,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly announcements: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Announcements';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdBy'];
+                };
+              };
               readonly assignmentGroupMembers: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -11477,6 +13366,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['userId'];
                 };
               };
+              readonly conversationMembers: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ConversationMembers';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly courses: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -11497,6 +13397,28 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['updatedBy'];
+                };
+              };
+              readonly forumPosts: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumPosts';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['authorId'];
+                };
+              };
+              readonly forumThreads: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ForumThreads';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdBy'];
                 };
               };
               readonly grades: {
@@ -11554,6 +13476,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['userId'];
                 };
               };
+              readonly materialComments: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'MaterialComments';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['authorId'];
+                };
+              };
               readonly materialProgresses: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -11585,6 +13518,17 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['updatedBy'];
+                };
+              };
+              readonly messages: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Messages';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['senderId'];
                 };
               };
               readonly notificationPreferences: {

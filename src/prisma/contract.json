@@ -8,6 +8,10 @@
       "model": "AcademicPeriods",
       "namespace": "public"
     },
+    "announcements": {
+      "model": "Announcements",
+      "namespace": "public"
+    },
     "assignment_group_members": {
       "model": "AssignmentGroupMembers",
       "namespace": "public"
@@ -48,12 +52,32 @@
       "model": "Classes",
       "namespace": "public"
     },
+    "conversation_members": {
+      "model": "ConversationMembers",
+      "namespace": "public"
+    },
+    "conversations": {
+      "model": "Conversations",
+      "namespace": "public"
+    },
     "courses": {
       "model": "Courses",
       "namespace": "public"
     },
     "divisions": {
       "model": "Divisions",
+      "namespace": "public"
+    },
+    "forum_categories": {
+      "model": "ForumCategories",
+      "namespace": "public"
+    },
+    "forum_posts": {
+      "model": "ForumPosts",
+      "namespace": "public"
+    },
+    "forum_threads": {
+      "model": "ForumThreads",
       "namespace": "public"
     },
     "grade_components": {
@@ -80,6 +104,10 @@
       "model": "MaterialBookmarks",
       "namespace": "public"
     },
+    "material_comments": {
+      "model": "MaterialComments",
+      "namespace": "public"
+    },
     "material_files": {
       "model": "MaterialFiles",
       "namespace": "public"
@@ -98,6 +126,10 @@
     },
     "materials": {
       "model": "Materials",
+      "namespace": "public"
+    },
+    "messages": {
+      "model": "Messages",
       "namespace": "public"
     },
     "modules": {
@@ -399,6 +431,202 @@
               },
               "namespaceId": "public",
               "table": "academic_periods"
+            }
+          },
+          "Announcements": {
+            "fields": {
+              "body": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "classId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "expiresAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "priority": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "publishedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "class": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "classId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Classes",
+                  "namespace": "public"
+                }
+              },
+              "division": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "body": {
+                  "column": "body"
+                },
+                "classId": {
+                  "column": "class_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "expiresAt": {
+                  "column": "expires_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                },
+                "priority": {
+                  "column": "priority"
+                },
+                "publishedAt": {
+                  "column": "published_at"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "announcements"
             }
           },
           "AssignmentGroupMembers": {
@@ -1812,6 +2040,21 @@
                   "namespace": "public"
                 }
               },
+              "announcements": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "classId"
+                  ]
+                },
+                "to": {
+                  "model": "Announcements",
+                  "namespace": "public"
+                }
+              },
               "attendanceSessions": {
                 "cardinality": "1:N",
                 "on": {
@@ -1873,6 +2116,21 @@
                   "model": "Divisions",
                   "namespace": "public"
                 }
+              },
+              "forumThreads": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "classId"
+                  ]
+                },
+                "to": {
+                  "model": "ForumThreads",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -1907,6 +2165,172 @@
               },
               "namespaceId": "public",
               "table": "classes"
+            }
+          },
+          "ConversationMembers": {
+            "fields": {
+              "conversationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "joinedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "lastReadAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "conversation": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "conversationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Conversations",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "conversationId": {
+                  "column": "conversation_id"
+                },
+                "joinedAt": {
+                  "column": "joined_at"
+                },
+                "lastReadAt": {
+                  "column": "last_read_at"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "conversation_members"
+            }
+          },
+          "Conversations": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "conversationMembers": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "conversationId"
+                  ]
+                },
+                "to": {
+                  "model": "ConversationMembers",
+                  "namespace": "public"
+                }
+              },
+              "messages": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "conversationId"
+                  ]
+                },
+                "to": {
+                  "model": "Messages",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "conversations"
             }
           },
           "Courses": {
@@ -2042,6 +2466,21 @@
                 },
                 "to": {
                   "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "forumThreads": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "courseId"
+                  ]
+                },
+                "to": {
+                  "model": "ForumThreads",
                   "namespace": "public"
                 }
               },
@@ -2272,6 +2711,21 @@
               }
             },
             "relations": {
+              "announcements": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "Announcements",
+                  "namespace": "public"
+                }
+              },
               "attendanceSessions": {
                 "cardinality": "1:N",
                 "on": {
@@ -2411,6 +2865,409 @@
               },
               "namespaceId": "public",
               "table": "divisions"
+            }
+          },
+          "ForumCategories": {
+            "fields": {
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "position": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "forumThreads": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "categoryId"
+                  ]
+                },
+                "to": {
+                  "model": "ForumThreads",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "description": {
+                  "column": "description"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "position": {
+                  "column": "position"
+                }
+              },
+              "namespaceId": "public",
+              "table": "forum_categories"
+            }
+          },
+          "ForumPosts": {
+            "fields": {
+              "authorId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "body": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "deletedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "threadId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "author": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "authorId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "forumThreads": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "acceptedPostId"
+                  ]
+                },
+                "to": {
+                  "model": "ForumThreads",
+                  "namespace": "public"
+                }
+              },
+              "thread": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "threadId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "ForumThreads",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "authorId": {
+                  "column": "author_id"
+                },
+                "body": {
+                  "column": "body"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "deletedAt": {
+                  "column": "deleted_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "threadId": {
+                  "column": "thread_id"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "forum_posts"
+            }
+          },
+          "ForumThreads": {
+            "fields": {
+              "acceptedPostId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "categoryId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "classId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "courseId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "lockedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "acceptedPost": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "acceptedPostId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "ForumPosts",
+                  "namespace": "public"
+                }
+              },
+              "category": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "categoryId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "ForumCategories",
+                  "namespace": "public"
+                }
+              },
+              "class": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "classId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Classes",
+                  "namespace": "public"
+                }
+              },
+              "course": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "courseId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "forumPosts": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "threadId"
+                  ]
+                },
+                "to": {
+                  "model": "ForumPosts",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "acceptedPostId": {
+                  "column": "accepted_post_id"
+                },
+                "categoryId": {
+                  "column": "category_id"
+                },
+                "classId": {
+                  "column": "class_id"
+                },
+                "courseId": {
+                  "column": "course_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "lockedAt": {
+                  "column": "locked_at"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "forum_threads"
             }
           },
           "GradeComponents": {
@@ -3230,6 +4087,120 @@
               "table": "material_bookmarks"
             }
           },
+          "MaterialComments": {
+            "fields": {
+              "authorId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "body": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "deletedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "materialId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "author": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "authorId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "material": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "materialId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materials",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "authorId": {
+                  "column": "author_id"
+                },
+                "body": {
+                  "column": "body"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "deletedAt": {
+                  "column": "deleted_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "materialId": {
+                  "column": "material_id"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "material_comments"
+            }
+          },
           "MaterialFiles": {
             "fields": {
               "checksum": {
@@ -3738,6 +4709,21 @@
                   "namespace": "public"
                 }
               },
+              "materialComments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materialId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialComments",
+                  "namespace": "public"
+                }
+              },
               "materialFiles": {
                 "cardinality": "1:N",
                 "on": {
@@ -3945,6 +4931,120 @@
               },
               "namespaceId": "public",
               "table": "materials"
+            }
+          },
+          "Messages": {
+            "fields": {
+              "body": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "conversationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "deletedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "editedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "senderId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "conversation": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "conversationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Conversations",
+                  "namespace": "public"
+                }
+              },
+              "sender": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "senderId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "body": {
+                  "column": "body"
+                },
+                "conversationId": {
+                  "column": "conversation_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "deletedAt": {
+                  "column": "deleted_at"
+                },
+                "editedAt": {
+                  "column": "edited_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "senderId": {
+                  "column": "sender_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "messages"
             }
           },
           "Modules": {
@@ -4392,6 +5492,21 @@
                   "namespace": "public"
                 }
               },
+              "announcements": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "Announcements",
+                  "namespace": "public"
+                }
+              },
               "batches": {
                 "cardinality": "1:N",
                 "on": {
@@ -4787,6 +5902,21 @@
               }
             },
             "relations": {
+              "announcements": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "Announcements",
+                  "namespace": "public"
+                }
+              },
               "assignmentGroupMembers": {
                 "cardinality": "1:N",
                 "on": {
@@ -4907,6 +6037,21 @@
                   "namespace": "public"
                 }
               },
+              "conversationMembers": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "ConversationMembers",
+                  "namespace": "public"
+                }
+              },
               "courses": {
                 "cardinality": "1:N",
                 "on": {
@@ -4934,6 +6079,36 @@
                 },
                 "to": {
                   "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "forumPosts": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "authorId"
+                  ]
+                },
+                "to": {
+                  "model": "ForumPosts",
+                  "namespace": "public"
+                }
+              },
+              "forumThreads": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "ForumThreads",
                   "namespace": "public"
                 }
               },
@@ -5012,6 +6187,21 @@
                   "namespace": "public"
                 }
               },
+              "materialComments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "authorId"
+                  ]
+                },
+                "to": {
+                  "model": "MaterialComments",
+                  "namespace": "public"
+                }
+              },
               "materialProgresses": {
                 "cardinality": "1:N",
                 "on": {
@@ -5054,6 +6244,21 @@
                 },
                 "to": {
                   "model": "Materials",
+                  "namespace": "public"
+                }
+              },
+              "messages": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "senderId"
+                  ]
+                },
+                "to": {
+                  "model": "Messages",
                   "namespace": "public"
                 }
               },
@@ -8344,6 +9549,55 @@
             }
           },
           "policy": {
+            "announcements_delete": {
+              "kind": "policy",
+              "name": "announcements_delete",
+              "namespaceId": "public",
+              "operation": "delete",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "announcements",
+              "using": "has_permission(auth.uid(), 'announcement.delete'::text)"
+            },
+            "announcements_insert": {
+              "kind": "policy",
+              "name": "announcements_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "announcements",
+              "withCheck": "has_permission(auth.uid(), 'announcement.create'::text)"
+            },
+            "announcements_select": {
+              "kind": "policy",
+              "name": "announcements_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "announcements",
+              "using": "(((division_id IS NULL) AND (class_id IS NULL)) OR ((division_id IS NOT NULL) AND is_division_member(auth.uid(), division_id)) OR ((class_id IS NOT NULL) AND is_class_member(auth.uid(), class_id)) OR has_permission(auth.uid(), 'announcement.create'::text) OR has_permission(auth.uid(), 'announcement.update'::text))"
+            },
+            "announcements_update": {
+              "kind": "policy",
+              "name": "announcements_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "announcements",
+              "using": "has_permission(auth.uid(), 'announcement.update'::text)",
+              "withCheck": "has_permission(auth.uid(), 'announcement.update'::text)"
+            },
             "assignment_group_members_select": {
               "kind": "policy",
               "name": "assignment_group_members_select",
@@ -8652,6 +9906,54 @@
               "using": "has_permission(auth.uid(), 'class.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'class.update'::text)"
             },
+            "conversation_members_insert": {
+              "kind": "policy",
+              "name": "conversation_members_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "conversation_members",
+              "withCheck": "true"
+            },
+            "conversation_members_select": {
+              "kind": "policy",
+              "name": "conversation_members_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "conversation_members",
+              "using": "(user_id = auth.uid())"
+            },
+            "conversations_insert": {
+              "kind": "policy",
+              "name": "conversations_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "conversations",
+              "withCheck": "true"
+            },
+            "conversations_select": {
+              "kind": "policy",
+              "name": "conversations_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "conversations",
+              "using": "(EXISTS ( SELECT 1\n   FROM conversation_members cm\n  WHERE ((cm.conversation_id = conversations.id) AND (cm.user_id = auth.uid()))))"
+            },
             "courses_delete": {
               "kind": "policy",
               "name": "courses_delete",
@@ -8749,6 +10051,129 @@
               "tableName": "divisions",
               "using": "has_permission(auth.uid(), 'division.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'division.update'::text)"
+            },
+            "forum_categories_select": {
+              "kind": "policy",
+              "name": "forum_categories_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_categories",
+              "using": "true"
+            },
+            "forum_categories_write": {
+              "kind": "policy",
+              "name": "forum_categories_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_categories",
+              "using": "has_permission(auth.uid(), 'forum.moderate'::text)",
+              "withCheck": "has_permission(auth.uid(), 'forum.moderate'::text)"
+            },
+            "forum_posts_delete": {
+              "kind": "policy",
+              "name": "forum_posts_delete",
+              "namespaceId": "public",
+              "operation": "delete",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_posts",
+              "using": "has_permission(auth.uid(), 'forum.moderate'::text)"
+            },
+            "forum_posts_insert": {
+              "kind": "policy",
+              "name": "forum_posts_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_posts",
+              "withCheck": "(has_permission(auth.uid(), 'forum.create'::text) AND (author_id = auth.uid()))"
+            },
+            "forum_posts_select": {
+              "kind": "policy",
+              "name": "forum_posts_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_posts",
+              "using": "((deleted_at IS NULL) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+            },
+            "forum_posts_update": {
+              "kind": "policy",
+              "name": "forum_posts_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_posts",
+              "using": "(((author_id = auth.uid()) AND (deleted_at IS NULL)) OR has_permission(auth.uid(), 'forum.moderate'::text))",
+              "withCheck": "((author_id = auth.uid()) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+            },
+            "forum_threads_delete": {
+              "kind": "policy",
+              "name": "forum_threads_delete",
+              "namespaceId": "public",
+              "operation": "delete",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_threads",
+              "using": "has_permission(auth.uid(), 'forum.moderate'::text)"
+            },
+            "forum_threads_insert": {
+              "kind": "policy",
+              "name": "forum_threads_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_threads",
+              "withCheck": "(has_permission(auth.uid(), 'forum.create'::text) AND (created_by = auth.uid()))"
+            },
+            "forum_threads_select": {
+              "kind": "policy",
+              "name": "forum_threads_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_threads",
+              "using": "true"
+            },
+            "forum_threads_update": {
+              "kind": "policy",
+              "name": "forum_threads_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "forum_threads",
+              "using": "has_permission(auth.uid(), 'forum.moderate'::text)",
+              "withCheck": "has_permission(auth.uid(), 'forum.moderate'::text)"
             },
             "grade_components_select": {
               "kind": "policy",
@@ -8899,6 +10324,55 @@
               "using": "(user_id = auth.uid())",
               "withCheck": "(user_id = auth.uid())"
             },
+            "material_comments_delete": {
+              "kind": "policy",
+              "name": "material_comments_delete",
+              "namespaceId": "public",
+              "operation": "delete",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_comments",
+              "using": "has_permission(auth.uid(), 'forum.moderate'::text)"
+            },
+            "material_comments_insert": {
+              "kind": "policy",
+              "name": "material_comments_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_comments",
+              "withCheck": "(author_id = auth.uid())"
+            },
+            "material_comments_select": {
+              "kind": "policy",
+              "name": "material_comments_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_comments",
+              "using": "((deleted_at IS NULL) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+            },
+            "material_comments_update": {
+              "kind": "policy",
+              "name": "material_comments_update",
+              "namespaceId": "public",
+              "operation": "update",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "material_comments",
+              "using": "(((author_id = auth.uid()) AND (deleted_at IS NULL)) OR has_permission(auth.uid(), 'forum.moderate'::text))",
+              "withCheck": "((author_id = auth.uid()) OR has_permission(auth.uid(), 'forum.moderate'::text))"
+            },
             "material_files_select": {
               "kind": "policy",
               "name": "material_files_select",
@@ -9023,6 +10497,30 @@
               "tableName": "materials",
               "using": "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))",
               "withCheck": "(has_permission(auth.uid(), 'material.create'::text) OR has_permission(auth.uid(), 'material.update'::text) OR has_permission(auth.uid(), 'material.delete'::text))"
+            },
+            "messages_insert": {
+              "kind": "policy",
+              "name": "messages_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "messages",
+              "withCheck": "((sender_id = auth.uid()) AND (EXISTS ( SELECT 1\n   FROM conversation_members cm\n  WHERE ((cm.conversation_id = cm.conversation_id) AND (cm.user_id = auth.uid())))))"
+            },
+            "messages_select": {
+              "kind": "policy",
+              "name": "messages_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "messages",
+              "using": "(EXISTS ( SELECT 1\n   FROM conversation_members cm\n  WHERE ((cm.conversation_id = cm.conversation_id) AND (cm.user_id = auth.uid()))))"
             },
             "modules_select": {
               "kind": "policy",
@@ -9848,6 +11346,11 @@
               "namespaceId": "public",
               "tableName": "academic_periods"
             },
+            "announcements": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "announcements"
+            },
             "assignment_group_members": {
               "kind": "rls",
               "namespaceId": "public",
@@ -9898,6 +11401,16 @@
               "namespaceId": "public",
               "tableName": "classes"
             },
+            "conversation_members": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "conversation_members"
+            },
+            "conversations": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "conversations"
+            },
             "courses": {
               "kind": "rls",
               "namespaceId": "public",
@@ -9907,6 +11420,21 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "divisions"
+            },
+            "forum_categories": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "forum_categories"
+            },
+            "forum_posts": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "forum_posts"
+            },
+            "forum_threads": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "forum_threads"
             },
             "grade_components": {
               "kind": "rls",
@@ -9938,6 +11466,11 @@
               "namespaceId": "public",
               "tableName": "material_bookmarks"
             },
+            "material_comments": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "material_comments"
+            },
             "material_files": {
               "kind": "rls",
               "namespaceId": "public",
@@ -9962,6 +11495,11 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "materials"
+            },
+            "messages": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "messages"
             },
             "modules": {
               "kind": "rls",
@@ -10205,6 +11743,186 @@
                   "name": "academic_periods_code_key"
                 }
               ]
+            },
+            "announcements": {
+              "columns": {
+                "body": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "class_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "expires_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "priority": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "NORMAL"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "published_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "announcements_class_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "class_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "announcements"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "classes"
+                  }
+                },
+                {
+                  "name": "announcements_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "announcements"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "announcements_division_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "announcements"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                },
+                {
+                  "name": "announcements_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "announcements"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "class_id"
+                  ],
+                  "name": "announcements_class_id",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "division_id"
+                  ],
+                  "name": "announcements_division_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "announcements_pkey"
+              },
+              "uniques": []
             },
             "assignment_group_members": {
               "columns": {
@@ -11461,6 +13179,130 @@
                 }
               ]
             },
+            "conversation_members": {
+              "columns": {
+                "conversation_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "joined_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "last_read_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "conversation_members_conversation_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "conversation_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "conversation_members"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "conversations"
+                  }
+                },
+                {
+                  "name": "conversation_members_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "conversation_members"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "conversation_id",
+                  "user_id"
+                ],
+                "name": "conversation_members_pkey"
+              },
+              "uniques": []
+            },
+            "conversations": {
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DIRECT"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "conversations_pkey"
+              },
+              "uniques": []
+            },
             "courses": {
               "columns": {
                 "code": {
@@ -11753,6 +13595,317 @@
                 }
               ]
             },
+            "forum_categories": {
+              "columns": {
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "position": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "forum_categories_pkey"
+              },
+              "uniques": []
+            },
+            "forum_posts": {
+              "columns": {
+                "author_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "body": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "deleted_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "thread_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "forum_posts_author_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "author_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_posts"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "forum_posts_thread_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "thread_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_posts"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_threads"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "thread_id"
+                  ],
+                  "name": "forum_posts_thread_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "forum_posts_pkey"
+              },
+              "uniques": []
+            },
+            "forum_threads": {
+              "columns": {
+                "accepted_post_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "category_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "class_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "course_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "locked_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "forum_threads_accepted_post_fkey",
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "accepted_post_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_threads"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_posts"
+                  }
+                },
+                {
+                  "name": "forum_threads_category_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "category_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_threads"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_categories"
+                  }
+                },
+                {
+                  "name": "forum_threads_class_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "class_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_threads"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "classes"
+                  }
+                },
+                {
+                  "name": "forum_threads_course_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "course_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_threads"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "courses"
+                  }
+                },
+                {
+                  "name": "forum_threads_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum_threads"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "forum_threads_pkey"
+              },
+              "uniques": []
+            },
             "grade_components": {
               "checks": [
                 {
@@ -11929,7 +14082,15 @@
                 ],
                 "name": "grade_scales_pkey"
               },
-              "uniques": []
+              "uniques": [
+                {
+                  "columns": [
+                    "organization_id",
+                    "code"
+                  ],
+                  "name": "grade_scales_org_code_unique"
+                }
+              ]
             },
             "grade_weights": {
               "checks": [
@@ -12469,6 +14630,111 @@
               },
               "uniques": []
             },
+            "material_comments": {
+              "columns": {
+                "author_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "body": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "deleted_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "material_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "material_comments_author_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "author_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_comments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "material_comments_material_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "material_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "material_comments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materials"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "material_id"
+                  ],
+                  "name": "material_comments_material_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "material_comments_pkey"
+              },
+              "uniques": []
+            },
             "material_files": {
               "columns": {
                 "checksum": {
@@ -12999,6 +15265,107 @@
                   "name": "materials_module_id_slug_key"
                 }
               ]
+            },
+            "messages": {
+              "columns": {
+                "body": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "conversation_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "deleted_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "edited_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "sender_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "messages_conversation_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "conversation_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "messages"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "conversations"
+                  }
+                },
+                {
+                  "name": "messages_sender_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "sender_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "messages"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "conversation_id"
+                  ],
+                  "name": "messages_conversation_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "messages_pkey"
+              },
+              "uniques": []
             },
             "modules": {
               "columns": {
@@ -16206,7 +18573,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "74671a1b9573656131c4e696d55a01dfd78abcc4f4594f3e806611b26f31de60"
+    "storageHash": "201bc9229bc535771022bbe8b72abf2d9cf1990ecf14184c8c9285cee55f5541"
   },
   "capabilities": {
     "postgres": {
