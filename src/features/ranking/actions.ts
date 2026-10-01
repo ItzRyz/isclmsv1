@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requirePermission } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import { scoreRanking, withRanks } from "./calc";
 import { createPeriodSchema } from "./schemas";
 
 async function orgId(): Promise<string> {
@@ -93,19 +94,12 @@ export async function computeRanking(
     }
   }
 
-  const scored = [...totals.entries()].map(([userId, v]) => {
-    const avg = v.grades.length
-      ? v.grades.reduce((s, x) => s + x, 0) / v.grades.length
-      : 0;
-    const score =
-      metric === "POINTS"
-        ? v.points
-        : metric === "GRADES"
-          ? avg
-          : v.points + avg;
-    return { userId, score: Math.round(score * 100) / 100, points: v.points };
-  });
-  scored.sort((a, b) => b.score - a.score);
+  const scored = withRanks(
+    scoreRanking(
+      metric as "POINTS" | "GRADES" | "MIXED",
+      totals as Map<string, { points: number; grades: number[] }>,
+    ),
+  );
 
   await supabase
     .from("ranking_entries")
@@ -113,10 +107,10 @@ export async function computeRanking(
     .eq("ranking_period_id", periodId);
   if (scored.length > 0) {
     const { error } = await supabase.from("ranking_entries").insert(
-      scored.map((s, i) => ({
+      scored.map((s) => ({
         ranking_period_id: periodId,
         user_id: s.userId,
-        rank: i + 1,
+        rank: s.rank,
         score: s.score,
         points: s.points,
       })),
