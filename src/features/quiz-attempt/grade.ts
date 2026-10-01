@@ -98,5 +98,9 @@ export async function gradeAttempt(
     .eq("id", attemptId)
     .eq("status", "SUBMITTED");
   if (error) throw new Error(`Gagal menyimpan nilai: ${error.message}`);
+  await supabase.rpc("check_achievements").then(
+    () => undefined,
+    () => undefined,
+  );
   return { score: result.total };
 }

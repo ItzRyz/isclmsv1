@@ -40,6 +40,10 @@ export async function completeMaterial(formData: FormData): Promise<void> {
     entityType: "material",
     entityId: parsed.data.material_id,
   });
+  await supabase.rpc("check_achievements").then(
+    () => undefined,
+    () => undefined,
+  );
   revalidatePath(`/materials/${parsed.data.material_id}`);
 }
 

@@ -224,6 +224,10 @@ export async function checkIn(input: {
       throw new Error("CONFLICT: sudah check-in sesi ini");
     throw new Error(`Gagal check-in: ${error.message}`);
   }
+  await supabase.rpc("check_achievements").then(
+    () => undefined,
+    () => undefined,
+  );
   revalidatePath(`/attendance/${session.id}`);
   return { status: late ? "LATE" : "PRESENT" };
 }
