@@ -11,6 +11,7 @@ import {
   replyThread,
   softDeletePost,
 } from "@/features/forum/actions";
+import { acceptAnswer } from "@/features/forum/qa-actions";
 
 export default async function ThreadPage({
   params,
@@ -21,7 +22,9 @@ export default async function ThreadPage({
   const supabase = await createClient();
   const { data: thread } = await supabase
     .from("forum_threads")
-    .select("id, title, locked_at, created_by, forum_categories(name)")
+    .select(
+      "id, title, locked_at, created_by, accepted_post_id, forum_categories(name)",
+    )
     .eq("id", id)
     .single();
   if (!thread) notFound();
@@ -38,6 +41,10 @@ export default async function ThreadPage({
   const moderate = await can("forum.moderate").catch(() => false);
   const locked = !!(thread as { locked_at: string | null }).locked_at;
   const writable = !!user && (!locked || moderate);
+  const asker =
+    user?.id === (thread as { created_by: string | null }).created_by;
+  const acceptedId = (thread as { accepted_post_id: string | null })
+    .accepted_post_id;
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-8">
@@ -45,6 +52,7 @@ export default async function ThreadPage({
         <CardHeader>
           <CardTitle className="flex flex-wrap items-center gap-2">
             {(thread as { title: string }).title}
+            {acceptedId ? <Badge variant="secondary">Terjawab ✓</Badge> : null}
             {locked ? <Badge variant="destructive">Terkunci</Badge> : null}
           </CardTitle>
         </CardHeader>
@@ -83,6 +91,19 @@ export default async function ThreadPage({
                   )}
                 </div>
                 <p className="whitespace-pre-wrap">{p.body}</p>
+                <div className="flex items-center gap-2">
+                  {acceptedId === p.id ? (
+                    <Badge variant="secondary">Jawaban diterima ✓</Badge>
+                  ) : (asker || moderate) && user ? (
+                    <form action={acceptAnswer}>
+                      <input type="hidden" name="thread_id" value={id} />
+                      <input type="hidden" name="post_id" value={p.id} />
+                      <Button type="submit" size="sm" variant="outline">
+                        Tandai jawaban
+                      </Button>
+                    </form>
+                  ) : null}
+                </div>
                 {mine ? (
                   <form action={editPost} className="flex gap-2">
                     <input type="hidden" name="post_id" value={p.id} />
