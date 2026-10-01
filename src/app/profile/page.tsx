@@ -1,5 +1,6 @@
 import QRCode from "qrcode";
 import { Badge } from "@/components/ui/badge";
+import { EarnedBadges } from "@/features/achievements/earned-badges";
 import {
   Card,
   CardContent,
@@ -46,6 +47,15 @@ export default async function ProfilePage() {
           {profile.student_number ? (
             <Badge variant="secondary">{profile.student_number}</Badge>
           ) : null}
+        </CardContent>
+      </Card>
+
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Pencapaian</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EarnedBadges userId={profile.id} />
         </CardContent>
       </Card>
 
