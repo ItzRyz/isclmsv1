@@ -22,6 +22,7 @@
     "test": "bun test",
     "test:rls": "bun scripts/rls-test.ts",
     "test:auth": "bun scripts/auth-test.ts",
+    "test:storage": "bun scripts/storage-test.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
