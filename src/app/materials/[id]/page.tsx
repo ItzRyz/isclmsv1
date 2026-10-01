@@ -19,6 +19,7 @@ import {
 } from "@/features/materials/actions";
 import { isVisibleNow } from "@/features/materials/visibility";
 import { logActivity } from "@/features/activity/log";
+import { CommentSection } from "@/features/comments/comment-section";
 import {
   addPrerequisite,
   removePrerequisite,
@@ -225,6 +226,7 @@ export default async function MaterialDetailPage({
                 <BookmarkButton materialId={material.id} />
                 <ProgressButton materialId={material.id} />
               </div>
+              <CommentSection materialId={material.id} />
             </>
           )}
           {staff && !visible ? (
