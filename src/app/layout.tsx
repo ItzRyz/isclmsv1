@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SiteHeader } from "@/components/site-header";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -50,7 +51,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            <SiteHeader />
+            {children}
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
