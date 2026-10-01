@@ -20,6 +20,7 @@
     "db:verify": "prisma db verify",
     "db:ping": "bun scripts/check-supabase-db.ts",
     "test": "bun test",
+    "test:rls": "bun scripts/rls-test.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
