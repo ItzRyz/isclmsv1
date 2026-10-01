@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requirePermission } from "@/lib/auth/server";
@@ -113,5 +114,9 @@ export async function generateReportCard(formData: FormData): Promise<void> {
     entity_id: reportId,
     new_values: { total, letter },
   });
+
   revalidatePath("/reports");
+  redirect(
+    `/reports?user=${parsed.data.user_id}&period=${parsed.data.academic_period_id}`,
+  );
 }

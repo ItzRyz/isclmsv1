@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { startAttemptForm } from "./actions";
 import { attemptDeadline, orderOptions, orderQuestions } from "./helpers";
@@ -177,7 +178,10 @@ export async function AttemptSection({ quiz }: { quiz: QuizInfo }) {
 
   async function retryGrade(formData: FormData): Promise<void> {
     "use server";
-    await gradeAttempt(String(formData.get("attempt_id") ?? ""));
+    const { quizId } = await gradeAttempt(
+      String(formData.get("attempt_id") ?? ""),
+    );
+    revalidatePath(`/quizzes/${quizId}`);
   }
 
   const passOf = (score: number | null): boolean | null =>

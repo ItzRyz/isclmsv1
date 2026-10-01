@@ -9,7 +9,7 @@ import { gradeAnswers } from "./grading";
  */
 export async function gradeAttempt(
   attemptId: string,
-): Promise<{ score: number }> {
+): Promise<{ score: number; quizId: string }> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -102,5 +102,8 @@ export async function gradeAttempt(
     () => undefined,
     () => undefined,
   );
-  return { score: result.total };
+  return {
+    score: result.total,
+    quizId: (attempt as { quiz_id: string }).quiz_id,
+  };
 }

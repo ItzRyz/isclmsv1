@@ -24,6 +24,8 @@
     "test:auth": "bun scripts/auth-test.ts",
     "test:storage": "bun scripts/storage-test.ts",
     "test:security": "bun scripts/security-scan.ts",
+    "e2e:seed": "bun scripts/e2e-seed.ts",
+    "test:e2e": "bun run build && bunx playwright test",
     "audit": "bun audit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -53,6 +55,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@prisma/cli-engine": "0.6.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24",

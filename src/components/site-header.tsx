@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { LogoutButton } from "@/features/auth/logout-button";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -55,7 +56,15 @@ export async function SiteHeader() {
                 </Badge>
               ) : null}
             </Link>
-          ) : null}
+          ) : (
+            <Link
+              href="/login"
+              className="text-muted-foreground hover:bg-muted hover:text-foreground rounded-md px-2 py-1 text-sm"
+            >
+              Masuk
+            </Link>
+          )}
+          {user ? <LogoutButton /> : null}
           <ThemeToggle />
         </div>
       </nav>
