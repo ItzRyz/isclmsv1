@@ -13,7 +13,9 @@ namespace public {
     academicPeriods AcademicPeriods[]
     announcements   Announcements[]
     batches         Batches[]
+    competitions    Competitions[]
     divisions       Divisions[]
+    events          Events[]
     gradeComponents GradeComponents[]
     gradeScales     GradeScales[]
     rankingPeriods  RankingPeriods[]
@@ -30,6 +32,7 @@ namespace public {
     startDate      Date?                 @map("start_date")
     endDate        Date?                 @map("end_date")
     status         pg.enum(EntityStatus) @default("ACTIVE")
+    certificates   Certificates[]
     classes        Classes[]
     gradeWeights   GradeWeights[]
     grades         Grades[]
@@ -39,6 +42,35 @@ namespace public {
 
     @@rls
     @@map("academic_periods")
+  }
+
+  model Achievements {
+    id               Uuid                  @id(map: "achievements_pkey") @default(sql`gen_random_uuid()`)
+    code             String                @unique(map: "achievements_code_key")
+    name             String
+    description      String?
+    icon             String                @default("🏅")
+    status           pg.enum(EntityStatus) @default("ACTIVE")
+    createdAt        Timestamptz           @default(now()) @map("created_at")
+    achievementRules AchievementRules[]
+    userAchievements UserAchievements[]
+
+    @@rls
+    @@map("achievements")
+  }
+
+  model AchievementRules {
+    id            Uuid         @id(map: "achievement_rules_pkey") @default(sql`gen_random_uuid()`)
+    achievementId Uuid         @map("achievement_id")
+    eventType     String       @map("event_type")
+    threshold     Int
+    configuration Jsonb        @default(json`{}`)
+    createdAt     Timestamptz  @default(now()) @map("created_at")
+    achievement   Achievements @relation(fields: [achievementId], references: [id], onDelete: Cascade, map: "achievement_rules_achievement_id_fkey", index: false)
+
+    @@check(expression: "(threshold >= 1)", map: "achievement_rules_threshold_check")
+    @@rls
+    @@map("achievement_rules")
   }
 
   model Batches {
@@ -68,8 +100,11 @@ namespace public {
     updatedAt          Timestamptz           @default(now()) @map("updated_at")
     announcements      Announcements[]
     attendanceSessions AttendanceSessions[]
+    certificates       Certificates[]
     classes            Classes[]
+    competitions       Competitions[]
     courses            Courses[]
+    events             Events[]
     gradeWeights       GradeWeights[]
     roadmaps           Roadmaps[]
     userDivisions      UserDivisions[]
@@ -120,8 +155,14 @@ namespace public {
     attendanceRecords                  AttendanceRecords[]
     attendanceSessions                 AttendanceSessions[]
     auditLogs                          AuditLogs[]
+    certificates                       Certificates[]
     classMembers                       ClassMembers[]
+    competitionParticipants            CompetitionParticipants[]
+    competitions                       Competitions[]
     conversationMembers                ConversationMembers[]
+    eventAttendances                   EventAttendance[]
+    eventParticipants                  EventParticipants[]
+    events                             Events[]
     forumPosts                         ForumPosts[]
     forumThreads                       ForumThreads[]
     learningActivities                 LearningActivities[]
@@ -137,6 +178,7 @@ namespace public {
     rankingEntries                     RankingEntries[]
     reportCards                        ReportCards[]
     submissionFeedbacks                SubmissionFeedback[]
+    userAchievements                   UserAchievements[]
     userDivisions                      UserDivisions[]
     assignments                        Assignments[]             @relation(name: "assignments_created_by_fkey")
     assignmentsAssignments             Assignments[]             @relation(name: "assignments_updated_by_fkey")
@@ -384,6 +426,26 @@ namespace public {
     @@map("audit_logs")
   }
 
+  model Certificates {
+    id                Uuid             @id(map: "certificates_pkey") @default(sql`gen_random_uuid()`)
+    certificateNumber String           @unique(map: "certificates_certificate_number_key") @map("certificate_number")
+    userId            Uuid             @map("user_id")
+    divisionId        Uuid?            @map("division_id")
+    academicPeriodId  Uuid?            @map("academic_period_id")
+    programName       String           @map("program_name")
+    issuedAt          Timestamptz      @default(now()) @map("issued_at")
+    issuerName        String           @map("issuer_name")
+    verificationToken String           @unique(map: "certificates_verification_token_key") @map("verification_token")
+    pdfPath           String?          @map("pdf_path")
+    academicPeriod    AcademicPeriods? @relation(fields: [academicPeriodId], references: [id], onDelete: SetNull, map: "certificates_academic_period_id_fkey", index: false)
+    division          Divisions?       @relation(fields: [divisionId], references: [id], onDelete: SetNull, map: "certificates_division_id_fkey", index: false)
+    user              Profiles         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "certificates_user_id_fkey")
+
+    @@index([userId], map: "certificates_user_id")
+    @@rls
+    @@map("certificates")
+  }
+
   model ClassMembers {
     classId  Uuid                  @map("class_id")
     userId   Uuid                  @map("user_id")
@@ -398,6 +460,48 @@ namespace public {
     @@index([userId], map: "class_members_user_id")
     @@rls
     @@map("class_members")
+  }
+
+  model Competitions {
+    id                      Uuid                      @id(map: "competitions_pkey") @default(sql`gen_random_uuid()`)
+    organizationId          Uuid                      @map("organization_id")
+    divisionId              Uuid?                     @map("division_id")
+    name                    String
+    slug                    String
+    description             String?
+    startsAt                Timestamptz?              @map("starts_at")
+    endsAt                  Timestamptz?              @map("ends_at")
+    status                  pg.enum(ContentStatus)    @default("DRAFT")
+    createdBy               Uuid?                     @map("created_by")
+    createdAt               Timestamptz               @default(now()) @map("created_at")
+    updatedAt               Timestamptz               @default(now()) @map("updated_at")
+    competitionParticipants CompetitionParticipants[]
+    profiles                Profiles?                 @relation(fields: [createdBy], references: [id], map: "competitions_created_by_fkey", index: false)
+    division                Divisions?                @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "competitions_division_id_fkey", index: false)
+    organization            Organizations             @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "competitions_organization_id_fkey", index: false)
+
+    @@unique([organizationId, slug], map: "competitions_organization_id_slug_key")
+    @@rls
+    @@map("competitions")
+  }
+
+  // WARNING: This table has no primary key in the database
+  model CompetitionParticipants {
+    competitionId Uuid         @map("competition_id")
+    userId        Uuid         @map("user_id")
+    status        String       @default("REGISTERED")
+    rank          Int?
+    score         Numeric?
+    pointsAwarded Int          @default(0) @map("points_awarded")
+    registeredAt  Timestamptz  @default(now()) @map("registered_at")
+    competition   Competitions @relation(fields: [competitionId], references: [id], onDelete: Cascade, map: "competition_participants_competition_id_fkey", index: false)
+    user          Profiles     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "competition_participants_user_id_fkey", index: false)
+
+    @@unique([competitionId, userId], map: "competition_participants_competition_id_user_id_key")
+    @@check(expression: "((rank IS NULL) OR (rank >= 1))", map: "competition_participants_rank_check")
+    @@check(expression: "((score IS NULL) OR (score >= (0)::numeric))", map: "competition_participants_score_check")
+    @@rls
+    @@map("competition_participants")
   }
 
   model Conversations {
@@ -423,6 +527,63 @@ namespace public {
     @@id([conversationId, userId], map: "conversation_members_pkey")
     @@rls
     @@map("conversation_members")
+  }
+
+  model Events {
+    id                Uuid                   @id(map: "events_pkey") @default(sql`gen_random_uuid()`)
+    organizationId    Uuid                   @map("organization_id")
+    divisionId        Uuid?                  @map("division_id")
+    _type             String                 @default("GENERAL") @map("type")
+    name              String
+    slug              String
+    description       String?
+    startsAt          Timestamptz            @map("starts_at")
+    endsAt            Timestamptz            @map("ends_at")
+    location          String?
+    capacity          Int?
+    status            pg.enum(ContentStatus) @default("DRAFT")
+    createdBy         Uuid?                  @map("created_by")
+    createdAt         Timestamptz            @default(now()) @map("created_at")
+    updatedAt         Timestamptz            @default(now()) @map("updated_at")
+    eventAttendances  EventAttendance[]
+    eventParticipants EventParticipants[]
+    profiles          Profiles?              @relation(fields: [createdBy], references: [id], map: "events_created_by_fkey", index: false)
+    division          Divisions?             @relation(fields: [divisionId], references: [id], onDelete: Cascade, map: "events_division_id_fkey", index: false)
+    organization      Organizations          @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "events_organization_id_fkey", index: false)
+
+    @@unique([organizationId, slug], map: "events_organization_id_slug_key")
+    @@check(expression: "((capacity IS NULL) OR (capacity > 0))", map: "events_capacity_check")
+    @@check(expression: "(ends_at > starts_at)", map: "events_check")
+    @@rls
+    @@map("events")
+  }
+
+  // WARNING: This table has no primary key in the database
+  model EventAttendance {
+    eventId     Uuid        @map("event_id")
+    userId      Uuid        @map("user_id")
+    status      String      @default("PRESENT")
+    checkedInAt Timestamptz @default(now()) @map("checked_in_at")
+    event       Events      @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "event_attendance_event_id_fkey", index: false)
+    user        Profiles    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "event_attendance_user_id_fkey", index: false)
+
+    @@unique([eventId, userId], map: "event_attendance_event_id_user_id_key")
+    @@rls
+    @@map("event_attendance")
+  }
+
+  // WARNING: This table has no primary key in the database
+  model EventParticipants {
+    eventId      Uuid        @map("event_id")
+    userId       Uuid        @map("user_id")
+    status       String      @default("REGISTERED")
+    registeredAt Timestamptz @default(now()) @map("registered_at")
+    event        Events      @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "event_participants_event_id_fkey", index: false)
+    user         Profiles    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "event_participants_user_id_fkey", index: false)
+
+    @@unique([eventId, userId], map: "event_participants_event_id_user_id_key")
+    @@rls
+    @@map("event_participants")
   }
 
   model ForumCategories {
@@ -1156,6 +1317,20 @@ namespace public {
     @@map("submission_revisions")
   }
 
+  model UserAchievements {
+    userId        Uuid         @map("user_id")
+    achievementId Uuid         @map("achievement_id")
+    awardedAt     Timestamptz  @default(now()) @map("awarded_at")
+    sourceType    String?      @map("source_type")
+    sourceId      String?      @map("source_id")
+    achievement   Achievements @relation(fields: [achievementId], references: [id], onDelete: Cascade, map: "user_achievements_achievement_id_fkey", index: false)
+    user          Profiles     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "user_achievements_user_id_fkey", index: false)
+
+    @@id([userId, achievementId], map: "user_achievements_pkey")
+    @@rls
+    @@map("user_achievements")
+  }
+
   model UserDivisions {
     userId         Uuid         @map("user_id")
     divisionId     Uuid         @map("division_id")
@@ -1218,6 +1393,20 @@ namespace public {
     COURSE = "COURSE"
     OWN = "OWN"
     @@map("scope_type")
+  }
+
+  policy_select achievement_rules_select {
+    target = AchievementRules
+    roles = [authenticated]
+    using = "true"
+    @@map("achievement_rules_select")
+  }
+
+  policy_select achievements_select {
+    target = Achievements
+    roles = [authenticated]
+    using = "true"
+    @@map("achievements_select")
   }
 
   policy_delete announcements_delete {
@@ -1388,6 +1577,21 @@ namespace public {
     @@map("batches_write")
   }
 
+  policy_select certificates_select {
+    target = Certificates
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'certificate.view'::text) OR has_permission(auth.uid(), 'certificate.issue'::text))"
+    @@map("certificates_select")
+  }
+
+  policy_all certificates_write {
+    target = Certificates
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'certificate.issue'::text)"
+    withCheck = "has_permission(auth.uid(), 'certificate.issue'::text)"
+    @@map("certificates_write")
+  }
+
   policy_select class_members_select {
     target = ClassMembers
     roles = [authenticated]
@@ -1430,6 +1634,36 @@ namespace public {
     using = "has_permission(auth.uid(), 'class.update'::text)"
     withCheck = "has_permission(auth.uid(), 'class.update'::text)"
     @@map("classes_update")
+  }
+
+  policy_select competition_participants_select {
+    target = CompetitionParticipants
+    roles = [authenticated]
+    using = "true"
+    @@map("competition_participants_select")
+  }
+
+  policy_all competition_participants_write {
+    target = CompetitionParticipants
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))"
+    @@map("competition_participants_write")
+  }
+
+  policy_select competitions_select {
+    target = Competitions
+    roles = [authenticated]
+    using = "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))"
+    @@map("competitions_select")
+  }
+
+  policy_all competitions_write {
+    target = Competitions
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))"
+    withCheck = "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))"
+    @@map("competitions_write")
   }
 
   policy_insert conversation_members_insert {
@@ -1516,6 +1750,51 @@ namespace public {
     using = "has_permission(auth.uid(), 'division.update'::text)"
     withCheck = "has_permission(auth.uid(), 'division.update'::text)"
     @@map("divisions_update")
+  }
+
+  policy_select event_attendance_select {
+    target = EventAttendance
+    roles = [authenticated]
+    using = "true"
+    @@map("event_attendance_select")
+  }
+
+  policy_all event_attendance_write {
+    target = EventAttendance
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'attendance.correct'::text) OR has_permission(auth.uid(), 'attendance.open_session'::text))"
+    withCheck = "(has_permission(auth.uid(), 'attendance.correct'::text) OR has_permission(auth.uid(), 'attendance.open_session'::text))"
+    @@map("event_attendance_write")
+  }
+
+  policy_select event_participants_select {
+    target = EventParticipants
+    roles = [authenticated]
+    using = "true"
+    @@map("event_participants_select")
+  }
+
+  policy_all event_participants_write {
+    target = EventParticipants
+    roles = [authenticated]
+    using = "true"
+    withCheck = "true"
+    @@map("event_participants_write")
+  }
+
+  policy_select events_select {
+    target = Events
+    roles = [authenticated]
+    using = "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))"
+    @@map("events_select")
+  }
+
+  policy_all events_write {
+    target = Events
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))"
+    withCheck = "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))"
+    @@map("events_write")
   }
 
   policy_select forum_categories_select {
@@ -2247,6 +2526,20 @@ namespace public {
     using = "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
     withCheck = "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
     @@map("submissions_update")
+  }
+
+  policy_insert user_achievements_insert {
+    target = UserAchievements
+    roles = [authenticated]
+    withCheck = "has_permission(auth.uid(), 'point.manage'::text)"
+    @@map("user_achievements_insert")
+  }
+
+  policy_select user_achievements_select {
+    target = UserAchievements
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'point.view'::text))"
+    @@map("user_achievements_select")
   }
 
   policy_select user_divisions_select {

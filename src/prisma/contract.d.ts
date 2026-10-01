@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'c4bee5aac67d8bbd779a9a88a294fc247cb27a390daf4833e4fd9d465276989c'>;
+  StorageHashBase<'fb3c2b5d01067b59bd7e5f2e95a8c3db2f1451b36d3d401b27db4bf3bf16fed3'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -258,6 +258,23 @@ export type FieldOutputTypes = {
       readonly startDate: CodecTypes['pg/date-temporal@1']['output'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly AchievementRules: {
+      readonly achievementId: CodecTypes['pg/uuid@1']['output'];
+      readonly configuration: CodecTypes['pg/jsonb@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly eventType: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly threshold: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly Achievements: {
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly icon: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    };
     readonly Announcements: {
       readonly body: CodecTypes['pg/text@1']['output'];
       readonly classId: CodecTypes['pg/uuid@1']['output'] | null;
@@ -363,6 +380,18 @@ export type FieldOutputTypes = {
       readonly startDate: CodecTypes['pg/date-temporal@1']['output'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly Certificates: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly certificateNumber: CodecTypes['pg/text@1']['output'];
+      readonly divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly issuedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly issuerName: CodecTypes['pg/text@1']['output'];
+      readonly pdfPath: CodecTypes['pg/text@1']['output'] | null;
+      readonly programName: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+      readonly verificationToken: CodecTypes['pg/text@1']['output'];
+    };
     readonly Classes: {
       readonly academicPeriodId: CodecTypes['pg/uuid@1']['output'] | null;
       readonly batchId: CodecTypes['pg/uuid@1']['output'] | null;
@@ -380,6 +409,29 @@ export type FieldOutputTypes = {
       readonly leftAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly CompetitionParticipants: {
+      readonly competitionId: CodecTypes['pg/uuid@1']['output'];
+      readonly pointsAwarded: CodecTypes['pg/int4@1']['output'];
+      readonly rank: CodecTypes['pg/int4@1']['output'] | null;
+      readonly registeredAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly score: CodecTypes['pg/numeric@1']['output'] | null;
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly Competitions: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly endsAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['output'];
+      readonly slug: CodecTypes['pg/text@1']['output'];
+      readonly startsAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly ConversationMembers: {
       readonly conversationId: CodecTypes['pg/uuid@1']['output'];
@@ -418,6 +470,35 @@ export type FieldOutputTypes = {
       readonly organizationId: CodecTypes['pg/uuid@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly EventAttendance: {
+      readonly checkedInAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly eventId: CodecTypes['pg/uuid@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly EventParticipants: {
+      readonly eventId: CodecTypes['pg/uuid@1']['output'];
+      readonly registeredAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly Events: {
+      readonly _type: CodecTypes['pg/text@1']['output'];
+      readonly capacity: CodecTypes['pg/int4@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly endsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly location: CodecTypes['pg/text@1']['output'] | null;
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['output'];
+      readonly slug: CodecTypes['pg/text@1']['output'];
+      readonly startsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly ForumCategories: {
@@ -846,6 +927,13 @@ export type FieldOutputTypes = {
       readonly userId: CodecTypes['pg/uuid@1']['output'] | null;
       readonly version: CodecTypes['pg/int4@1']['output'];
     };
+    readonly UserAchievements: {
+      readonly achievementId: CodecTypes['pg/uuid@1']['output'];
+      readonly awardedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly sourceId: CodecTypes['pg/text@1']['output'] | null;
+      readonly sourceType: CodecTypes['pg/text@1']['output'] | null;
+      readonly userId: CodecTypes['pg/uuid@1']['output'];
+    };
     readonly UserDivisions: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly divisionId: CodecTypes['pg/uuid@1']['output'];
@@ -871,6 +959,23 @@ export type FieldInputTypes = {
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly organizationId: CodecTypes['pg/uuid@1']['input'];
       readonly startDate: CodecTypes['pg/date-temporal@1']['input'] | null;
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    };
+    readonly AchievementRules: {
+      readonly achievementId: CodecTypes['pg/uuid@1']['input'];
+      readonly configuration: CodecTypes['pg/jsonb@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly eventType: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly threshold: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly Achievements: {
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly icon: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
     readonly Announcements: {
@@ -978,6 +1083,18 @@ export type FieldInputTypes = {
       readonly startDate: CodecTypes['pg/date-temporal@1']['input'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly Certificates: {
+      readonly academicPeriodId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly certificateNumber: CodecTypes['pg/text@1']['input'];
+      readonly divisionId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly issuedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly issuerName: CodecTypes['pg/text@1']['input'];
+      readonly pdfPath: CodecTypes['pg/text@1']['input'] | null;
+      readonly programName: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+      readonly verificationToken: CodecTypes['pg/text@1']['input'];
+    };
     readonly Classes: {
       readonly academicPeriodId: CodecTypes['pg/uuid@1']['input'] | null;
       readonly batchId: CodecTypes['pg/uuid@1']['input'] | null;
@@ -995,6 +1112,29 @@ export type FieldInputTypes = {
       readonly leftAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
       readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly CompetitionParticipants: {
+      readonly competitionId: CodecTypes['pg/uuid@1']['input'];
+      readonly pointsAwarded: CodecTypes['pg/int4@1']['input'];
+      readonly rank: CodecTypes['pg/int4@1']['input'] | null;
+      readonly registeredAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly score: CodecTypes['pg/numeric@1']['input'] | null;
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly Competitions: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly endsAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['input'];
+      readonly slug: CodecTypes['pg/text@1']['input'];
+      readonly startsAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly ConversationMembers: {
       readonly conversationId: CodecTypes['pg/uuid@1']['input'];
@@ -1033,6 +1173,35 @@ export type FieldInputTypes = {
       readonly organizationId: CodecTypes['pg/uuid@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly EventAttendance: {
+      readonly checkedInAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly eventId: CodecTypes['pg/uuid@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly EventParticipants: {
+      readonly eventId: CodecTypes['pg/uuid@1']['input'];
+      readonly registeredAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly Events: {
+      readonly _type: CodecTypes['pg/text@1']['input'];
+      readonly capacity: CodecTypes['pg/int4@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly createdBy: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly divisionId: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly endsAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly location: CodecTypes['pg/text@1']['input'] | null;
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organizationId: CodecTypes['pg/uuid@1']['input'];
+      readonly slug: CodecTypes['pg/text@1']['input'];
+      readonly startsAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly ForumCategories: {
@@ -1461,6 +1630,13 @@ export type FieldInputTypes = {
       readonly userId: CodecTypes['pg/uuid@1']['input'] | null;
       readonly version: CodecTypes['pg/int4@1']['input'];
     };
+    readonly UserAchievements: {
+      readonly achievementId: CodecTypes['pg/uuid@1']['input'];
+      readonly awardedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly sourceId: CodecTypes['pg/text@1']['input'] | null;
+      readonly sourceType: CodecTypes['pg/text@1']['input'] | null;
+      readonly userId: CodecTypes['pg/uuid@1']['input'];
+    };
     readonly UserDivisions: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly divisionId: CodecTypes['pg/uuid@1']['input'];
@@ -1486,6 +1662,23 @@ export type StorageColumnTypes = {
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly organization_id: CodecTypes['pg/uuid@1']['output'];
       readonly start_date: CodecTypes['pg/date-temporal@1']['output'] | null;
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    };
+    readonly achievement_rules: {
+      readonly achievement_id: CodecTypes['pg/uuid@1']['output'];
+      readonly configuration: CodecTypes['pg/jsonb@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly event_type: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly threshold: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly achievements: {
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly icon: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
     readonly announcements: {
@@ -1593,6 +1786,18 @@ export type StorageColumnTypes = {
       readonly start_date: CodecTypes['pg/date-temporal@1']['output'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly certificates: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly certificate_number: CodecTypes['pg/text@1']['output'];
+      readonly division_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly issued_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly issuer_name: CodecTypes['pg/text@1']['output'];
+      readonly pdf_path: CodecTypes['pg/text@1']['output'] | null;
+      readonly program_name: CodecTypes['pg/text@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+      readonly verification_token: CodecTypes['pg/text@1']['output'];
+    };
     readonly class_members: {
       readonly class_id: CodecTypes['pg/uuid@1']['output'];
       readonly joined_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -1610,6 +1815,29 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    };
+    readonly competition_participants: {
+      readonly competition_id: CodecTypes['pg/uuid@1']['output'];
+      readonly points_awarded: CodecTypes['pg/int4@1']['output'];
+      readonly rank: CodecTypes['pg/int4@1']['output'] | null;
+      readonly registered_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly score: CodecTypes['pg/numeric@1']['output'] | null;
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly competitions: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly ends_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['output'];
+      readonly slug: CodecTypes['pg/text@1']['output'];
+      readonly starts_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly conversation_members: {
       readonly conversation_id: CodecTypes['pg/uuid@1']['output'];
@@ -1648,6 +1876,35 @@ export type StorageColumnTypes = {
       readonly organization_id: CodecTypes['pg/uuid@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly event_attendance: {
+      readonly checked_in_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly event_id: CodecTypes['pg/uuid@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly event_participants: {
+      readonly event_id: CodecTypes['pg/uuid@1']['output'];
+      readonly registered_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
+    readonly events: {
+      readonly capacity: CodecTypes['pg/int4@1']['output'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_by: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['output'] | null;
+      readonly ends_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly location: CodecTypes['pg/text@1']['output'] | null;
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['output'];
+      readonly slug: CodecTypes['pg/text@1']['output'];
+      readonly starts_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly type: CodecTypes['pg/text@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly forum_categories: {
@@ -2076,6 +2333,13 @@ export type StorageColumnTypes = {
       readonly user_id: CodecTypes['pg/uuid@1']['output'] | null;
       readonly version: CodecTypes['pg/int4@1']['output'];
     };
+    readonly user_achievements: {
+      readonly achievement_id: CodecTypes['pg/uuid@1']['output'];
+      readonly awarded_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly source_id: CodecTypes['pg/text@1']['output'] | null;
+      readonly source_type: CodecTypes['pg/text@1']['output'] | null;
+      readonly user_id: CodecTypes['pg/uuid@1']['output'];
+    };
     readonly user_divisions: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly division_id: CodecTypes['pg/uuid@1']['output'];
@@ -2101,6 +2365,23 @@ export type StorageColumnInputTypes = {
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly organization_id: CodecTypes['pg/uuid@1']['input'];
       readonly start_date: CodecTypes['pg/date-temporal@1']['input'] | null;
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    };
+    readonly achievement_rules: {
+      readonly achievement_id: CodecTypes['pg/uuid@1']['input'];
+      readonly configuration: CodecTypes['pg/jsonb@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly event_type: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly threshold: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly achievements: {
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly icon: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
     readonly announcements: {
@@ -2208,6 +2489,18 @@ export type StorageColumnInputTypes = {
       readonly start_date: CodecTypes['pg/date-temporal@1']['input'] | null;
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
     };
+    readonly certificates: {
+      readonly academic_period_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly certificate_number: CodecTypes['pg/text@1']['input'];
+      readonly division_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly issued_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly issuer_name: CodecTypes['pg/text@1']['input'];
+      readonly pdf_path: CodecTypes['pg/text@1']['input'] | null;
+      readonly program_name: CodecTypes['pg/text@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+      readonly verification_token: CodecTypes['pg/text@1']['input'];
+    };
     readonly class_members: {
       readonly class_id: CodecTypes['pg/uuid@1']['input'];
       readonly joined_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -2225,6 +2518,29 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    };
+    readonly competition_participants: {
+      readonly competition_id: CodecTypes['pg/uuid@1']['input'];
+      readonly points_awarded: CodecTypes['pg/int4@1']['input'];
+      readonly rank: CodecTypes['pg/int4@1']['input'] | null;
+      readonly registered_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly score: CodecTypes['pg/numeric@1']['input'] | null;
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly competitions: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly ends_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['input'];
+      readonly slug: CodecTypes['pg/text@1']['input'];
+      readonly starts_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly conversation_members: {
       readonly conversation_id: CodecTypes['pg/uuid@1']['input'];
@@ -2263,6 +2579,35 @@ export type StorageColumnInputTypes = {
       readonly organization_id: CodecTypes['pg/uuid@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
       readonly status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly event_attendance: {
+      readonly checked_in_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly event_id: CodecTypes['pg/uuid@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly event_participants: {
+      readonly event_id: CodecTypes['pg/uuid@1']['input'];
+      readonly registered_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
+    readonly events: {
+      readonly capacity: CodecTypes['pg/int4@1']['input'] | null;
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_by: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly division_id: CodecTypes['pg/uuid@1']['input'] | null;
+      readonly ends_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly location: CodecTypes['pg/text@1']['input'] | null;
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly organization_id: CodecTypes['pg/uuid@1']['input'];
+      readonly slug: CodecTypes['pg/text@1']['input'];
+      readonly starts_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+      readonly type: CodecTypes['pg/text@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly forum_categories: {
@@ -2691,6 +3036,13 @@ export type StorageColumnInputTypes = {
       readonly user_id: CodecTypes['pg/uuid@1']['input'] | null;
       readonly version: CodecTypes['pg/int4@1']['input'];
     };
+    readonly user_achievements: {
+      readonly achievement_id: CodecTypes['pg/uuid@1']['input'];
+      readonly awarded_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly source_id: CodecTypes['pg/text@1']['input'] | null;
+      readonly source_type: CodecTypes['pg/text@1']['input'] | null;
+      readonly user_id: CodecTypes['pg/uuid@1']['input'];
+    };
     readonly user_divisions: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly division_id: CodecTypes['pg/uuid@1']['input'];
@@ -2717,6 +3069,7 @@ export namespace Models {
     organizationId: CodecTypes['pg/uuid@1']['output'];
     startDate: CodecTypes['pg/date-temporal@1']['output'] | null;
     status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    certificates: public_Certificates[];
     classes: public_Classes[];
     gradeWeights: public_GradeWeights[];
     grades: public_Grades[];
@@ -2724,7 +3077,35 @@ export namespace Models {
     rankingPeriods: public_RankingPeriods[];
     reportCards: public_ReportCards[];
     readonly [RelationKeys]?:
-      'classes' | 'gradeWeights' | 'grades' | 'organization' | 'rankingPeriods' | 'reportCards';
+      | 'certificates'
+      | 'classes'
+      | 'gradeWeights'
+      | 'grades'
+      | 'organization'
+      | 'rankingPeriods'
+      | 'reportCards';
+  };
+  export type public_AchievementRules = {
+    achievementId: CodecTypes['pg/uuid@1']['output'];
+    configuration: CodecTypes['pg/jsonb@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    eventType: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    threshold: CodecTypes['pg/int4@1']['output'];
+    achievement: public_Achievements;
+    readonly [RelationKeys]?: 'achievement';
+  };
+  export type public_Achievements = {
+    code: CodecTypes['pg/text@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    description: CodecTypes['pg/text@1']['output'] | null;
+    icon: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
+    status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+    achievementRules: public_AchievementRules[];
+    userAchievements: public_UserAchievements[];
+    readonly [RelationKeys]?: 'achievementRules' | 'userAchievements';
   };
   export type public_Announcements = {
     body: CodecTypes['pg/text@1']['output'];
@@ -2875,6 +3256,22 @@ export namespace Models {
     organization: public_Organizations;
     readonly [RelationKeys]?: 'classes' | 'organization';
   };
+  export type public_Certificates = {
+    academicPeriodId: CodecTypes['pg/uuid@1']['output'] | null;
+    certificateNumber: CodecTypes['pg/text@1']['output'];
+    divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    issuedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    issuerName: CodecTypes['pg/text@1']['output'];
+    pdfPath: CodecTypes['pg/text@1']['output'] | null;
+    programName: CodecTypes['pg/text@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    verificationToken: CodecTypes['pg/text@1']['output'];
+    academicPeriod: public_AcademicPeriods | null;
+    division: public_Divisions | null;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'academicPeriod' | 'division' | 'user';
+  };
   export type public_ClassMembers = {
     classId: CodecTypes['pg/uuid@1']['output'];
     joinedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -2910,6 +3307,37 @@ export namespace Models {
       | 'classMembers'
       | 'division'
       | 'forumThreads';
+  };
+  export type public_CompetitionParticipants = {
+    competitionId: CodecTypes['pg/uuid@1']['output'];
+    pointsAwarded: CodecTypes['pg/int4@1']['output'];
+    rank: CodecTypes['pg/int4@1']['output'] | null;
+    registeredAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    score: CodecTypes['pg/numeric@1']['output'] | null;
+    status: CodecTypes['pg/text@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    competition: public_Competitions;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'competition' | 'user';
+  };
+  export type public_Competitions = {
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+    description: CodecTypes['pg/text@1']['output'] | null;
+    divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+    endsAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    id: CodecTypes['pg/uuid@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
+    organizationId: CodecTypes['pg/uuid@1']['output'];
+    slug: CodecTypes['pg/text@1']['output'];
+    startsAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    competitionParticipants: public_CompetitionParticipants[];
+    division: public_Divisions | null;
+    organization: public_Organizations;
+    profiles: public_Profiles | null;
+    readonly [RelationKeys]?: 'competitionParticipants' | 'division' | 'organization' | 'profiles';
   };
   export type public_ConversationMembers = {
     conversationId: CodecTypes['pg/uuid@1']['output'];
@@ -2978,8 +3406,11 @@ export namespace Models {
     updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     announcements: public_Announcements[];
     attendanceSessions: public_AttendanceSessions[];
+    certificates: public_Certificates[];
     classes: public_Classes[];
+    competitions: public_Competitions[];
     courses: public_Courses[];
+    events: public_Events[];
     gradeWeights: public_GradeWeights[];
     organization: public_Organizations;
     roadmaps: public_Roadmaps[];
@@ -2987,12 +3418,57 @@ export namespace Models {
     readonly [RelationKeys]?:
       | 'announcements'
       | 'attendanceSessions'
+      | 'certificates'
       | 'classes'
+      | 'competitions'
       | 'courses'
+      | 'events'
       | 'gradeWeights'
       | 'organization'
       | 'roadmaps'
       | 'userDivisions';
+  };
+  export type public_EventAttendance = {
+    checkedInAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    eventId: CodecTypes['pg/uuid@1']['output'];
+    status: CodecTypes['pg/text@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    event: public_Events;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'event' | 'user';
+  };
+  export type public_EventParticipants = {
+    eventId: CodecTypes['pg/uuid@1']['output'];
+    registeredAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    status: CodecTypes['pg/text@1']['output'];
+    userId: CodecTypes['pg/uuid@1']['output'];
+    event: public_Events;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'event' | 'user';
+  };
+  export type public_Events = {
+    _type: CodecTypes['pg/text@1']['output'];
+    capacity: CodecTypes['pg/int4@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    createdBy: CodecTypes['pg/uuid@1']['output'] | null;
+    description: CodecTypes['pg/text@1']['output'] | null;
+    divisionId: CodecTypes['pg/uuid@1']['output'] | null;
+    endsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    id: CodecTypes['pg/uuid@1']['output'];
+    location: CodecTypes['pg/text@1']['output'] | null;
+    name: CodecTypes['pg/text@1']['output'];
+    organizationId: CodecTypes['pg/uuid@1']['output'];
+    slug: CodecTypes['pg/text@1']['output'];
+    startsAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    division: public_Divisions | null;
+    eventAttendances: public_EventAttendance[];
+    eventParticipants: public_EventParticipants[];
+    organization: public_Organizations;
+    profiles: public_Profiles | null;
+    readonly [RelationKeys]?:
+      'division' | 'eventAttendances' | 'eventParticipants' | 'organization' | 'profiles';
   };
   export type public_ForumCategories = {
     description: CodecTypes['pg/text@1']['output'] | null;
@@ -3276,7 +3752,9 @@ export namespace Models {
     academicPeriods: public_AcademicPeriods[];
     announcements: public_Announcements[];
     batches: public_Batches[];
+    competitions: public_Competitions[];
     divisions: public_Divisions[];
+    events: public_Events[];
     gradeComponents: public_GradeComponents[];
     gradeScales: public_GradeScales[];
     rankingPeriods: public_RankingPeriods[];
@@ -3284,7 +3762,9 @@ export namespace Models {
       | 'academicPeriods'
       | 'announcements'
       | 'batches'
+      | 'competitions'
       | 'divisions'
+      | 'events'
       | 'gradeComponents'
       | 'gradeScales'
       | 'rankingPeriods';
@@ -3332,10 +3812,16 @@ export namespace Models {
     attendanceRecords: public_AttendanceRecords[];
     attendanceSessions: public_AttendanceSessions[];
     auditLogs: public_AuditLogs[];
+    certificates: public_Certificates[];
     classMembers: public_ClassMembers[];
+    competitionParticipants: public_CompetitionParticipants[];
+    competitions: public_Competitions[];
     conversationMembers: public_ConversationMembers[];
     courses: public_Courses[];
     coursesCourses: public_Courses[];
+    eventAttendances: public_EventAttendance[];
+    eventParticipants: public_EventParticipants[];
+    events: public_Events[];
     forumPosts: public_ForumPosts[];
     forumThreads: public_ForumThreads[];
     grades: public_Grades[];
@@ -3360,6 +3846,7 @@ export namespace Models {
     submissionFeedbacks: public_SubmissionFeedback[];
     submissions: public_Submissions[];
     submissionsSubmissions: public_Submissions[];
+    userAchievements: public_UserAchievements[];
     userDivisions: public_UserDivisions[];
     userRoles: public_UserRoles[];
     userRolesUserRoles: public_UserRoles[];
@@ -3372,10 +3859,16 @@ export namespace Models {
       | 'attendanceRecords'
       | 'attendanceSessions'
       | 'auditLogs'
+      | 'certificates'
       | 'classMembers'
+      | 'competitionParticipants'
+      | 'competitions'
       | 'conversationMembers'
       | 'courses'
       | 'coursesCourses'
+      | 'eventAttendances'
+      | 'eventParticipants'
+      | 'events'
       | 'forumPosts'
       | 'forumThreads'
       | 'grades'
@@ -3400,6 +3893,7 @@ export namespace Models {
       | 'submissionFeedbacks'
       | 'submissions'
       | 'submissionsSubmissions'
+      | 'userAchievements'
       | 'userDivisions'
       | 'userRoles'
       | 'userRolesUserRoles';
@@ -3695,6 +4189,16 @@ export namespace Models {
       | 'submissionRevisions'
       | 'user';
   };
+  export type public_UserAchievements = {
+    achievementId: CodecTypes['pg/uuid@1']['output'];
+    awardedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    sourceId: CodecTypes['pg/text@1']['output'] | null;
+    sourceType: CodecTypes['pg/text@1']['output'] | null;
+    userId: CodecTypes['pg/uuid@1']['output'];
+    achievement: public_Achievements;
+    user: public_Profiles;
+    readonly [RelationKeys]?: 'achievement' | 'user';
+  };
   export type public_UserDivisions = {
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     divisionId: CodecTypes['pg/uuid@1']['output'];
@@ -3721,6 +4225,8 @@ export namespace Models {
 export declare const models: {
   public: {
     AcademicPeriods: Models.public_AcademicPeriods;
+    AchievementRules: Models.public_AchievementRules;
+    Achievements: Models.public_Achievements;
     Announcements: Models.public_Announcements;
     AssignmentGroupMembers: Models.public_AssignmentGroupMembers;
     AssignmentGroups: Models.public_AssignmentGroups;
@@ -3730,12 +4236,18 @@ export declare const models: {
     AttendanceSessions: Models.public_AttendanceSessions;
     AuditLogs: Models.public_AuditLogs;
     Batches: Models.public_Batches;
+    Certificates: Models.public_Certificates;
     ClassMembers: Models.public_ClassMembers;
     Classes: Models.public_Classes;
+    CompetitionParticipants: Models.public_CompetitionParticipants;
+    Competitions: Models.public_Competitions;
     ConversationMembers: Models.public_ConversationMembers;
     Conversations: Models.public_Conversations;
     Courses: Models.public_Courses;
     Divisions: Models.public_Divisions;
+    EventAttendance: Models.public_EventAttendance;
+    EventParticipants: Models.public_EventParticipants;
+    Events: Models.public_Events;
     ForumCategories: Models.public_ForumCategories;
     ForumPosts: Models.public_ForumPosts;
     ForumThreads: Models.public_ForumThreads;
@@ -3780,6 +4292,7 @@ export declare const models: {
     SubmissionFiles: Models.public_SubmissionFiles;
     SubmissionRevisions: Models.public_SubmissionRevisions;
     Submissions: Models.public_Submissions;
+    UserAchievements: Models.public_UserAchievements;
     UserDivisions: Models.public_UserDivisions;
     UserRoles: Models.public_UserRoles;
   };
@@ -3873,6 +4386,129 @@ type ContractBase = Omit<
                   readonly name: 'academic_periods_organization_id_fkey';
                 },
               ];
+            };
+            readonly achievement_rules: {
+              columns: {
+                readonly achievement_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly configuration: {
+                  readonly nativeType: 'jsonb';
+                  readonly codecId: 'pg/jsonb@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/jsonb@1', {}>;
+                  };
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly event_type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly threshold: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'achievement_rules_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'achievement_rules';
+                    readonly columns: readonly ['achievement_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'achievements';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'achievement_rules_achievement_id_fkey';
+                },
+              ];
+            };
+            readonly achievements: {
+              columns: {
+                readonly code: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly icon: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', '🏅'>;
+                  };
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'entity_status';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'ACTIVE'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'entity_status' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'achievements_pkey' };
+              uniques: readonly [
+                { readonly columns: readonly ['code']; readonly name: 'achievements_code_key' },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [];
             };
             readonly announcements: {
               columns: {
@@ -4821,6 +5457,124 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly certificates: {
+              columns: {
+                readonly academic_period_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly certificate_number: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly division_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly issued_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly issuer_name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly pdf_path: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly program_name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly verification_token: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'certificates_pkey' };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['certificate_number'];
+                  readonly name: 'certificates_certificate_number_key';
+                },
+                {
+                  readonly columns: readonly ['verification_token'];
+                  readonly name: 'certificates_verification_token_key';
+                },
+              ];
+              indexes: readonly [
+                {
+                  readonly name: 'certificates_user_id';
+                  readonly columns: readonly ['user_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'certificates';
+                    readonly columns: readonly ['academic_period_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'academic_periods';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'certificates_academic_period_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'certificates';
+                    readonly columns: readonly ['division_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'divisions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'certificates_division_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'certificates';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'certificates_user_id_fkey';
+                },
+              ];
+            };
             readonly class_members: {
               columns: {
                 readonly class_id: {
@@ -5009,6 +5763,213 @@ type ContractBase = Omit<
                     readonly columns: readonly ['id'];
                   };
                   readonly name: 'classes_division_id_fkey';
+                },
+              ];
+            };
+            readonly competition_participants: {
+              columns: {
+                readonly competition_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly points_awarded: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                };
+                readonly rank: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
+                };
+                readonly registered_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly score: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: true;
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'REGISTERED'>;
+                  };
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['competition_id', 'user_id'];
+                  readonly name: 'competition_participants_competition_id_user_id_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'competition_participants';
+                    readonly columns: readonly ['competition_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'competitions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'competition_participants_competition_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'competition_participants';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'competition_participants_user_id_fkey';
+                },
+              ];
+            };
+            readonly competitions: {
+              columns: {
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly created_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly division_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly ends_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly organization_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly slug: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly starts_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: true;
+                };
+                readonly status: {
+                  readonly nativeType: 'content_status';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'DRAFT'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'competitions_pkey' };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['organization_id', 'slug'];
+                  readonly name: 'competitions_organization_id_slug_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'competitions';
+                    readonly columns: readonly ['created_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'competitions_created_by_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'competitions';
+                    readonly columns: readonly ['division_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'divisions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'competitions_division_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'competitions';
+                    readonly columns: readonly ['organization_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'organizations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'competitions_organization_id_fkey';
                 },
               ];
             };
@@ -5330,6 +6291,277 @@ type ContractBase = Omit<
                     readonly columns: readonly ['id'];
                   };
                   readonly name: 'divisions_organization_id_fkey';
+                },
+              ];
+            };
+            readonly event_attendance: {
+              columns: {
+                readonly checked_in_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly event_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'PRESENT'>;
+                  };
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['event_id', 'user_id'];
+                  readonly name: 'event_attendance_event_id_user_id_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'event_attendance';
+                    readonly columns: readonly ['event_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'events';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'event_attendance_event_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'event_attendance';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'event_attendance_user_id_fkey';
+                },
+              ];
+            };
+            readonly event_participants: {
+              columns: {
+                readonly event_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly registered_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'REGISTERED'>;
+                  };
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['event_id', 'user_id'];
+                  readonly name: 'event_participants_event_id_user_id_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'event_participants';
+                    readonly columns: readonly ['event_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'events';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'event_participants_event_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'event_participants';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'event_participants_user_id_fkey';
+                },
+              ];
+            };
+            readonly events: {
+              columns: {
+                readonly capacity: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
+                };
+                readonly created_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly created_by: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly division_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: true;
+                };
+                readonly ends_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                };
+                readonly location: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly organization_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly slug: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly starts_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'content_status';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'DRAFT'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+                readonly type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'GENERAL'>;
+                  };
+                };
+                readonly updated_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'events_pkey' };
+              uniques: readonly [
+                {
+                  readonly columns: readonly ['organization_id', 'slug'];
+                  readonly name: 'events_organization_id_slug_key';
+                },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'events';
+                    readonly columns: readonly ['created_by'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'events_created_by_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'events';
+                    readonly columns: readonly ['division_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'divisions';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'events_division_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'events';
+                    readonly columns: readonly ['organization_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'organizations';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'events_organization_id_fkey';
                 },
               ];
             };
@@ -9084,6 +10316,70 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly user_achievements: {
+              columns: {
+                readonly achievement_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+                readonly awarded_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly source_id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly source_type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly user_id: {
+                  readonly nativeType: 'uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['user_id', 'achievement_id'];
+                readonly name: 'user_achievements_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user_achievements';
+                    readonly columns: readonly ['achievement_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'achievements';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'user_achievements_achievement_id_fkey';
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user_achievements';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'profiles';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'user_achievements_user_id_fkey';
+                },
+              ];
+            };
             readonly user_divisions: {
               columns: {
                 readonly created_at: {
@@ -9292,6 +10588,14 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'AcademicPeriods';
     };
+    readonly achievement_rules: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'AchievementRules';
+    };
+    readonly achievements: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Achievements';
+    };
     readonly announcements: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Announcements';
@@ -9325,11 +10629,23 @@ type ContractBase = Omit<
       readonly model: 'AuditLogs';
     };
     readonly batches: { readonly namespace: 'public' & NamespaceId; readonly model: 'Batches' };
+    readonly certificates: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Certificates';
+    };
     readonly class_members: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ClassMembers';
     };
     readonly classes: { readonly namespace: 'public' & NamespaceId; readonly model: 'Classes' };
+    readonly competition_participants: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'CompetitionParticipants';
+    };
+    readonly competitions: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Competitions';
+    };
     readonly conversation_members: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ConversationMembers';
@@ -9340,6 +10656,15 @@ type ContractBase = Omit<
     };
     readonly courses: { readonly namespace: 'public' & NamespaceId; readonly model: 'Courses' };
     readonly divisions: { readonly namespace: 'public' & NamespaceId; readonly model: 'Divisions' };
+    readonly event_attendance: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'EventAttendance';
+    };
+    readonly event_participants: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'EventParticipants';
+    };
+    readonly events: { readonly namespace: 'public' & NamespaceId; readonly model: 'Events' };
     readonly forum_categories: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ForumCategories';
@@ -9486,6 +10811,10 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Submissions';
     };
+    readonly user_achievements: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'UserAchievements';
+    };
     readonly user_divisions: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'UserDivisions';
@@ -9535,6 +10864,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly certificates: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Certificates';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['academicPeriodId'];
+                };
+              };
               readonly classes: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -9613,6 +10953,139 @@ type ContractBase = Omit<
                 readonly name: { readonly column: 'name' };
                 readonly organizationId: { readonly column: 'organization_id' };
                 readonly startDate: { readonly column: 'start_date' };
+                readonly status: { readonly column: 'status' };
+              };
+            };
+          };
+          readonly AchievementRules: {
+            readonly fields: {
+              readonly achievementId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly configuration: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/jsonb@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly eventType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly threshold: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: {
+              readonly achievement: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Achievements';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['achievementId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'achievement_rules';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly achievementId: { readonly column: 'achievement_id' };
+                readonly configuration: { readonly column: 'configuration' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly eventType: { readonly column: 'event_type' };
+                readonly id: { readonly column: 'id' };
+                readonly threshold: { readonly column: 'threshold' };
+              };
+            };
+          };
+          readonly Achievements: {
+            readonly fields: {
+              readonly code: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly icon: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'entity_status' };
+                };
+              };
+            };
+            readonly relations: {
+              readonly achievementRules: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AchievementRules';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['achievementId'];
+                };
+              };
+              readonly userAchievements: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserAchievements';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['achievementId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'achievements';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly code: { readonly column: 'code' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly description: { readonly column: 'description' };
+                readonly icon: { readonly column: 'icon' };
+                readonly id: { readonly column: 'id' };
+                readonly name: { readonly column: 'name' };
                 readonly status: { readonly column: 'status' };
               };
             };
@@ -10547,6 +12020,107 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly Certificates: {
+            readonly fields: {
+              readonly academicPeriodId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly certificateNumber: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly divisionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly issuedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly issuerName: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly pdfPath: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly programName: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly verificationToken: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly academicPeriod: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AcademicPeriods';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['academicPeriodId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly division: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Divisions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['divisionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'certificates';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly academicPeriodId: { readonly column: 'academic_period_id' };
+                readonly certificateNumber: { readonly column: 'certificate_number' };
+                readonly divisionId: { readonly column: 'division_id' };
+                readonly id: { readonly column: 'id' };
+                readonly issuedAt: { readonly column: 'issued_at' };
+                readonly issuerName: { readonly column: 'issuer_name' };
+                readonly pdfPath: { readonly column: 'pdf_path' };
+                readonly programName: { readonly column: 'program_name' };
+                readonly userId: { readonly column: 'user_id' };
+                readonly verificationToken: { readonly column: 'verification_token' };
+              };
+            };
+          };
           readonly Classes: {
             readonly fields: {
               readonly academicPeriodId: {
@@ -10759,6 +12333,215 @@ type ContractBase = Omit<
                 readonly leftAt: { readonly column: 'left_at' };
                 readonly status: { readonly column: 'status' };
                 readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly CompetitionParticipants: {
+            readonly fields: {
+              readonly competitionId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly pointsAwarded: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly rank: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly registeredAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly score: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly competition: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Competitions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['competitionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'competition_participants';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly competitionId: { readonly column: 'competition_id' };
+                readonly pointsAwarded: { readonly column: 'points_awarded' };
+                readonly rank: { readonly column: 'rank' };
+                readonly registeredAt: { readonly column: 'registered_at' };
+                readonly score: { readonly column: 'score' };
+                readonly status: { readonly column: 'status' };
+                readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly Competitions: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly createdBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly divisionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly endsAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly organizationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly slug: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly startsAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly competitionParticipants: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'CompetitionParticipants';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['competitionId'];
+                };
+              };
+              readonly division: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Divisions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['divisionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly organization: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Organizations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['organizationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'competitions';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly createdBy: { readonly column: 'created_by' };
+                readonly description: { readonly column: 'description' };
+                readonly divisionId: { readonly column: 'division_id' };
+                readonly endsAt: { readonly column: 'ends_at' };
+                readonly id: { readonly column: 'id' };
+                readonly name: { readonly column: 'name' };
+                readonly organizationId: { readonly column: 'organization_id' };
+                readonly slug: { readonly column: 'slug' };
+                readonly startsAt: { readonly column: 'starts_at' };
+                readonly status: { readonly column: 'status' };
+                readonly updatedAt: { readonly column: 'updated_at' };
               };
             };
           };
@@ -11164,6 +12947,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['divisionId'];
                 };
               };
+              readonly certificates: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Certificates';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['divisionId'];
+                };
+              };
               readonly classes: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -11175,10 +12969,32 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['divisionId'];
                 };
               };
+              readonly competitions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Competitions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['divisionId'];
+                };
+              };
               readonly courses: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Courses';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['divisionId'];
+                };
+              };
+              readonly events: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Events';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
@@ -11243,6 +13059,285 @@ type ContractBase = Omit<
                 readonly name: { readonly column: 'name' };
                 readonly organizationId: { readonly column: 'organization_id' };
                 readonly slug: { readonly column: 'slug' };
+                readonly status: { readonly column: 'status' };
+                readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly EventAttendance: {
+            readonly fields: {
+              readonly checkedInAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly eventId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly event: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Events';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['eventId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'event_attendance';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly checkedInAt: { readonly column: 'checked_in_at' };
+                readonly eventId: { readonly column: 'event_id' };
+                readonly status: { readonly column: 'status' };
+                readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly EventParticipants: {
+            readonly fields: {
+              readonly eventId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly registeredAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly event: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Events';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['eventId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'event_participants';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly eventId: { readonly column: 'event_id' };
+                readonly registeredAt: { readonly column: 'registered_at' };
+                readonly status: { readonly column: 'status' };
+                readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly Events: {
+            readonly fields: {
+              readonly _type: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly capacity: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly createdBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly divisionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly endsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly location: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly organizationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly slug: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly startsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'content_status' };
+                };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly division: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Divisions';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['divisionId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly eventAttendances: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'EventAttendance';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['eventId'];
+                };
+              };
+              readonly eventParticipants: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'EventParticipants';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['eventId'];
+                };
+              };
+              readonly organization: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Organizations';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['organizationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly profiles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdBy'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'events';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly _type: { readonly column: 'type' };
+                readonly capacity: { readonly column: 'capacity' };
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly createdBy: { readonly column: 'created_by' };
+                readonly description: { readonly column: 'description' };
+                readonly divisionId: { readonly column: 'division_id' };
+                readonly endsAt: { readonly column: 'ends_at' };
+                readonly id: { readonly column: 'id' };
+                readonly location: { readonly column: 'location' };
+                readonly name: { readonly column: 'name' };
+                readonly organizationId: { readonly column: 'organization_id' };
+                readonly slug: { readonly column: 'slug' };
+                readonly startsAt: { readonly column: 'starts_at' };
                 readonly status: { readonly column: 'status' };
                 readonly updatedAt: { readonly column: 'updated_at' };
               };
@@ -13028,10 +15123,32 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['organizationId'];
                 };
               };
+              readonly competitions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Competitions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['organizationId'];
+                };
+              };
               readonly divisions: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Divisions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['organizationId'];
+                };
+              };
+              readonly events: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Events';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
@@ -13369,6 +15486,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['actorId'];
                 };
               };
+              readonly certificates: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Certificates';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly classMembers: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -13378,6 +15506,28 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly competitionParticipants: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'CompetitionParticipants';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly competitions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Competitions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdBy'];
                 };
               };
               readonly conversationMembers: {
@@ -13411,6 +15561,39 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['updatedBy'];
+                };
+              };
+              readonly eventAttendances: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'EventAttendance';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly eventParticipants: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'EventParticipants';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly events: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Events';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdBy'];
                 };
               };
               readonly forumPosts: {
@@ -13670,6 +15853,17 @@ type ContractBase = Omit<
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Submissions';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly userAchievements: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserAchievements';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
@@ -15550,6 +17744,70 @@ type ContractBase = Omit<
                 readonly updatedAt: { readonly column: 'updated_at' };
                 readonly userId: { readonly column: 'user_id' };
                 readonly version: { readonly column: 'version' };
+              };
+            };
+          };
+          readonly UserAchievements: {
+            readonly fields: {
+              readonly achievementId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly awardedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly sourceId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sourceType: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly achievement: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Achievements';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['achievementId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Profiles';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'user_achievements';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly achievementId: { readonly column: 'achievement_id' };
+                readonly awardedAt: { readonly column: 'awarded_at' };
+                readonly sourceId: { readonly column: 'source_id' };
+                readonly sourceType: { readonly column: 'source_type' };
+                readonly userId: { readonly column: 'user_id' };
               };
             };
           };

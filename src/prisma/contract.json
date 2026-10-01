@@ -8,6 +8,14 @@
       "model": "AcademicPeriods",
       "namespace": "public"
     },
+    "achievement_rules": {
+      "model": "AchievementRules",
+      "namespace": "public"
+    },
+    "achievements": {
+      "model": "Achievements",
+      "namespace": "public"
+    },
     "announcements": {
       "model": "Announcements",
       "namespace": "public"
@@ -44,12 +52,24 @@
       "model": "Batches",
       "namespace": "public"
     },
+    "certificates": {
+      "model": "Certificates",
+      "namespace": "public"
+    },
     "class_members": {
       "model": "ClassMembers",
       "namespace": "public"
     },
     "classes": {
       "model": "Classes",
+      "namespace": "public"
+    },
+    "competition_participants": {
+      "model": "CompetitionParticipants",
+      "namespace": "public"
+    },
+    "competitions": {
+      "model": "Competitions",
       "namespace": "public"
     },
     "conversation_members": {
@@ -66,6 +86,18 @@
     },
     "divisions": {
       "model": "Divisions",
+      "namespace": "public"
+    },
+    "event_attendance": {
+      "model": "EventAttendance",
+      "namespace": "public"
+    },
+    "event_participants": {
+      "model": "EventParticipants",
+      "namespace": "public"
+    },
+    "events": {
+      "model": "Events",
       "namespace": "public"
     },
     "forum_categories": {
@@ -244,6 +276,10 @@
       "model": "Submissions",
       "namespace": "public"
     },
+    "user_achievements": {
+      "model": "UserAchievements",
+      "namespace": "public"
+    },
     "user_divisions": {
       "model": "UserDivisions",
       "namespace": "public"
@@ -313,6 +349,21 @@
               }
             },
             "relations": {
+              "certificates": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "academicPeriodId"
+                  ]
+                },
+                "to": {
+                  "model": "Certificates",
+                  "namespace": "public"
+                }
+              },
               "classes": {
                 "cardinality": "1:N",
                 "on": {
@@ -431,6 +482,209 @@
               },
               "namespaceId": "public",
               "table": "academic_periods"
+            }
+          },
+          "AchievementRules": {
+            "fields": {
+              "achievementId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "configuration": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/jsonb@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "eventType": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "threshold": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "achievement": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "achievementId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Achievements",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "achievementId": {
+                  "column": "achievement_id"
+                },
+                "configuration": {
+                  "column": "configuration"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "eventType": {
+                  "column": "event_type"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "threshold": {
+                  "column": "threshold"
+                }
+              },
+              "namespaceId": "public",
+              "table": "achievement_rules"
+            }
+          },
+          "Achievements": {
+            "fields": {
+              "code": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "icon": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "entity_status"
+                  }
+                }
+              }
+            },
+            "relations": {
+              "achievementRules": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "achievementId"
+                  ]
+                },
+                "to": {
+                  "model": "AchievementRules",
+                  "namespace": "public"
+                }
+              },
+              "userAchievements": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "achievementId"
+                  ]
+                },
+                "to": {
+                  "model": "UserAchievements",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "code": {
+                  "column": "code"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "icon": {
+                  "column": "icon"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "status": {
+                  "column": "status"
+                }
+              },
+              "namespaceId": "public",
+              "table": "achievements"
             }
           },
           "Announcements": {
@@ -1857,6 +2111,166 @@
               "table": "batches"
             }
           },
+          "Certificates": {
+            "fields": {
+              "academicPeriodId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "certificateNumber": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "issuedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "issuerName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "pdfPath": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "programName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "verificationToken": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "academicPeriod": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "academicPeriodId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "AcademicPeriods",
+                  "namespace": "public"
+                }
+              },
+              "division": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "academicPeriodId": {
+                  "column": "academic_period_id"
+                },
+                "certificateNumber": {
+                  "column": "certificate_number"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "issuedAt": {
+                  "column": "issued_at"
+                },
+                "issuerName": {
+                  "column": "issuer_name"
+                },
+                "pdfPath": {
+                  "column": "pdf_path"
+                },
+                "programName": {
+                  "column": "program_name"
+                },
+                "userId": {
+                  "column": "user_id"
+                },
+                "verificationToken": {
+                  "column": "verification_token"
+                }
+              },
+              "namespaceId": "public",
+              "table": "certificates"
+            }
+          },
           "ClassMembers": {
             "fields": {
               "classId": {
@@ -2165,6 +2579,318 @@
               },
               "namespaceId": "public",
               "table": "classes"
+            }
+          },
+          "CompetitionParticipants": {
+            "fields": {
+              "competitionId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "pointsAwarded": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "rank": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "registeredAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "score": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "competition": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "competitionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Competitions",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "competitionId": {
+                  "column": "competition_id"
+                },
+                "pointsAwarded": {
+                  "column": "points_awarded"
+                },
+                "rank": {
+                  "column": "rank"
+                },
+                "registeredAt": {
+                  "column": "registered_at"
+                },
+                "score": {
+                  "column": "score"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "competition_participants"
+            }
+          },
+          "Competitions": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "endsAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "startsAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "competitionParticipants": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "competitionId"
+                  ]
+                },
+                "to": {
+                  "model": "CompetitionParticipants",
+                  "namespace": "public"
+                }
+              },
+              "division": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "endsAt": {
+                  "column": "ends_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "startsAt": {
+                  "column": "starts_at"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "competitions"
             }
           },
           "ConversationMembers": {
@@ -2741,6 +3467,21 @@
                   "namespace": "public"
                 }
               },
+              "certificates": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "Certificates",
+                  "namespace": "public"
+                }
+              },
               "classes": {
                 "cardinality": "1:N",
                 "on": {
@@ -2756,6 +3497,21 @@
                   "namespace": "public"
                 }
               },
+              "competitions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "Competitions",
+                  "namespace": "public"
+                }
+              },
               "courses": {
                 "cardinality": "1:N",
                 "on": {
@@ -2768,6 +3524,21 @@
                 },
                 "to": {
                   "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "events": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "divisionId"
+                  ]
+                },
+                "to": {
+                  "model": "Events",
                   "namespace": "public"
                 }
               },
@@ -2865,6 +3636,417 @@
               },
               "namespaceId": "public",
               "table": "divisions"
+            }
+          },
+          "EventAttendance": {
+            "fields": {
+              "checkedInAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "eventId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "event": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "eventId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Events",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "checkedInAt": {
+                  "column": "checked_in_at"
+                },
+                "eventId": {
+                  "column": "event_id"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "event_attendance"
+            }
+          },
+          "EventParticipants": {
+            "fields": {
+              "eventId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "registeredAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "event": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "eventId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Events",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "eventId": {
+                  "column": "event_id"
+                },
+                "registeredAt": {
+                  "column": "registered_at"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "event_participants"
+            }
+          },
+          "Events": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "capacity": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "divisionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "endsAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "location": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "startsAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "content_status"
+                  }
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "division": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "divisionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "eventAttendances": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "eventId"
+                  ]
+                },
+                "to": {
+                  "model": "EventAttendance",
+                  "namespace": "public"
+                }
+              },
+              "eventParticipants": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "eventId"
+                  ]
+                },
+                "to": {
+                  "model": "EventParticipants",
+                  "namespace": "public"
+                }
+              },
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "capacity": {
+                  "column": "capacity"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "divisionId": {
+                  "column": "division_id"
+                },
+                "endsAt": {
+                  "column": "ends_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "location": {
+                  "column": "location"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "startsAt": {
+                  "column": "starts_at"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "events"
             }
           },
           "ForumCategories": {
@@ -5522,6 +6704,21 @@
                   "namespace": "public"
                 }
               },
+              "competitions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "Competitions",
+                  "namespace": "public"
+                }
+              },
               "divisions": {
                 "cardinality": "1:N",
                 "on": {
@@ -5534,6 +6731,21 @@
                 },
                 "to": {
                   "model": "Divisions",
+                  "namespace": "public"
+                }
+              },
+              "events": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "Events",
                   "namespace": "public"
                 }
               },
@@ -6029,6 +7241,21 @@
                   "namespace": "public"
                 }
               },
+              "certificates": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "Certificates",
+                  "namespace": "public"
+                }
+              },
               "classMembers": {
                 "cardinality": "1:N",
                 "on": {
@@ -6041,6 +7268,36 @@
                 },
                 "to": {
                   "model": "ClassMembers",
+                  "namespace": "public"
+                }
+              },
+              "competitionParticipants": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "CompetitionParticipants",
+                  "namespace": "public"
+                }
+              },
+              "competitions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "Competitions",
                   "namespace": "public"
                 }
               },
@@ -6086,6 +7343,51 @@
                 },
                 "to": {
                   "model": "Courses",
+                  "namespace": "public"
+                }
+              },
+              "eventAttendances": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "EventAttendance",
+                  "namespace": "public"
+                }
+              },
+              "eventParticipants": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "EventParticipants",
+                  "namespace": "public"
+                }
+              },
+              "events": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "Events",
                   "namespace": "public"
                 }
               },
@@ -6446,6 +7748,21 @@
                 },
                 "to": {
                   "model": "Submissions",
+                  "namespace": "public"
+                }
+              },
+              "userAchievements": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "UserAchievements",
                   "namespace": "public"
                 }
               },
@@ -9305,6 +10622,100 @@
               "table": "submissions"
             }
           },
+          "UserAchievements": {
+            "fields": {
+              "achievementId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "awardedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "sourceId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "sourceType": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "achievement": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "achievementId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Achievements",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "achievementId": {
+                  "column": "achievement_id"
+                },
+                "awardedAt": {
+                  "column": "awarded_at"
+                },
+                "sourceId": {
+                  "column": "source_id"
+                },
+                "sourceType": {
+                  "column": "source_type"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "user_achievements"
+            }
+          },
           "UserDivisions": {
             "fields": {
               "createdAt": {
@@ -9559,6 +10970,30 @@
             }
           },
           "policy": {
+            "achievement_rules_select": {
+              "kind": "policy",
+              "name": "achievement_rules_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "achievement_rules",
+              "using": "true"
+            },
+            "achievements_select": {
+              "kind": "policy",
+              "name": "achievements_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "achievements",
+              "using": "true"
+            },
             "announcements_delete": {
               "kind": "policy",
               "name": "announcements_delete",
@@ -9842,6 +11277,31 @@
               "using": "has_permission(auth.uid(), 'class.create'::text)",
               "withCheck": "has_permission(auth.uid(), 'class.create'::text)"
             },
+            "certificates_select": {
+              "kind": "policy",
+              "name": "certificates_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "certificates",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'certificate.view'::text) OR has_permission(auth.uid(), 'certificate.issue'::text))"
+            },
+            "certificates_write": {
+              "kind": "policy",
+              "name": "certificates_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "certificates",
+              "using": "has_permission(auth.uid(), 'certificate.issue'::text)",
+              "withCheck": "has_permission(auth.uid(), 'certificate.issue'::text)"
+            },
             "class_members_select": {
               "kind": "policy",
               "name": "class_members_select",
@@ -9915,6 +11375,56 @@
               "tableName": "classes",
               "using": "has_permission(auth.uid(), 'class.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'class.update'::text)"
+            },
+            "competition_participants_select": {
+              "kind": "policy",
+              "name": "competition_participants_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "competition_participants",
+              "using": "true"
+            },
+            "competition_participants_write": {
+              "kind": "policy",
+              "name": "competition_participants_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "competition_participants",
+              "using": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))"
+            },
+            "competitions_select": {
+              "kind": "policy",
+              "name": "competitions_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "competitions",
+              "using": "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))"
+            },
+            "competitions_write": {
+              "kind": "policy",
+              "name": "competitions_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "competitions",
+              "using": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))"
             },
             "conversation_members_insert": {
               "kind": "policy",
@@ -10061,6 +11571,81 @@
               "tableName": "divisions",
               "using": "has_permission(auth.uid(), 'division.update'::text)",
               "withCheck": "has_permission(auth.uid(), 'division.update'::text)"
+            },
+            "event_attendance_select": {
+              "kind": "policy",
+              "name": "event_attendance_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "event_attendance",
+              "using": "true"
+            },
+            "event_attendance_write": {
+              "kind": "policy",
+              "name": "event_attendance_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "event_attendance",
+              "using": "(has_permission(auth.uid(), 'attendance.correct'::text) OR has_permission(auth.uid(), 'attendance.open_session'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'attendance.correct'::text) OR has_permission(auth.uid(), 'attendance.open_session'::text))"
+            },
+            "event_participants_select": {
+              "kind": "policy",
+              "name": "event_participants_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "event_participants",
+              "using": "true"
+            },
+            "event_participants_write": {
+              "kind": "policy",
+              "name": "event_participants_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "event_participants",
+              "using": "true",
+              "withCheck": "true"
+            },
+            "events_select": {
+              "kind": "policy",
+              "name": "events_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "events",
+              "using": "((status = 'PUBLISHED'::content_status) OR has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text))"
+            },
+            "events_write": {
+              "kind": "policy",
+              "name": "events_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "events",
+              "using": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))"
             },
             "forum_categories_select": {
               "kind": "policy",
@@ -11288,6 +12873,30 @@
               "using": "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))",
               "withCheck": "((user_id = auth.uid()) OR ((assignment_group_id IS NOT NULL) AND is_group_member(auth.uid(), assignment_group_id)) OR has_permission(auth.uid(), 'assignment.grade'::text))"
             },
+            "user_achievements_insert": {
+              "kind": "policy",
+              "name": "user_achievements_insert",
+              "namespaceId": "public",
+              "operation": "insert",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "user_achievements",
+              "withCheck": "has_permission(auth.uid(), 'point.manage'::text)"
+            },
+            "user_achievements_select": {
+              "kind": "policy",
+              "name": "user_achievements_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "user_achievements",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'point.view'::text))"
+            },
             "user_divisions_select": {
               "kind": "policy",
               "name": "user_divisions_select",
@@ -11356,6 +12965,16 @@
               "namespaceId": "public",
               "tableName": "academic_periods"
             },
+            "achievement_rules": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "achievement_rules"
+            },
+            "achievements": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "achievements"
+            },
             "announcements": {
               "kind": "rls",
               "namespaceId": "public",
@@ -11401,6 +13020,11 @@
               "namespaceId": "public",
               "tableName": "batches"
             },
+            "certificates": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "certificates"
+            },
             "class_members": {
               "kind": "rls",
               "namespaceId": "public",
@@ -11410,6 +13034,16 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "classes"
+            },
+            "competition_participants": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "competition_participants"
+            },
+            "competitions": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "competitions"
             },
             "conversation_members": {
               "kind": "rls",
@@ -11430,6 +13064,21 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "divisions"
+            },
+            "event_attendance": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "event_attendance"
+            },
+            "event_participants": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "event_participants"
+            },
+            "events": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "events"
             },
             "forum_categories": {
               "kind": "rls",
@@ -11651,6 +13300,11 @@
               "namespaceId": "public",
               "tableName": "submissions"
             },
+            "user_achievements": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "user_achievements"
+            },
             "user_divisions": {
               "kind": "rls",
               "namespaceId": "public",
@@ -11751,6 +13405,166 @@
                     "code"
                   ],
                   "name": "academic_periods_code_key"
+                }
+              ]
+            },
+            "achievement_rules": {
+              "checks": [
+                {
+                  "expression": "(threshold >= 1)",
+                  "name": "achievement_rules_threshold_check"
+                }
+              ],
+              "columns": {
+                "achievement_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "configuration": {
+                  "codecId": "pg/jsonb@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": {}
+                  },
+                  "nativeType": "jsonb",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "event_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "threshold": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "achievement_rules_achievement_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "achievement_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "achievement_rules"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "achievements"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "achievement_rules_pkey"
+              },
+              "uniques": []
+            },
+            "achievements": {
+              "columns": {
+                "code": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "icon": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "🏅"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "ACTIVE"
+                  },
+                  "nativeType": "entity_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "entity_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "EntityStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "achievements_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "code"
+                  ],
+                  "name": "achievements_code_key"
                 }
               ]
             },
@@ -12934,6 +14748,153 @@
                 }
               ]
             },
+            "certificates": {
+              "columns": {
+                "academic_period_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "certificate_number": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "issued_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "issuer_name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "pdf_path": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "program_name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "verification_token": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "certificates_academic_period_id_fkey",
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "academic_period_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "certificates"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "academic_periods"
+                  }
+                },
+                {
+                  "name": "certificates_division_id_fkey",
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "certificates"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                },
+                {
+                  "name": "certificates_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "certificates"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "certificates_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "certificates_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "certificate_number"
+                  ],
+                  "name": "certificates_certificate_number_key"
+                },
+                {
+                  "columns": [
+                    "verification_token"
+                  ],
+                  "name": "certificates_verification_token_key"
+                }
+              ]
+            },
             "class_members": {
               "columns": {
                 "class_id": {
@@ -13186,6 +15147,275 @@
                     "code"
                   ],
                   "name": "classes_code_key"
+                }
+              ]
+            },
+            "competition_participants": {
+              "checks": [
+                {
+                  "expression": "((rank IS NULL) OR (rank >= 1))",
+                  "name": "competition_participants_rank_check"
+                },
+                {
+                  "expression": "((score IS NULL) OR (score >= (0)::numeric))",
+                  "name": "competition_participants_score_check"
+                }
+              ],
+              "columns": {
+                "competition_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "points_awarded": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "rank": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "registered_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "score": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": true
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "REGISTERED"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "competition_participants_competition_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "competition_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "competition_participants"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "competitions"
+                  }
+                },
+                {
+                  "name": "competition_participants_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "competition_participants"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "uniques": [
+                {
+                  "columns": [
+                    "competition_id",
+                    "user_id"
+                  ],
+                  "name": "competition_participants_competition_id_user_id_key"
+                }
+              ]
+            },
+            "competitions": {
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "ends_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "starts_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "competitions_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "competitions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "competitions_division_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "competitions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                },
+                {
+                  "name": "competitions_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "competitions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "competitions_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "organization_id",
+                    "slug"
+                  ],
+                  "name": "competitions_organization_id_slug_key"
                 }
               ]
             },
@@ -13602,6 +15832,355 @@
                     "slug"
                   ],
                   "name": "divisions_slug_key"
+                }
+              ]
+            },
+            "event_attendance": {
+              "columns": {
+                "checked_in_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "event_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "PRESENT"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "event_attendance_event_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "event_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "event_attendance"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "events"
+                  }
+                },
+                {
+                  "name": "event_attendance_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "event_attendance"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "uniques": [
+                {
+                  "columns": [
+                    "event_id",
+                    "user_id"
+                  ],
+                  "name": "event_attendance_event_id_user_id_key"
+                }
+              ]
+            },
+            "event_participants": {
+              "columns": {
+                "event_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "registered_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "REGISTERED"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "event_participants_event_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "event_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "event_participants"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "events"
+                  }
+                },
+                {
+                  "name": "event_participants_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "event_participants"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "uniques": [
+                {
+                  "columns": [
+                    "event_id",
+                    "user_id"
+                  ],
+                  "name": "event_participants_event_id_user_id_key"
+                }
+              ]
+            },
+            "events": {
+              "checks": [
+                {
+                  "expression": "((capacity IS NULL) OR (capacity > 0))",
+                  "name": "events_capacity_check"
+                },
+                {
+                  "expression": "(ends_at > starts_at)",
+                  "name": "events_check"
+                }
+              ],
+              "columns": {
+                "capacity": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "division_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "ends_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "location": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "starts_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "DRAFT"
+                  },
+                  "nativeType": "content_status",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "content_status"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContentStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "GENERAL"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "events_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "events"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "events_division_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "division_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "events"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "divisions"
+                  }
+                },
+                {
+                  "name": "events_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "events"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "events_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "organization_id",
+                    "slug"
+                  ],
+                  "name": "events_organization_id_slug_key"
                 }
               ]
             },
@@ -18330,6 +20909,86 @@
               },
               "uniques": []
             },
+            "user_achievements": {
+              "columns": {
+                "achievement_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "awarded_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "source_id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "source_type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "user_achievements_achievement_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "achievement_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "user_achievements"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "achievements"
+                  }
+                },
+                {
+                  "name": "user_achievements_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "user_achievements"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "user_id",
+                  "achievement_id"
+                ],
+                "name": "user_achievements_pkey"
+              },
+              "uniques": []
+            },
             "user_divisions": {
               "columns": {
                 "created_at": {
@@ -18588,7 +21247,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "c4bee5aac67d8bbd779a9a88a294fc247cb27a390daf4833e4fd9d465276989c"
+    "storageHash": "fb3c2b5d01067b59bd7e5f2e95a8c3db2f1451b36d3d401b27db4bf3bf16fed3"
   },
   "capabilities": {
     "postgres": {
