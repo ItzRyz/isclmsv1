@@ -45,6 +45,12 @@ export default function RootLayout({
       )}
     >
       <body className="flex min-h-full flex-col">
+        <a
+          href="#konten"
+          className="focus:bg-primary focus:text-primary-foreground sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:px-3 focus:py-2"
+        >
+          Lewati ke konten
+        </a>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -53,7 +59,9 @@ export default function RootLayout({
         >
           <TooltipProvider>
             <SiteHeader />
-            {children}
+            <div id="konten" className="flex min-h-full flex-1 flex-col">
+              {children}
+            </div>
           </TooltipProvider>
         </ThemeProvider>
       </body>

@@ -184,14 +184,14 @@ export default async function CalendarPage({
           <Link
             href={`/calendar?y=${prev.getFullYear()}&m=${prev.getMonth() + 1}`}
           >
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" aria-label="Bulan sebelumnya">
               ←
             </Button>
           </Link>
           <Link
             href={`/calendar?y=${next.getFullYear()}&m=${next.getMonth() + 1}`}
           >
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" aria-label="Bulan berikutnya">
               →
             </Button>
           </Link>

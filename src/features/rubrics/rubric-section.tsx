@@ -86,7 +86,12 @@ export async function RubricSection({
                       value={assignmentId}
                     />
                     <input type="hidden" name="item_id" value={it.id} />
-                    <Button type="submit" size="sm" variant="ghost">
+                    <Button
+                      type="submit"
+                      size="sm"
+                      variant="ghost"
+                      aria-label={`Hapus kriteria ${it.criterion}`}
+                    >
                       ✕
                     </Button>
                   </form>

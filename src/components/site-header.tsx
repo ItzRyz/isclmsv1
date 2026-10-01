@@ -45,6 +45,7 @@ export async function SiteHeader() {
           {user ? (
             <Link
               href="/notifications"
+              aria-label={`Notifikasi${unread > 0 ? `, ${unread} belum dibaca` : ""}`}
               className="text-muted-foreground hover:bg-muted hover:text-foreground relative rounded-md px-2 py-1 text-sm"
             >
               🔔

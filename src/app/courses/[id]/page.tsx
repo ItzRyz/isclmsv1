@@ -224,6 +224,7 @@ export default async function CourseDetailPage({
                         size="sm"
                         variant="ghost"
                         disabled={i === 0}
+                        aria-label="Pindah modul ke atas"
                       >
                         ↑
                       </Button>
@@ -236,6 +237,7 @@ export default async function CourseDetailPage({
                         size="sm"
                         variant="ghost"
                         disabled={i === arr.length - 1}
+                        aria-label="Pindah modul ke bawah"
                       >
                         ↓
                       </Button>

@@ -135,7 +135,12 @@ export default async function QuizDetailPage({
                       name="question_id"
                       value={it.question_id}
                     />
-                    <Button type="submit" size="sm" variant="ghost">
+                    <Button
+                      type="submit"
+                      size="sm"
+                      variant="ghost"
+                      aria-label="Hapus soal dari kuis"
+                    >
                       ✕
                     </Button>
                   </form>

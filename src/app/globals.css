@@ -127,4 +127,7 @@
   html {
     @apply font-mono;
   }
+  :focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
+  }
 }
