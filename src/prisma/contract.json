@@ -100,6 +100,18 @@
       "model": "Events",
       "namespace": "public"
     },
+    "financial_accounts": {
+      "model": "FinancialAccounts",
+      "namespace": "public"
+    },
+    "financial_categories": {
+      "model": "FinancialCategories",
+      "namespace": "public"
+    },
+    "financial_transactions": {
+      "model": "FinancialTransactions",
+      "namespace": "public"
+    },
     "forum_categories": {
       "model": "ForumCategories",
       "namespace": "public"
@@ -178,6 +190,10 @@
     },
     "organizations": {
       "model": "Organizations",
+      "namespace": "public"
+    },
+    "payments": {
+      "model": "Payments",
       "namespace": "public"
     },
     "permissions": {
@@ -4049,6 +4065,407 @@
               "table": "events"
             }
           },
+          "FinancialAccounts": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "code": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "isActive": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "openingBalance": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "financialTransactions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "accountId"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialTransactions",
+                  "namespace": "public"
+                }
+              },
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "code": {
+                  "column": "code"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "isActive": {
+                  "column": "is_active"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "openingBalance": {
+                  "column": "opening_balance"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "financial_accounts"
+            }
+          },
+          "FinancialCategories": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "kind": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "organizationId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "financialTransactions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "categoryId"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialTransactions",
+                  "namespace": "public"
+                }
+              },
+              "organization": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "organizationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Organizations",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "kind": {
+                  "column": "kind"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "organizationId": {
+                  "column": "organization_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "financial_categories"
+            }
+          },
+          "FinancialTransactions": {
+            "fields": {
+              "_type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "accountId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "amount": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "categoryId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "reference": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "transactionDate": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/date-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "account": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "accountId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialAccounts",
+                  "namespace": "public"
+                }
+              },
+              "category": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "categoryId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialCategories",
+                  "namespace": "public"
+                }
+              },
+              "payments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "transactionId"
+                  ]
+                },
+                "to": {
+                  "model": "Payments",
+                  "namespace": "public"
+                }
+              },
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "createdBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "_type": {
+                  "column": "type"
+                },
+                "accountId": {
+                  "column": "account_id"
+                },
+                "amount": {
+                  "column": "amount"
+                },
+                "categoryId": {
+                  "column": "category_id"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "createdBy": {
+                  "column": "created_by"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "reference": {
+                  "column": "reference"
+                },
+                "transactionDate": {
+                  "column": "transaction_date"
+                }
+              },
+              "namespaceId": "public",
+              "table": "financial_transactions"
+            }
+          },
           "ForumCategories": {
             "fields": {
               "description": {
@@ -6749,6 +7166,36 @@
                   "namespace": "public"
                 }
               },
+              "financialAccounts": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialAccounts",
+                  "namespace": "public"
+                }
+              },
+              "financialCategories": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "organizationId"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialCategories",
+                  "namespace": "public"
+                }
+              },
               "gradeComponents": {
                 "cardinality": "1:N",
                 "on": {
@@ -6821,6 +7268,186 @@
               },
               "namespaceId": "public",
               "table": "organizations"
+            }
+          },
+          "Payments": {
+            "fields": {
+              "amount": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "method": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "note": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "paidAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "periodLabel": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "recordedBy": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "transactionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "profiles": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "recordedBy"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              },
+              "transaction": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "transactionId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialTransactions",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Profiles",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "amount": {
+                  "column": "amount"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "method": {
+                  "column": "method"
+                },
+                "note": {
+                  "column": "note"
+                },
+                "paidAt": {
+                  "column": "paid_at"
+                },
+                "periodLabel": {
+                  "column": "period_label"
+                },
+                "recordedBy": {
+                  "column": "recorded_by"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "transactionId": {
+                  "column": "transaction_id"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "payments"
             }
           },
           "Permissions": {
@@ -7391,6 +8018,21 @@
                   "namespace": "public"
                 }
               },
+              "financialTransactions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "createdBy"
+                  ]
+                },
+                "to": {
+                  "model": "FinancialTransactions",
+                  "namespace": "public"
+                }
+              },
               "forumPosts": {
                 "cardinality": "1:N",
                 "on": {
@@ -7598,6 +8240,36 @@
                 },
                 "to": {
                   "model": "Notifications",
+                  "namespace": "public"
+                }
+              },
+              "payments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "recordedBy"
+                  ]
+                },
+                "to": {
+                  "model": "Payments",
+                  "namespace": "public"
+                }
+              },
+              "paymentsPayments": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "Payments",
                   "namespace": "public"
                 }
               },
@@ -11647,6 +12319,81 @@
               "using": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))",
               "withCheck": "(has_permission(auth.uid(), 'event.create'::text) OR has_permission(auth.uid(), 'event.update'::text) OR has_permission(auth.uid(), 'event.delete'::text))"
             },
+            "financial_accounts_select": {
+              "kind": "policy",
+              "name": "financial_accounts_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "financial_accounts",
+              "using": "has_permission(auth.uid(), 'finance.view'::text)"
+            },
+            "financial_accounts_write": {
+              "kind": "policy",
+              "name": "financial_accounts_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "financial_accounts",
+              "using": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))"
+            },
+            "financial_categories_select": {
+              "kind": "policy",
+              "name": "financial_categories_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "financial_categories",
+              "using": "has_permission(auth.uid(), 'finance.view'::text)"
+            },
+            "financial_categories_write": {
+              "kind": "policy",
+              "name": "financial_categories_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "financial_categories",
+              "using": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))"
+            },
+            "financial_transactions_select": {
+              "kind": "policy",
+              "name": "financial_transactions_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "financial_transactions",
+              "using": "has_permission(auth.uid(), 'finance.view'::text)"
+            },
+            "financial_transactions_write": {
+              "kind": "policy",
+              "name": "financial_transactions_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "financial_transactions",
+              "using": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))"
+            },
             "forum_categories_select": {
               "kind": "policy",
               "name": "forum_categories_select",
@@ -12216,6 +12963,31 @@
               "tableName": "organizations",
               "using": "has_permission(auth.uid(), 'settings.manage'::text)",
               "withCheck": "has_permission(auth.uid(), 'settings.manage'::text)"
+            },
+            "payments_select": {
+              "kind": "policy",
+              "name": "payments_select",
+              "namespaceId": "public",
+              "operation": "select",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "payments",
+              "using": "((user_id = auth.uid()) OR has_permission(auth.uid(), 'finance.view'::text))"
+            },
+            "payments_write": {
+              "kind": "policy",
+              "name": "payments_write",
+              "namespaceId": "public",
+              "operation": "all",
+              "permissive": true,
+              "roles": [
+                "authenticated"
+              ],
+              "tableName": "payments",
+              "using": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))",
+              "withCheck": "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))"
             },
             "periods_select": {
               "kind": "policy",
@@ -13080,6 +13852,21 @@
               "namespaceId": "public",
               "tableName": "events"
             },
+            "financial_accounts": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "financial_accounts"
+            },
+            "financial_categories": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "financial_categories"
+            },
+            "financial_transactions": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "financial_transactions"
+            },
             "forum_categories": {
               "kind": "rls",
               "namespaceId": "public",
@@ -13179,6 +13966,11 @@
               "kind": "rls",
               "namespaceId": "public",
               "tableName": "organizations"
+            },
+            "payments": {
+              "kind": "rls",
+              "namespaceId": "public",
+              "tableName": "payments"
             },
             "permissions": {
               "kind": "rls",
@@ -16184,6 +16976,341 @@
                 }
               ]
             },
+            "financial_accounts": {
+              "columns": {
+                "code": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "is_active": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "opening_balance": {
+                  "codecId": "pg/numeric@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "0"
+                  },
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "CASH"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "financial_accounts_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_accounts"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "financial_accounts_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "organization_id",
+                    "code"
+                  ],
+                  "name": "financial_accounts_organization_id_code_key"
+                }
+              ]
+            },
+            "financial_categories": {
+              "checks": [
+                {
+                  "expression": "(kind = ANY (ARRAY['INCOME'::text, 'EXPENSE'::text]))",
+                  "name": "financial_categories_kind_check"
+                }
+              ],
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "kind": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "organization_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "financial_categories_organization_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "organization_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_categories"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "organizations"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "financial_categories_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "organization_id",
+                    "name"
+                  ],
+                  "name": "financial_categories_organization_id_name_key"
+                }
+              ]
+            },
+            "financial_transactions": {
+              "checks": [
+                {
+                  "expression": "(amount > (0)::numeric)",
+                  "name": "financial_transactions_amount_check"
+                },
+                {
+                  "expression": "(type = ANY (ARRAY['INCOME'::text, 'EXPENSE'::text]))",
+                  "name": "financial_transactions_type_check"
+                }
+              ],
+              "columns": {
+                "account_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "amount": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "category_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "created_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "reference": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "transaction_date": {
+                  "codecId": "pg/date-temporal@1",
+                  "default": {
+                    "expression": "CURRENT_DATE",
+                    "kind": "function"
+                  },
+                  "nativeType": "date",
+                  "nullable": false
+                },
+                "type": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "financial_transactions_account_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "account_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_transactions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_accounts"
+                  }
+                },
+                {
+                  "name": "financial_transactions_category_id_fkey",
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "category_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_transactions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_categories"
+                  }
+                },
+                {
+                  "name": "financial_transactions_created_by_fkey",
+                  "source": {
+                    "columns": [
+                      "created_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_transactions"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "account_id"
+                  ],
+                  "name": "financial_transactions_account_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "financial_transactions_pkey"
+              },
+              "uniques": []
+            },
             "forum_categories": {
               "columns": {
                 "description": {
@@ -18314,6 +19441,167 @@
                   "name": "organizations_slug_key"
                 }
               ]
+            },
+            "payments": {
+              "checks": [
+                {
+                  "expression": "(amount > (0)::numeric)",
+                  "name": "payments_amount_check"
+                },
+                {
+                  "expression": "(status = ANY (ARRAY['PENDING'::text, 'PAID'::text, 'OVERDUE'::text, 'CANCELLED'::text]))",
+                  "name": "payments_status_check"
+                }
+              ],
+              "columns": {
+                "amount": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "method": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "note": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "paid_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "period_label": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "recorded_by": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "PENDING"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "transaction_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "payments_recorded_by_fkey",
+                  "source": {
+                    "columns": [
+                      "recorded_by"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "payments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                },
+                {
+                  "name": "payments_transaction_id_fkey",
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "transaction_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "payments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "financial_transactions"
+                  }
+                },
+                {
+                  "name": "payments_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "payments"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "profiles"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "payments_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "payments_pkey"
+              },
+              "uniques": []
             },
             "permissions": {
               "columns": {
@@ -21247,7 +22535,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "fb3c2b5d01067b59bd7e5f2e95a8c3db2f1451b36d3d401b27db4bf3bf16fed3"
+    "storageHash": "97fc87a6655bd6f9c0d5bc538529bd60b7cbdcbf21ab6bb01a107178a6b51a49"
   },
   "capabilities": {
     "postgres": {

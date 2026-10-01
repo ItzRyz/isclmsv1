@@ -3,22 +3,24 @@
 
 namespace public {
   model Organizations {
-    id              Uuid              @id(map: "organizations_pkey") @default(sql`gen_random_uuid()`)
-    name            String
-    slug            String            @unique(map: "organizations_slug_key")
-    description     String?
-    logoPath        String?           @map("logo_path")
-    createdAt       Timestamptz       @default(now()) @map("created_at")
-    updatedAt       Timestamptz       @default(now()) @map("updated_at")
-    academicPeriods AcademicPeriods[]
-    announcements   Announcements[]
-    batches         Batches[]
-    competitions    Competitions[]
-    divisions       Divisions[]
-    events          Events[]
-    gradeComponents GradeComponents[]
-    gradeScales     GradeScales[]
-    rankingPeriods  RankingPeriods[]
+    id                  Uuid                  @id(map: "organizations_pkey") @default(sql`gen_random_uuid()`)
+    name                String
+    slug                String                @unique(map: "organizations_slug_key")
+    description         String?
+    logoPath            String?               @map("logo_path")
+    createdAt           Timestamptz           @default(now()) @map("created_at")
+    updatedAt           Timestamptz           @default(now()) @map("updated_at")
+    academicPeriods     AcademicPeriods[]
+    announcements       Announcements[]
+    batches             Batches[]
+    competitions        Competitions[]
+    divisions           Divisions[]
+    events              Events[]
+    financialAccounts   FinancialAccounts[]
+    financialCategories FinancialCategories[]
+    gradeComponents     GradeComponents[]
+    gradeScales         GradeScales[]
+    rankingPeriods      RankingPeriods[]
 
     @@rls
     @@map("organizations")
@@ -163,6 +165,7 @@ namespace public {
     eventAttendances                   EventAttendance[]
     eventParticipants                  EventParticipants[]
     events                             Events[]
+    financialTransactions              FinancialTransactions[]
     forumPosts                         ForumPosts[]
     forumThreads                       ForumThreads[]
     learningActivities                 LearningActivities[]
@@ -189,6 +192,8 @@ namespace public {
     grades2                            Grades[]                  @relation(name: "grades_user_id_fkey")
     materials                          Materials[]               @relation(name: "materials_created_by_fkey")
     materialsMaterials                 Materials[]               @relation(name: "materials_updated_by_fkey")
+    payments                           Payments[]                @relation(name: "payments_recorded_by_fkey")
+    paymentsPayments                   Payments[]                @relation(name: "payments_user_id_fkey")
     pointTransactions                  PointTransactions[]       @relation(name: "point_transactions_created_by_fkey")
     pointTransactionsPointTransactions PointTransactions[]       @relation(name: "point_transactions_user_id_fkey")
     submissions                        Submissions[]             @relation(name: "submissions_graded_by_fkey")
@@ -586,6 +591,62 @@ namespace public {
     @@map("event_participants")
   }
 
+  model FinancialAccounts {
+    id                    Uuid                    @id(map: "financial_accounts_pkey") @default(sql`gen_random_uuid()`)
+    organizationId        Uuid                    @map("organization_id")
+    name                  String
+    code                  String
+    _type                 String                  @default("CASH") @map("type")
+    openingBalance        Numeric                 @default(0) @map("opening_balance")
+    isActive              Boolean                 @default(true) @map("is_active")
+    createdAt             Timestamptz             @default(now()) @map("created_at")
+    updatedAt             Timestamptz             @default(now()) @map("updated_at")
+    financialTransactions FinancialTransactions[]
+    organization          Organizations           @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "financial_accounts_organization_id_fkey", index: false)
+
+    @@unique([organizationId, code], map: "financial_accounts_organization_id_code_key")
+    @@rls
+    @@map("financial_accounts")
+  }
+
+  model FinancialCategories {
+    id                    Uuid                    @id(map: "financial_categories_pkey") @default(sql`gen_random_uuid()`)
+    organizationId        Uuid                    @map("organization_id")
+    name                  String
+    kind                  String
+    createdAt             Timestamptz             @default(now()) @map("created_at")
+    financialTransactions FinancialTransactions[]
+    organization          Organizations           @relation(fields: [organizationId], references: [id], onDelete: Cascade, map: "financial_categories_organization_id_fkey", index: false)
+
+    @@unique([organizationId, name], map: "financial_categories_organization_id_name_key")
+    @@check(expression: "(kind = ANY (ARRAY['INCOME'::text, 'EXPENSE'::text]))", map: "financial_categories_kind_check")
+    @@rls
+    @@map("financial_categories")
+  }
+
+  model FinancialTransactions {
+    id              Uuid                 @id(map: "financial_transactions_pkey") @default(sql`gen_random_uuid()`)
+    accountId       Uuid                 @map("account_id")
+    categoryId      Uuid?                @map("category_id")
+    _type           String               @map("type")
+    amount          Numeric
+    description     String
+    transactionDate Date                 @default(sql`CURRENT_DATE`) @map("transaction_date")
+    reference       String?
+    createdBy       Uuid?                @map("created_by")
+    createdAt       Timestamptz          @default(now()) @map("created_at")
+    payments        Payments[]
+    account         FinancialAccounts    @relation(fields: [accountId], references: [id], onDelete: Cascade, map: "financial_transactions_account_id_fkey")
+    category        FinancialCategories? @relation(fields: [categoryId], references: [id], onDelete: SetNull, map: "financial_transactions_category_id_fkey", index: false)
+    profiles        Profiles?            @relation(fields: [createdBy], references: [id], map: "financial_transactions_created_by_fkey", index: false)
+
+    @@index([accountId], map: "financial_transactions_account_id")
+    @@check(expression: "(amount > (0)::numeric)", map: "financial_transactions_amount_check")
+    @@check(expression: "(type = ANY (ARRAY['INCOME'::text, 'EXPENSE'::text]))", map: "financial_transactions_type_check")
+    @@rls
+    @@map("financial_transactions")
+  }
+
   model ForumCategories {
     id           Uuid           @id(map: "forum_categories_pkey") @default(sql`gen_random_uuid()`)
     name         String
@@ -904,6 +965,30 @@ namespace public {
     @@index([recipientId], map: "notifications_recipient_id")
     @@rls
     @@map("notifications")
+  }
+
+  model Payments {
+    id            Uuid                   @id(map: "payments_pkey") @default(sql`gen_random_uuid()`)
+    userId        Uuid                   @map("user_id")
+    amount        Numeric
+    periodLabel   String                 @map("period_label")
+    status        String                 @default("PENDING")
+    paidAt        Timestamptz?           @map("paid_at")
+    method        String?
+    note          String?
+    transactionId Uuid?                  @map("transaction_id")
+    recordedBy    Uuid?                  @map("recorded_by")
+    createdAt     Timestamptz            @default(now()) @map("created_at")
+    updatedAt     Timestamptz            @default(now()) @map("updated_at")
+    profiles      Profiles?              @relation(name: "payments_recorded_by_fkey", fields: [recordedBy], references: [id], map: "payments_recorded_by_fkey", index: false)
+    transaction   FinancialTransactions? @relation(fields: [transactionId], references: [id], onDelete: SetNull, map: "payments_transaction_id_fkey", index: false)
+    user          Profiles               @relation(name: "payments_user_id_fkey", fields: [userId], references: [id], onDelete: Cascade, map: "payments_user_id_fkey")
+
+    @@index([userId], map: "payments_user_id")
+    @@check(expression: "(amount > (0)::numeric)", map: "payments_amount_check")
+    @@check(expression: "(status = ANY (ARRAY['PENDING'::text, 'PAID'::text, 'OVERDUE'::text, 'CANCELLED'::text]))", map: "payments_status_check")
+    @@rls
+    @@map("payments")
   }
 
   model Permissions {
@@ -1797,6 +1882,51 @@ namespace public {
     @@map("events_write")
   }
 
+  policy_select financial_accounts_select {
+    target = FinancialAccounts
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'finance.view'::text)"
+    @@map("financial_accounts_select")
+  }
+
+  policy_all financial_accounts_write {
+    target = FinancialAccounts
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))"
+    withCheck = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))"
+    @@map("financial_accounts_write")
+  }
+
+  policy_select financial_categories_select {
+    target = FinancialCategories
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'finance.view'::text)"
+    @@map("financial_categories_select")
+  }
+
+  policy_all financial_categories_write {
+    target = FinancialCategories
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))"
+    @@map("financial_categories_write")
+  }
+
+  policy_select financial_transactions_select {
+    target = FinancialTransactions
+    roles = [authenticated]
+    using = "has_permission(auth.uid(), 'finance.view'::text)"
+    @@map("financial_transactions_select")
+  }
+
+  policy_all financial_transactions_write {
+    target = FinancialTransactions
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))"
+    withCheck = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text) OR has_permission(auth.uid(), 'finance.delete'::text))"
+    @@map("financial_transactions_write")
+  }
+
   policy_select forum_categories_select {
     target = ForumCategories
     roles = [authenticated]
@@ -2135,6 +2265,21 @@ namespace public {
     using = "has_permission(auth.uid(), 'settings.manage'::text)"
     withCheck = "has_permission(auth.uid(), 'settings.manage'::text)"
     @@map("organizations_write")
+  }
+
+  policy_select payments_select {
+    target = Payments
+    roles = [authenticated]
+    using = "((user_id = auth.uid()) OR has_permission(auth.uid(), 'finance.view'::text))"
+    @@map("payments_select")
+  }
+
+  policy_all payments_write {
+    target = Payments
+    roles = [authenticated]
+    using = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))"
+    withCheck = "(has_permission(auth.uid(), 'finance.create'::text) OR has_permission(auth.uid(), 'finance.update'::text))"
+    @@map("payments_write")
   }
 
   policy_select periods_select {
