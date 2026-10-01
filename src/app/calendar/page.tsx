@@ -199,8 +199,8 @@ export default async function CalendarPage({
       </div>
 
       <Card>
-        <CardContent className="pt-6">
-          <div className="text-muted-foreground grid grid-cols-7 gap-1 text-center text-xs">
+        <CardContent className="overflow-x-auto pt-6">
+          <div className="text-muted-foreground grid min-w-[560px] grid-cols-7 gap-1 text-center text-xs">
             {["Sn", "Sl", "Rb", "Km", "Jm", "Sb", "Mn"].map((d) => (
               <div key={d} className="py-1">
                 {d}

@@ -28,7 +28,7 @@ export async function SiteHeader() {
 
   return (
     <header className="bg-background/80 sticky top-0 z-40 border-b backdrop-blur-md">
-      <nav className="mx-auto flex w-full max-w-4xl items-center gap-1 p-3">
+      <nav className="mx-auto flex w-full max-w-4xl flex-wrap items-center gap-1 p-3">
         <Link href="/" className="mr-2 font-semibold">
           SC LMS
         </Link>
