@@ -1,6 +1,6 @@
 /**
- * P1-807: klien email transaksional Sender (server-only).
- * POST https://api.sender.net/v2/message/send, Bearer SENDER_API_KEY.
+ * P1-807: klien email transaksional Resend (server-only).
+ * POST https://api.resend.com/emails, Bearer RESEND_API_KEY.
  * Tanpa kredensial -> skip diam-diam (kembali { skipped: true }).
  * Satu retry untuk kegagalan jaringan/5xx.
  */
@@ -25,7 +25,7 @@ async function postOnce(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 10000);
   try {
-    const res = await fetch("https://api.sender.net/v2/message/send", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -33,8 +33,8 @@ async function postOnce(
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        from: { email: from, name: "Study Club LMS" },
-        to: { email: input.to, ...(input.name ? { name: input.name } : {}) },
+        from,
+        to: input.to,
         subject: input.subject,
         text: input.text,
         ...(input.html ? { html: input.html } : {}),
@@ -43,7 +43,7 @@ async function postOnce(
     });
     if (!res.ok) {
       const body = await res.text().catch(() => "");
-      throw new Error(`Sender ${res.status}: ${body.slice(0, 200)}`);
+      throw new Error(`Resend ${res.status}: ${body.slice(0, 200)}`);
     }
   } finally {
     clearTimeout(timer);
@@ -51,8 +51,8 @@ async function postOnce(
 }
 
 export async function sendEmail(input: SendEmailInput): Promise<SendResult> {
-  const apiKey = process.env["SENDER_API_KEY"];
-  const from = process.env["SENDER_FROM_EMAIL"];
+  const apiKey = process.env["RESEND_API_KEY"];
+  const from = process.env["RESEND_FROM_EMAIL"];
   if (!apiKey || !from) return { ok: true, skipped: true };
   try {
     await postOnce(input, apiKey, from);
