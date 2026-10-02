@@ -9,6 +9,14 @@ import {
   updateQuizSchema,
 } from "./schemas";
 
+function cleanFormData(formData: FormData): FormData {
+  const clean = new FormData();
+  for (const [key, value] of formData.entries()) {
+    clean.append(key.replace(/^_\d+_/, ""), value);
+  }
+  return clean;
+}
+
 export async function createQuiz(formData: FormData): Promise<void> {
   const parsed = createQuizSchema.safeParse({
     course_id: formData.get("course_id"),
@@ -92,10 +100,11 @@ export async function deleteQuiz(formData: FormData): Promise<void> {
 }
 
 export async function addQuizQuestion(formData: FormData): Promise<void> {
+  const clean = cleanFormData(formData);
   const parsed = addQuizQuestionSchema.safeParse({
-    quiz_id: formData.get("quiz_id"),
-    question_id: formData.get("question_id"),
-    points: formData.get("points"),
+    quiz_id: clean.get("quiz_id"),
+    question_id: clean.get("question_id"),
+    points: clean.get("points"),
   });
   if (!parsed.success) throw new Error("VALIDATION_ERROR");
 

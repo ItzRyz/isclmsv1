@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { emails, getCourseId, runId } from "./fixtures";
+import { emails, getCourseId, getQuestionId, runId } from "./fixtures";
 import { badge, login } from "./helpers";
 
 test.describe.serial("quiz E2E", () => {
   let quizId: string;
+  let questionId: string;
 
   test("admin membuat soal di bank", async ({ page }) => {
     await login(page, emails.admin);
@@ -25,6 +26,7 @@ test.describe.serial("quiz E2E", () => {
         timeout: 15_000,
       },
     );
+    questionId = await getQuestionId(`E2E Berapa hasil 1+1? ${runId}`);
   });
 
   test("admin membuat kuis, menambah soal, publish", async ({ page }) => {
@@ -44,7 +46,7 @@ test.describe.serial("quiz E2E", () => {
     await expect(page).toHaveURL(/\/quizzes\/[0-9a-f-]{36}/);
     quizId = new URL(page.url()).pathname.split("/").pop() ?? "";
 
-    await page.locator('select[name="question_id"]').selectOption({ index: 1 });
+    await page.locator('select[name="question_id"]').selectOption(questionId);
     await page.getByRole("button", { name: "Tambah", exact: true }).click();
     await expect(page.getByText("Soal (1)")).toBeVisible({ timeout: 15_000 });
 

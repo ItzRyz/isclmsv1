@@ -19,6 +19,8 @@
     "contract:emit": "prisma contract emit",
     "db:verify": "prisma db verify",
     "db:ping": "bun scripts/check-supabase-db.ts",
+    "db:push": "supabase db push",
+    "db:seed": "bun scripts/staging-seed.ts",
     "test": "bun test",
     "test:rls": "bun scripts/rls-test.ts",
     "test:auth": "bun scripts/auth-test.ts",
@@ -71,7 +73,7 @@
     "prettier": "^3.9.9",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "prisma": "8.0.0-rc.17",
-    "supabase": "2.118.0",
+    "supabase": "^2.119.0",
     "tailwindcss": "^4",
     "typescript": "^5.9"
   },

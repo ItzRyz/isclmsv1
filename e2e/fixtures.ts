@@ -111,6 +111,20 @@ export async function getComponentId(code: string): Promise<string> {
   );
 }
 
+export async function getQuestionId(prompt: string): Promise<string> {
+  for (let i = 0; i < 20; i++) {
+    const r = await adminClient()
+      .from("questions")
+      .select("id")
+      .eq("prompt", prompt)
+      .maybeSingle();
+    if (r.data) return r.data.id;
+    if (r.error) throw new Error(`question: ${r.error.message}`);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+  throw new Error(`question "${prompt}" tidak ada`);
+}
+
 export async function getCertificateToken(userId: string): Promise<string> {
   const r = await adminClient()
     .from("certificates")
